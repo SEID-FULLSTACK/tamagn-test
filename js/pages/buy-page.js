@@ -4,6 +4,7 @@ import { db, auth } from "/js/core/firebase.js";
 import { initSharedAuthModal } from "/js/features/auth-modal-shared.js";
 import { getUserDisplayProfile } from "/js/features/auth-user-profile.js";
 import { byId, onClickActions, onIfPresent, setDisplay } from "./page-utils.js";
+import { ensurePropertyStatusBadgeStyles, renderPropertyStatusBadge } from "/js/utils/ui-helpers.js";
 
 let currentUser = auth.currentUser;
 
@@ -37,6 +38,7 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 const sharedAuth = initSharedAuthModal({ googleRedirectPath: "buy.html" });
+ensurePropertyStatusBadgeStyles();
 
 const logoutBtn = byId("logoutBtn");
 onIfPresent(logoutBtn, "click", async () => {
@@ -122,6 +124,13 @@ async function loadTamagnListings() {
             const data = docSnap.data();
             const docId = docSnap.id;
             const dataString = encodeURIComponent(JSON.stringify(data));
+            const statusBadge = renderPropertyStatusBadge(data.status, {
+                labels: {
+                    selling: "ሽያጭ",
+                    renting: "ኪራይ",
+                    sold: "ተሽጧል"
+                }
+            });
             const canEdit = Boolean(currentUser && data.userId && data.userId === currentUser.uid);
             const editTooltip = canEdit
                 ? "ይህን ንብረት ማስተካከል ይችላሉ።"
@@ -133,6 +142,7 @@ async function loadTamagnListings() {
 
             htmlCards += `
     <div class="tamagn-card">
+        ${statusBadge}
         <img src="${data.imageUrl || "https://placehold.co/300x200/png"}" alt="House">
         <div class="tamagn-info">
             <span class="price-text">${data.price ? Number(data.price).toLocaleString() : "---"} ETB</span>

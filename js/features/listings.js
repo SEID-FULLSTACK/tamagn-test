@@ -127,6 +127,7 @@ async function resolveImageUrlForSubmit(existingImageUrl = "") {
 function buildPropertyData(imageUrl) {
     return {
         category: getInputValue("pDeveloper"),
+        status: getInputValue("pStatus", "selling") || "selling",
         title: getInputValue("pTitle"),
         price: Number(getInputValue("pPrice", 0)),
         location: getInputValue("pLocation"),
@@ -154,6 +155,7 @@ function prefillPropertyForm(listingId, listingData) {
 
     setInputValue("pTitle", listingData.title);
     setInputValue("pPrice", listingData.price);
+    setInputValue("pStatus", listingData.status || "selling");
     setInputValue("pLocation", listingData.location);
     setInputValue("pSize", listingData.size);
     setInputValue("pDescription", listingData.description);
