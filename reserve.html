@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tamagn Bet | ንብረት ይለጥፉ</title>
+    <style>
+        * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { margin: 0; background: #f4f6f9; color: #333; }
+        
+        /* Header - Responsive */
+       .header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; border-bottom: 1px solid #ddd;position: relative; }
+        .logo { font-size: 24px; font-weight: 800; color: var(--primary-blue); justify-content: center;align-items: center;text-decoration-line: none;position: absolute;left: 50%;}
+       /* nav { display: flex; gap: 25px;position: absolute; right: 20px;border-radius: 20px;background-color: #007bff;padding: 15px; }
+        nav a { color: black; text-decoration: none; font-weight: bold; font-size: 14px;padding: 10px 20px;border-radius: 5px;}*/
+.navbar {
+    display: flex;
+    justify-content: flex-end; /* ወደ ቀኝ እንዲጠጉ ለማድረግ */
+    gap: 15px;               /* በሊንኮች መካከል ያለው ክፍተት */
+    padding: 10px;
+}
+
+.nav-item {
+    background-color: #007bff; /* የሊንኩ ዳራ ቀለም */
+    color: white;              /* የጽሁፍ ቀለም */
+    padding: 8px 16px;         /* የሊንኩ ውስጠኛ ቦታ */
+    text-decoration: none;     /* ከስር መስመር እንዳይኖረው */
+    border-radius: 10px;        /* ጠርዙን ክብ ለማድረግ */
+    transition: background 0.3s;
+}
+
+.nav-item:hover {
+    background-color: #0056b3; /* መዳፊት ሲያርፍ የሚቀየር ቀለም */
+}
+
+@media (max-width: 768px) {
+  .logo {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo {
+    font-size: 18px;
+    position: static;
+    left: auto;
+    transform: none;
+    display: block;
+    text-align: center;
+    margin: 10px 0;
+  }
+}
+        
+        /* Desktop Adjustments */
+        @media (min-width: 768px) {
+            header { flex-direction: row; justify-content: space-between; padding: 15px 50px; }
+            .container { margin-top: 40px; }
+        }
+/* 1. Modal Overlay (ለሁለቱም ሞዳል የሚሰራ) */
+.modal, .modal-overlay {
+    display: block; 
+    position: fixed; 
+    z-index: 10000; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    background-color: rgba(0,0,0,0.6); /* የጠቆረ ዳራ */
+    overflow-y: auto; /* ስክሪኑ ላይ እንዲሸብለል */
+}
+
+/* 2. Modal Content (የውስጠኛው ሳጥን) */
+.modal-content, .registration-card {
+    background-color: #fff;
+    margin: 5% auto; /* ከላይ የተወሰነ ቦታ ይተዋል */
+    padding: 25px;
+    width: 90%; /* በሞባይል ሙሉ ስክሪን እንዲጠጋ */
+    max-width: 600px; /* በኮምፒውተር ከ600px አይሰፋም */
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    position: relative;
+}
+
+/* 3. Close Button */
+.close {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #aaa;
+    cursor: pointer;
+}
+.close:hover { color: #000; }
+
+/* 4. Form Layout */
+.form-group { margin-bottom: 15px; }
+.form-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 14px; }
+input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+/* 5. Special Sections (Conditional inputs) */
+.special-section {
+    border-left: 5px solid #1a73e8;
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+/* 6. Buttons */
+.btn-submit {
+    background: #0a1f44;
+    color: white;
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+}
+.btn-submit:hover { background: #132d5e; }
+
+.pay-btn {
+    transition: 0.3s;
+}
+.pay-btn:hover { opacity: 0.9; transform: scale(1.02); }
+
+/* 7. Responsive Desktop Adjustment */
+@media (min-width: 768px) {
+    .modal-content {
+        padding: 40px;
+    }
+    .form-group {
+        display: block;
+    }
+}
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">
+    <span style="color: #007bff; font-weight: bold;">Tamagn</span><span style="color: #28a745; font-weight: 800;">-Bet</span>
+</div>
+   <nav class="navbar">
+    <a href="index.html" class="nav-item">መነሻ</a>
+    <a href="buy.html" class="nav-item">መግዛት</a>
+    <a href="dashboard.html" class="nav-item">ዳሽቦርድ</a>
+</nav>
+ 
+
+</header>
+  <div id="postPropFormContainer" style="max-width: 800px; margin: 20px auto; padding: 20px; background: #fff; border-radius: 10px; border: 1px solid #ddd;">
+    <h2 id="postTitleText">Post New Property</h2>
+    
+    <div class="pricing-banner" style="background: #fdf7e2; padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px dashed #f39c12; text-align: center;">
+        <div class="banner-icon" style="font-size: 24px; color: #f39c12; margin-bottom: 5px;">
+            <i class="fas fa-gem"></i>
+        </div>
+        <div class="banner-text">
+            <span style="display: block; margin-bottom: 10px; font-weight: bold;">ምርጥ አማራጮችን ይምረጡ!</span>
+            <a href="../pricing.html" class="post-property-btn" style="background: #27ae60; color: white; padding: 8px 15px; text-decoration: none; border-radius: 5px; display: inline-block;">
+                የአገልግሎት ዋጋ ዝርዝር እዚህ ይገኛል <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <hr>
+    <form id="propertyForm">
+        <div class="form-group">
+            <label for="pDeveloper">Select Real Estate Developer or Category:</label>
+            <select id="pDeveloper" name="developer_id" required style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ccc; border-radius:5px;">
+                <option value="" disabled selected>-- Choose --</option>
+                <optgroup label="ሪል እስቴት አልሚዎች (Developers)">
+                    <option value="1">Noah Real Estate</option>
+                    <option value="2">Gift Real Estate</option>
+                    <option value="3">Ayat Real Estate</option>
+                    <option value="4">Sunshine Real Estate</option>
+                    <option value="5">Metropolitan Real Estate</option>
+                    <option value="6">Flintstone Homes</option>
+                    <option value="7">Ovid Real Estate</option>
+                    <option value="8">Temir Properties</option>
+                    <option value="9">Bora Real Estate</option>
+                    <option value="10">Zemen Real Estate</option>
+                    <option value="11">Tsehay Real Estate</option>
+                </optgroup>
+                <optgroup label="Categories">
+                    <option value="Villa">Villa</option>
+                    <option value="Apartment">Apartment</option>
+                    <option value="condominium">Condominium</option>
+                    <option value="Land">Land</option>
+                </optgroup>
+            </select>
+        </div>
+
+        <div id="re-section" class="special-section" style="display:none; background:#f9f9f9; padding:15px; border-radius:8px; margin-bottom:15px; border-left: 5px solid #1a73e8;">
+            <label>Level of Construction (የግንባታ ደረጃ)</label>
+            <select id="constructionLevel" style="width:100%; margin-bottom:10px;">
+                <option>Excavation (መሬት ቁፋሮ)</option>
+                <option>Structural Work (አፅም ግንባታ)</option>
+                <option>Finishing (ፊኒሺንግ)</option>
+                <option>Ready for Residents (ለነዋሪ ዝግጁ)</option>
+            </select>
+            <label>Floor Plan (የፎቅ ዲዛይን)</label>
+            <input type="file" id="pFloorPlan" accept="image/*">
+        </div>
+
+        <div id="condo-section" class="special-section" style="display:none; background:#fff8e1; padding:15px; border-radius:8px; margin-bottom:15px; border-left: 5px solid #ffc107;">
+            <label>House Type</label>
+            <select id="condoType" style="width:100%; margin-bottom:10px;">
+                <option>Studio</option>
+                <option>1 Bedroom</option>
+                <option>2 Bedroom</option>
+                <option>3 Bedroom</option>
+            </select>
+            <div style="display:flex; gap:10px; margin-bottom:10px;">
+                <input type="text" id="condoSite" placeholder="Site Name" style="flex:1;">
+                <input type="number" id="condoFloor" placeholder="Floor No." style="flex:1;">
+            </div>
+            <label>Bank Loan Status</label>
+            <select id="condoLoan" style="width:100%;">
+                <option>Has Loan (ዕዳ ያለበት)</option>
+                <option>No Loan (ዕዳ የሌለበት)</option>
+            </select>
+        </div>
+
+        <div id="villa-apt-section" class="special-section" style="display:none; background:#f1f8e9; padding:15px; border-radius:8px; margin-bottom:15px; border-left: 5px solid #4caf50;">
+            <div style="display:flex; gap:10px; margin-bottom:10px;">
+                <div style="flex:1;">
+                    <label>Bedrooms (መኝታ)</label>
+                    <input type="number" id="pBedrooms" placeholder="e.g. 3" style="width:100%;">
+                </div>
+                <div style="flex:1;">
+                    <label>Bathrooms (መታጠቢያ)</label>
+                    <input type="number" id="pBathrooms" placeholder="e.g. 2" style="width:100%;">
+                </div>
+            </div>
+            <label>Parking Spaces (የመኪና ማቆሚያ)</label>
+            <input type="number" id="pParking" placeholder="Number of cars" style="width:100%;">
+        </div>
+
+        <div class="form-group">
+            <label id="lblPropTitle">Property Title</label>
+            <input type="text" id="pTitle" placeholder="e.g. Noah Garden Apartment" required style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ccc; border-radius:5px;">
+        </div>
+
+        <div class="form-group">
+            <label id="lblPrice">Price (ETB)</label>
+            <input type="number" id="pPrice" placeholder="e.g. 15000000" required style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ccc; border-radius:5px;">
+        </div>
+
+        <div class="form-group">
+            <label id="lblLocation">Location</label>
+            <input type="text" id="pLocation" placeholder="e.g. Bole, Addis Ababa" required style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ccc; border-radius:5px;">
+        </div>
+
+        <div class="form-group">
+            <label>Size (Square Meters / ካሬ ሜትር)</label>
+            <input type="number" id="pSize" placeholder="e.g. 120" style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ccc; border-radius:5px;">
+        </div>
+
+        <div class="form-group">
+            <label>ተጨማሪ ማብራሪያ (Detailed Description)</label>
+            <textarea id="pDescription" rows="4" style="width:100%; border-radius:5px; padding:10px; border:1px solid #ccc; margin-bottom:15px;" placeholder="ስለ ንብረቱ ዝርዝር መረጃ እዚህ ይፃፉ..."></textarea>
+        </div>
+        
+        <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 15px;">
+            <h4 style="margin-top: 0; color: #333;">የሻጭ መረጃ (Seller Info)</h4>
+            <input type="text" id="sellerName" placeholder="የሻጭ ስም (ለምሳሌ፡ አቶ ካሳሁን)" required style="width:100%; padding:10px; margin-bottom:10px; border:1px solid #ccc;">
+            <input type="tel" id="sellerPhone" placeholder="የስልክ ቁጥር (ለምሳሌ፡ 0911...)" required style="width:100%; padding:10px; border:1px solid #ccc;">
+        </div>
+
+        <div class="form-group">
+            <label>ምስል የመጫኛ መንገድ ይምረጡ</label>
+            <select id="imageOption" style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ccc;">
+                <option value="link">በሊንክ (Image URL)</option>
+                <option value="upload">ከኮምፒውተር ይጫኑ (Upload File)</option>
+            </select>
+        </div>
+
+        <div id="urlInputArea" class="form-group">
+            <label>የምስል ሊንክ (URL)</label>
+            <input type="text" id="pImageLink" placeholder="https://example.com/photo.jpg" style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ccc;">
+        </div>
+
+        <div id="fileInputArea" class="form-group" style="display:none;">
+            <label>ምስል ይምረጡ</label>
+            <input type="file" id="pImageFile" accept="image/*" style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ccc;">
+        </div>
+
+        <button type="submit" class="btn-submit" id="btnSubmitPost" style="width:100%; padding:15px; background:#2c3e50; color:#fff; border:none; border-radius:5px; cursor:pointer;">Post Property</button>
+    </form>
+</div>
+
+<div id="postPaymentModal" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10001; justify-content: center; align-items: center;">
+    <div class="registration-card" style="max-width: 450px; text-align: center; background: white; padding: 25px; border-radius: 15px;">
+        <div style="font-size: 50px; color: #27ae60; margin-bottom: 15px;">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <h3>የቤት መረጃው ተሞልቷል!</h3>
+        <p style="color: #666; margin-bottom: 20px;">ማስታወቂያው ለህዝብ እንዲታይ እባክዎ ክፍያ ይፈጽሙ።</p>
+        
+        <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: left;">
+            <p><strong>ፓኬጅ:</strong> Standard Listing</p>
+            <p><strong>ዋጋ:</strong> 500 ETB</p>
+        </div>
+
+        <button class="pay-btn" style="background: #0066ff; color: white; width: 100%; padding: 12px; border: none; border-radius: 5px; margin-bottom: 10px;">ቴሌብርር</button>
+        <button class="pay-btn" style="background: #27ae60; color: white; width: 100%; padding: 12px; border: none; border-radius: 5px;">ቻፓ (Chapa)</button>
+        
+        <button type="button" data-action="reserve-close-post-payment" style="margin-top: 15px; background: none; border: none; color: #999; cursor: pointer;">ለጊዜው ይቆይ</button>
+    </div>
+</div>
+
+<script type="module" src="/js/pages/reserve-page.js"></script>
+</body>
+</html>
+
+
+
+require('dotenv').config(); // አንዴ ብቻ መጥራት በቂ ነው
+const express = require('express');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
+const cors = require('cors');
+
+const app = express();
+
+app.use(cors()); 
+app.use(express.json());
+
+// 4. Gemini API Initialize
+console.log("Checking API Key existence...");
+const apiKey = process.env.GEMINI_KEY;
+console.log("Key loaded:", apiKey ? "Yes" : "No");
+
+if (!apiKey) {
+    console.error("ERROR: GEMINI_KEY is missing in .env file!");
+}
+
+const genAI = new GoogleGenerativeAI(apiKey);
+
+// 5. Routes
+app.get('/', (req, res) => {
+    res.send('የታማኝ-ቤት AI ሰርቨር በሰላም እየሰራ ነው!');
+});
+
+app.post('/chat', async (req, res) => {
+    console.log("--- አዲስ ጥያቄ ወደ ሰርቨር ደርሷል! ---"); // ይህንን መስመር ጨምር
+    try {
+        const { message } = req.body;
+        
+        if (!message) {
+            return res.status(400).json({ error: "Message is required" });
+        }
+
+        // ከዚህ በፊት የነበረውን አጥፍተህ ይህንን አስገባ
+// መስመር 42 አካባቢ እንዲህ አድርገህ ሞክር
+const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+        const context = "You are the professional AI assistant for Tamagn-Bet (Trusted House) in Ethiopia. Provide helpful info about real estate and bank loans in Amharic and English.";
+        
+        const result = await model.generateContent(`${context} \n User: ${message}`);
+        const response = await result.response;
+        
+        res.json({ reply: response.text() });
+
+    } catch (error) {
+    console.error("=== እውነተኛው የስህተት ዝርዝር (Error Details) ===");
+    console.error(error); // ይህ ስህተቱን በሙሉ በተርሚናል ላይ ያሳያል
+    
+    res.status(500).json({ 
+        error: "AI Server Error", 
+        details: error.message // ስህተቱን ለብሮውዘርህም ይልካል
+    });
+}
+});
+// ይህን ኮድ በ server.js ውስጥ አስገባ
+app.get('/list-models', async (req, res) => {
+    try {
+        const models = await genAI.listModels();
+        res.json(models.models);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Tamagn Bet | Buy Property</title>
+    <style>
+      * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { margin: 0; background: #f4f6f9; }
+        
+        .header {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 50px;
+    background: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/*.logo { font-size: 24px; font-weight: bold;}*/
+.logo {grid-column: 2; font-size: 24px; font-weight: 800; color: var(--primary-blue); justify-self: center;align-items: center;text-decoration-line: none;
+}
+#l1 { color: #333; }
+#l2 { color: #d4af37; } /* Gold */
+        
+        .auth-btn { background: #0a1f44; color: white; padding: 8px 16px; border-radius: 5px; cursor: pointer; border: none; }
+        
+        /* Modal Styles */
+       /* --- Form & Modal Styles --- */
+
+/* 1. Main Login Form Container */
+.reg-container {
+    max-width: 400px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    border: 1px solid #eee;
+    text-align: center;
+}
+
+/* 4. Modal (የምዝገባ/መግቢያ መደራረቢያ) */
+.modal {
+    display: none; /* በነባሪ ተደብቋል */
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* ጥቁር የደበዘዘ ዳራ */
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+}
+
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    width: 350px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    text-align: center;
+}
+
+/* 5. Inputs እና Buttons */
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box; /* ስፋቱ እንዳይበላሽ */
+}
+
+.gold-btn {
+    width: 100%;
+    background-color: #d4af37;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+.gold-btn:hover {
+    background: #b8962f; /* Slightly darker gold on hover */
+}
+
+/* 6. Typography adjustments */
+.reg-container h2 { margin-bottom: 20px; color: #333; font-size: 22px; }
+.modal-content h2, .modal-content h3 { color: #d4af37; }
+.modal-content h3 { margin-top: 5px; font-size: 16px; }
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .reg-container { margin: 20px; }
+}
+        /* Utility styles from your existing code preserved below... */
+        .tamagn-card { background: white; border-radius: 8px; overflow: hidden; border: 1px solid #eee; transition: 0.3s; display: flex; flex-direction: column; }
+        .tamagn-card img { width: 100%; height: 200px; object-fit: cover; }
+        .tamagn-info { padding: 15px; }
+        .price-text { color: #f39c12; font-weight: bold; font-size: 18px; margin: 10px 0; display: block; }
+        .properties-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; padding: 20px; max-width: 1200px; margin: 0 auto; }
+   
+  /* 3. Avatar */
+.profile-circle {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background-color: #d35400;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 16px;
+
+}
+
+.logout-btn {
+    padding: 5px 10px;
+    background-color: #ff4757;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+
+}
+.auth-card {
+        background: #ffffff;
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        border: 1px solid #f0f0f0;
+        font-family: 'Segoe UI', Tahoma, sans-serif;
+    }
+
+    .auth-card .icon-box {
+        font-size: 45px;
+        color: #4a90e2;
+        margin-bottom: 20px;
+    }
+
+    .auth-card h3 {
+        color: #333;
+        margin-bottom: 15px;
+        font-size: 22px;
+    }
+
+    .auth-card p {
+        color: #666;
+        margin-bottom: 30px;
+        line-height: 1.6;
+        font-size: 15px;
+    }
+
+    .auth-card .login-btn {
+        background-color: #4a90e2;
+        color: white;
+        border: none;
+        padding: 14px 30px;
+        border-radius: 10px;
+        font-weight: 600;
+        cursor: pointer;
+        width: 100%;
+        transition: transform 0.2s, background 0.3s;
+    }
+
+    .auth-card .login-btn:hover {
+        background-color: #357abd;
+        transform: translateY(-2px);
+    }
+/* ለሁሉም የAuth ቁልፎች የሚሆን መሠረታዊ ስታይል */
+/* አሁን ያለውን .auth-btn እና .btn-login/signup ስታይል በዚህ ቀይረው */
+.auth-btn {
+grid-column: 3;
+justify-self: end;
+display: flex;
+align-items: center;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+margin-left: auto;
+
+
+
+    /* absolute ቦታውን አውጥተነዋል */
+}
+
+.btn-login {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-signup {
+    background-color: #007bff;
+    color: white;
+}
+.btn-signup:hover {
+    background-color: #0056b3;
+}
+@media (max-width: 600px) {
+    .auth-btn {
+        padding: 6px 12px;   /* Smaller padding */
+        font-size: 12px;     /* Smaller font size */
+        margin-left: 5px;    /* Reduce space between buttons */
+    }
+
+    /* Optional: If your header layout breaks, use this to adjust the buttons container */
+    #auth-btns {
+        gap: 5px !important; /* Reduces gap between buttons on mobile */
+    }
+}
+/* Dashboard-ው በነባሪነት እንዲደበቅ */
+#tamagn-display-grid {
+    display: none; 
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+<div class="logo">
+    <span style="color: #007bff; font-weight: bold;">Tamagn</span><span style="color: #28a745; font-weight: 800;  ">-Bet</span>
+</div>
+    
+  <div id="auth-btns" style="display: flex;">
+        <button class="auth-btn btn-login" type="button" data-action="buy-open-auth-modal" data-mode="login">መግቢያ</button>
+        <button class="auth-btn btn-signup" type="button" data-action="buy-open-auth-modal" data-mode="signup">አዲስ ተጠቃሚ</button>
+    </div>
+        
+    <div id="user-profile" style="display: none; align-items: center; gap: 10px;">
+        <div id="avatar" class="profile-circle"></div>
+        <p id="userNameDisplay" style="margin: 0;"></p>
+        <button id="logoutBtn" class="logout-btn">Logout</button>
+    </div>
+</header>
+<div id="login-prompt" class="auth-card">
+    <div class="icon-box">
+        <i class="fa-solid fa-lock"></i>
+    </div>
+    <h3>እንኳን ደህና መጡ</h3>
+    <p>የንብረት ዝርዝርን ሙሉ በሙሉ ለማየት እና አዳዲስ መረጃዎችን ለማግኘት እባክዎ ይግቡ።</p>
+    <button type="button" data-action="buy-open-auth-modal" data-mode="login" class="login-btn">አሁን ይግቡ</button>
+</div>
+<div id="tamagn-display-grid" class="properties-grid">
+    </div>
+<div id="authModal" class="modal">
+    <div class="modal-content">
+        <span id="closeModal" style="float:right; cursor:pointer; font-size:24px;">&times;</span>
+        
+        <h2 id="authTitle">ወደ ታማኝ ቤት እንኳን በሰላም መጡ</h2>
+        <h3 id="authSubtitle">መመዝገቢያ</h3>
+        
+        <input type="text" id="signupName" placeholder="ሙሉ ስም (ለምሳሌ: አበበ ከበደ)" required>
+        <input type="tel" id="signupPhone" placeholder="ስልክ ቁጥር (ለምሳሌ: 0911223344)" required>
+        
+        <input type="email" id="email" placeholder="ኢሜይል (ለምሳሌ: example@gmail.com)" required>
+        <input type="password" id="password" placeholder="ፓስወርድ (ቢያንስ 6 ቁምፊዎች)" required>
+        
+        <select id="userRole" required>
+            <option value="" disabled selected>ሚናዎን ይምረጡ</option>
+            <option value="buyer">ገዢ ነኝ</option>
+            <option value="seller">ሻጭ ነኝ</option>
+        </select>
+        
+        <button id="authBtn" class="gold-btn" type="button" data-action="buy-auth-submit">ተመዝገብ</button>
+        
+        <p id="toggleText">አካውንት አለህ? <a href="#" data-action="buy-switch-auth-mode" style="color:#d4af37;">ግባ</a></p>
+<button type="button" data-action="buy-google-login" style=" display: flex;  align-items: center;  justify-content: center;  gap: 12px; 
+    width: 100%;  padding: 10px;  background-color: white;  border: 1px solid #dadce0;  border-radius: 5px;  cursor: pointer;
+"> <i class="fa-brands fa-google" style="color: #DB4437; font-size: 18px;"></i> <span>ከ Google ጋር ይግቡ</span>
+</button>
+    </div>
+</div>
+
+<script type="module" src="/js/pages/buy-page.js"></script>
+<div id="propertyModal" style="display:none; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.5);">
+    <div style="background:white; margin:10% auto; padding:20px; width:80%; max-width:500px; border-radius:8px; position:relative;">
+        <span data-action="buy-close-property-modal" style="cursor:pointer; float:right; font-size:24px;">&times;</span>
+        <div id="modal-body"></div>
+    </div>
+</div>
+
+
+</body>
+</html>

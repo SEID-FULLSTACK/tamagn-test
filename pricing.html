@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing Plans - የዋጋ አማራጮች</title>
+    <!-- Font Awesome ለሊስቱ ምልክቶች (Icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        /* መነሻ ቅንብሮች */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f4f7f6;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* የርዕስ ክፍል */
+        .pricing-header {
+            text-align: center;
+            padding: 60px 0 40px;
+        }
+
+        .pricing-header h1 {
+            font-size: 36px;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .pricing-header p {
+            color: #7f8c8d;
+            font-size: 18px;
+        }
+
+        /* የካርዶቹ መደርደሪያ (Grid) */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+            align-items: center;
+        }
+
+        /* የዋጋ ካርድ ዲዛይን */
+        .pricing-card {
+            background: #fff;
+            padding: 40px 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            border: 1px solid #eee;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        /* ለተመረጠው (Standard) ካርድ ልዩ ዲዛይን */
+        .pricing-card.featured {
+            border: 2px solid #27ae60;
+            padding: 60px 30px; /* ትንሽ ረዘም እንዲል */
+        }
+
+        .featured-badge {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #27ae60;
+            color: #fff;
+            padding: 5px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        /* የዋጋ መግለጫ */
+        .plan-name {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .price {
+            font-size: 42px;
+            font-weight: 800;
+            color: #27ae60;
+            margin-bottom: 25px;
+        }
+
+        .price span {
+            font-size: 16px;
+            color: #95a5a6;
+            font-weight: normal;
+        }
+
+        /* የአገልግሎት ዝርዝር (Features) */
+        .features-list {
+            list-style: none;
+            margin-bottom: 35px;
+            text-align: left;
+        }
+
+        .features-list li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            font-size: 15px;
+        }
+
+        .features-list li i {
+            margin-right: 12px;
+            font-size: 18px;
+        }
+
+        .fa-check-circle { color: #27ae60; } /* የሚሰሩ አገልግሎቶች */
+        .fa-times-circle { color: #e74c3c; } /* የማይሰሩ አገልግሎቶች */
+
+        .disabled {
+            color: #bdc3c7;
+            text-decoration: line-through;
+        }
+
+        /* የተግባር በተኖች (Buttons) */
+        .btn {
+            display: inline-block;
+            width: 100%;
+            padding: 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #27ae60;
+            color: #27ae60;
+        }
+
+        .btn-outline:hover {
+            background: #27ae60;
+            color: #fff;
+        }
+
+        .btn-primary {
+            background: #27ae60;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #219150;
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
+        }
+
+        /* Responsive - ለሞባይል */
+        @media (max-width: 768px) {
+            .pricing-card.featured {
+                padding: 40px 30px;
+                transform: none;
+            }
+            .pricing-card.featured:hover {
+                transform: translateY(-15px);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header class="pricing-header">
+            <h1>ለእርስዎ የሚስማማውን ፓኬጅ ይምረጡ</h1>
+            <p>በኢትዮጵያ ቀዳሚው የሪል እስቴት መድረክ ላይ ማስታወቂያዎን ያውጡ</p>
+        </header>
+
+        <div class="pricing-grid">
+            
+            <!-- 1. Free Plan -->
+            <div class="pricing-card">
+                <div class="plan-name">መሰረታዊ (Free)</div>
+                <div class="price">0 <span>ETB / በወር</span></div>
+                <ul class="features-list">
+                    <li><i class="fas fa-check-circle"></i> 1 ቤት መጫን ይፈቀዳል</li>
+                    <li><i class="fas fa-check-circle"></i> ለ 7 ቀናት የሚቆይ ማስታወቂያ</li>
+                    <li class="disabled"><i class="fas fa-times-circle"></i> Verified Agent Badge</li>
+                    <li class="disabled"><i class="fas fa-times-circle"></i> Featured (ከላይ እንዲታይ)</li>
+                    <li class="disabled"><i class="fas fa-times-circle"></i> የቪዲዮ ማስታወቂያ</li>
+                </ul>
+<a href="index.html#post-property-btn" class="btn btn-primary">በነፃ ይጀምሩ</a>
+            
+            </div>
+
+            <!-- 2. Standard Plan (Featured) -->
+            <div class="pricing-card featured">
+                <div class="featured-badge">ተመራጭ</div>
+                <div class="plan-name">መካከለኛ (Standard)</div>
+                <div class="price">500 <span>ETB / በወር</span></div>
+                <ul class="features-list">
+                    <li><i class="fas fa-check-circle"></i> እስከ 10 ቤት መጫን ይፈቀዳል</li>
+                    <li><i class="fas fa-check-circle"></i> ለ 30 ቀናት የሚቆይ ማስታወቂያ</li>
+                    <li><i class="fas fa-check-circle"></i> Verified Agent Badge</li>
+                    <li><i class="fas fa-check-circle"></i> ለ 3 ቀናት Featured መሆን</li>
+                    <li class="disabled"><i class="fas fa-times-circle"></i> የቪዲዮ ማስታወቂያ</li>
+                </ul>
+               
+<a href="index.html#post-property-btn" class="btn btn-primary">አሁኑኑ ይጀምሩ</a>
+            </div>
+
+            <!-- 3. Professional Plan -->
+            <div class="pricing-card">
+                <div class="plan-name">ከፍተኛ (Professional)</div>
+                <div class="price">1,500 <span>ETB / በወር</span></div>
+                <ul class="features-list">
+                    <li><i class="fas fa-check-circle"></i> ያልተገደበ ቤት መጫን</li>
+                    <li><i class="fas fa-check-circle"></i> ለ 30 ቀናት የሚቆይ ማስታወቂያ</li>
+                    <li><i class="fas fa-check-circle"></i> Verified Agent Badge</li>
+                    <li><i class="fas fa-check-circle"></i> ለ 10 ቀናት Featured መሆን</li>
+                    <li><i class="fas fa-check-circle"></i> የቪዲዮ ማስታወቂያ ድጋፍ</li>
+                </ul>
+               <a href="index.html#post-property-btn" class="btn btn-primary">አሁኑኑ ይጀምሩ</a>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

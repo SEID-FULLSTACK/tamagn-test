@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="am" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tamagn Bet Dashboard</title>
+    <style>
+        body { margin: 0; font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #eef2f5; display: flex; height: 100vh; }
+
+        /* Top Header */
+        .top-header { position: fixed; top: 0; width: 100%; height: 50px; background-color: white; color: black; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; box-sizing: border-box; z-index: 1000; }
+        .logo { font-size: 1.2rem; font-weight: bold; cursor: pointer;position: absolute;left: 50%;}
+        
+        /* Menu Toggle Buttons */
+        .open-btn { background: #d35400; color: white; border: none; padding: 8px 15px; cursor: pointer; border-radius: 4px; display: none; }
+        .back-btn { background: none; border: none; color: #d35400; font-size: 20px; cursor: pointer; display: none; margin-bottom: 20px; }
+
+        .user-nav { display: flex; gap: 10px; align-items: center;position: absolute; right: 20px; }
+        .lang-btn { background: #444; border: 1px solid #d35400; color: white; padding: 5px 12px; cursor: pointer; border-radius: 4px;display: flex;}
+        .lang-btn:hover { background: #d35400; }
+
+        /* Sidebar */
+        .sidebar { width: 260px; background-color: #f4f4f4; border-right: 1px solid #ddd; height: 100vh; padding-top: 60px; flex-shrink: 0; transition: 0.3s; z-index: 999; }
+        .menu-header { background-color: #d35400; color: white; padding: 12px 20px; font-weight: bold; margin-bottom: 5px; }
+        .menu-header.project { background-color: #e0e0e0; color: #333; margin-top: 20px; }
+        .menu-item { padding: 12px 20px; cursor: pointer; color: #333; text-decoration: none; display: block; border-bottom: 1px solid #eee; transition: 0.3s; }
+        .menu-item:hover { background-color: #e8e8e8; }
+        
+        /* Main Content - Space Adjusted */
+        .main-content { margin-top: 60px; padding: 40px; padding-top: 80px; flex-grow: 1; transition: 0.3s; }
+        .stats-container { display: flex; gap: 20px; flex-wrap: wrap; }
+        .stat-card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); flex: 1; min-width: 200px; text-align: center; }
+
+        /* Media Query */
+        @media (max-width: 768px) {
+            .sidebar { position: fixed; left: -260px; padding-top: 60px; }
+            .sidebar.active { left: 0; }
+            .open-btn { display: block; }
+            .back-btn { display: block; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="top-header">
+        <button class="open-btn" type="button" data-action="fhc-toggle-sidebar">☰ </button>
+         <div class="logo">
+    <span style="color: #007bff; font-weight: bold;">Tamagn</span><span style="color: #28a745; font-weight: bold;">-Bet</span>
+</div>
+        <div class="user-nav">
+            <button id="lang-toggle-btn" class="lang-btn" type="button" data-action="fhc-toggle-language">English</button>
+            <div style="width: 30px; height: 30px; background: #d35400; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white;">D</div>
+        </div>
+    </header>
+
+    <nav class="sidebar" id="sidebar">
+        <button class="back-btn" type="button" data-action="fhc-toggle-sidebar">←</button>
+        <div class="menu-header" data-i18n="services">አገልግሎቶች</div>
+        <a href="#" class="menu-item" data-i18n="tender">ጨረታ መከታተያ</a>
+        <a href="#" class="menu-item" data-i18n="docs">ሰነዶች</a>
+        <a href="#" class="menu-item" data-i18n="guidelines">መመሪያወች</a>
+        <a href="#" class="menu-item" data-i18n="apply_housing">ለመኖሪያ ቤት ያመልክቱ</a>
+        <a href="#" class="menu-item" data-i18n="rent_pay">የኪራይ ክፍያ</a>
+        <a href="#" class="menu-item" data-i18n="repair">ጥገና</a>
+        <a href="#" class="menu-item" data-i18n="house_rent">የቤት ኪራይ</a>
+
+        <div class="menu-header project" data-i18n="projects">ፕሮጀክቶች</div>
+        <a href="#" class="menu-item" data-i18n="planned">የታቀዱ ፕሮጀክቶች</a>
+        <a href="#" class="menu-item" data-i18n="completed_proj">የተጠናቀቁ ፕሮጀክቶች</a>
+        <a href="#" class="menu-item" style="color: #d35400; font-weight: bold;" data-i18n="logout">Logout</a>
+    </nav>
+
+    <main class="main-content">
+        <h1 data-i18n="welcome">እንኳን ደህና መጡ!</h1>
+        <div class="stats-container">
+            <div class="stat-card"><h3 data-i18n="in_progress">በሂደት ላይ</h3><p>124</p></div>
+            <div class="stat-card"><h3 data-i18n="completed">የተጠናቀቀ</h3><p>5</p></div>
+            <div class="stat-card"><h3 data-i18n="tasks">ተሰኪዎች</h3><p>3</p></div>
+        </div>
+    </main>
+
+<script type="module" src="/js/pages/fhc-page.js"></script>
+</body>
+</html>

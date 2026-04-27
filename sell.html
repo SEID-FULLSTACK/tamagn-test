@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <title>Tamagn Bet | ንብረት ይለጥፉ</title>
+    <style>
+        * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { margin: 0; background: #f4f6f9; color: #333; }
+        
+        /* Header - Responsive */
+       .header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; border-bottom: 1px solid #ddd;position: relative; }
+        .logo { font-size: 24px; font-weight: 800; color: var(--primary-blue); justify-content: center;align-items: center;text-decoration-line: none;position: absolute;left: 50%;}
+       /* nav { display: flex; gap: 25px;position: absolute; right: 20px;border-radius: 20px;background-color: #007bff;padding: 15px; }
+        nav a { color: black; text-decoration: none; font-weight: bold; font-size: 14px;padding: 10px 20px;border-radius: 5px;}*/
+.navbar {
+    display: flex;
+    justify-content: flex-end; /* ወደ ቀኝ እንዲጠጉ ለማድረግ */
+    gap: 15px;               /* በሊንኮች መካከል ያለው ክፍተት */
+    padding: 10px;
+}
+
+.nav-item {
+    background-color: #007bff; /* የሊንኩ ዳራ ቀለም */
+    color: white;              /* የጽሁፍ ቀለም */
+    padding: 8px 16px;         /* የሊንኩ ውስጠኛ ቦታ */
+    text-decoration: none;     /* ከስር መስመር እንዳይኖረው */
+    border-radius: 10px;        /* ጠርዙን ክብ ለማድረግ */
+    transition: background 0.3s;
+}
+
+.nav-item:hover {
+    background-color: #0056b3; /* መዳፊት ሲያርፍ የሚቀየር ቀለም */
+}
+
+@media (max-width: 768px) {
+  .logo {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo {
+    font-size: 18px;
+    position: static;
+    left: auto;
+    transform: none;
+    display: block;
+    text-align: center;
+    margin: 10px 0;
+  }
+}
+        
+        /* Desktop Adjustments */
+        @media (min-width: 768px) {
+            header { flex-direction: row; justify-content: space-between; padding: 15px 50px; }
+            .container { margin-top: 40px; }
+        }
+/* 1. Modal Overlay (ለሁለቱም ሞዳል የሚሰራ) */
+.modal, .modal-overlay {
+    display: block; 
+    position: fixed; 
+    z-index: 10000; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    background-color: rgba(0,0,0,0.6); /* የጠቆረ ዳራ */
+    overflow-y: auto; /* ስክሪኑ ላይ እንዲሸብለል */
+}
+
+/* 2. Modal Content (የውስጠኛው ሳጥን) */
+.modal-content, .registration-card {
+    background-color: #fff;
+    margin: 5% auto; /* ከላይ የተወሰነ ቦታ ይተዋል */
+    padding: 25px;
+    width: 90%; /* በሞባይል ሙሉ ስክሪን እንዲጠጋ */
+    max-width: 600px; /* በኮምፒውተር ከ600px አይሰፋም */
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    position: relative;
+}
+
+/* 3. Close Button */
+.close {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #aaa;
+    cursor: pointer;
+}
+.close:hover { color: #000; }
+
+/* 4. Form Layout */
+.form-group { margin-bottom: 15px; }
+.form-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 14px; }
+input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+
+}
+
+/* 5. Special Sections (Conditional inputs) */
+.special-section {
+    border-left: 5px solid #1a73e8;
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+/* 6. Buttons */
+.btn-submit {
+    background: #0a1f44;
+    color: white;
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+}
+.btn-submit:hover { background: #132d5e; }
+
+.pay-btn {
+    transition: 0.3s;
+}
+.pay-btn:hover { opacity: 0.9; transform: scale(1.02); }
+
+/* 7. Responsive Desktop Adjustment */
+@media (min-width: 768px) {
+    .modal-content {
+        padding: 40px;
+    }
+    .form-group {
+        display: block;
+    }
+}
+/* 1. Main Login Form Container */
+.reg-container {
+    max-width: 400px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    border: 1px solid #eee;
+    text-align: center;
+}
+
+/* 4. Modal (የምዝገባ/መግቢያ መደራረቢያ) */
+.modal {
+    display: none; /* በነባሪ ተደብቋል */
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* ጥቁር የደበዘዘ ዳራ */
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+}
+
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    width: 350px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    text-align: center;
+}
+
+/* 5. Inputs እና Buttons */
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box; /* ስፋቱ እንዳይበላሽ */
+}
+
+.gold-btn {
+    width: 100%;
+    background-color: #d4af37;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+.gold-btn:hover {
+    background: #b8962f; /* Slightly darker gold on hover */
+}
+ /*3. Avatar */
+.profile-circle {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background-color: #d35400;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 16px;
+padding-top: 0;
+
+}
+.logout-btn {
+    padding: 5px 10px;
+    background-color: #ff4757;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+
+}
+.auth-card {
+        background: #ffffff;
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        border: 1px solid #f0f0f0;
+        font-family: 'Segoe UI', Tahoma, sans-serif;
+    }
+
+    .auth-card .icon-box {
+        font-size: 45px;
+        color: #4a90e2;
+        margin-bottom: 20px;
+    }
+
+    .auth-card h3 {
+        color: #333;
+        margin-bottom: 15px;
+        font-size: 22px;
+    }
+
+    .auth-card p {
+        color: #666;
+        margin-bottom: 30px;
+        line-height: 1.6;
+        font-size: 15px;
+    }
+
+    .auth-card .login-btn {
+        background-color: #4a90e2;
+        color: white;
+        border: none;
+        padding: 14px 30px;
+        border-radius: 10px;
+        font-weight: 600;
+        cursor: pointer;
+        width: 100%;
+        transition: transform 0.2s, background 0.3s;
+    }
+
+    .auth-card .login-btn:hover {
+        background-color: #357abd;
+        transform: translateY(-2px);
+    }
+/* 6. Typography adjustments */
+.reg-container h2 { margin-bottom: 20px; color: #333; font-size: 22px; }
+.modal-content h2, .modal-content h3 { color: #d4af37; }
+.modal-content h3 { margin-top: 5px; font-size: 16px; }
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .reg-container { margin: 20px; }
+}
+*
+
+#postPropFormContainer {
+display: none;
+}
+/* --- Media Query ለሞባይል እና ታብሌት --- */
+
+/* ለሞባይል (ከ 480px በታች) */
+@media (max-width: 480px) {
+    .header {
+        padding: 10px 5px; /* የጎን ክፍተትን መቀነስ */
+    }
+
+    /* የ Welcome ጽሁፍን በሞባይል ትንሽ ማሳነስ ወይም መደበቅ */
+    #auth-actions span {
+        font-size: 11px !important;
+        /* በጣም ትንሽ ስክሪን ከሆነ ስሙን መደበቅ ከፈለጉ "display: none;" ይጨምሩ */
+    }
+
+    /* ቁልፎቹን ትንሽ ማሳነስ */
+    .logout-btn, .login-btn, .signup-btn {
+        padding: 4px 8px !important;
+        font-size: 12px !important;
+    }
+
+    /* Profile Circle */
+    .profile-circle {
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+    }
+}
+
+/* ለታብሌት (ከ 480px እስከ 768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+    .header {
+        padding: 10px 15px;
+    }
+    
+    .auth-actions {
+        gap: 8px !important; /* በቁልፎች መካከል ያለው ክፍተት መቀነስ */
+    }
+}
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">
+    <span style="color: #007bff; font-weight: bold;">Tamagn</span><span style="color: #28a745; font-weight: 800;">-Bet</span>
+</div>
+  
+<div id="auth-actions" style="display: flex; align-items: center; gap: 15px;position:
+ absolute; top: 10px; right: 10px;font-size: 22px;font-weight: 400;">
+        <div id="auth-btns" style="display: block;">
+            <button type="button" data-action="sell-open-auth-modal" data-mode="login">ግባ</button>
+            <button type="button" data-action="sell-open-auth-modal" data-mode="signup">ተመዝገብ</button>
+        </div>
+        
+        <div id="user-profile" style="display: none; display: flex; align-items: center; gap: 10px;">
+            <div id="avatar" class="avatar-circle"></div>
+            <p id="userNameDisplay" style="margin: 0;"></p>
+            <button id="logoutBtn" style="background-color: #ff4d4d; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 5px;">Logout</button>
+        </div>
+
+</nav>
+
+    </div>
+ <div id="login-prompt" class="auth-card">
+    <div class="icon-box">
+        <i class="fa-solid fa-lock"></i>
+    </div>
+    <h3>እንኳን ደህና መጡ</h3>
+    <p>ንብረቶችን ለመመዝገብ እባክወትን መጀመሪያ Login ያድርጉ</p>
+    <button type="button" data-action="sell-open-auth-modal" data-mode="login" class="login-btn">Login</button>
+</div>
+<div id="authModal" class="modal">
+    <div class="modal-content">
+        <span id="closeModal" style="float:right; cursor:pointer; font-size:24px;">&times;</span>
+        
+        <h2 id="authTitle">ወደ ታማኝ ቤት እንኳን በሰላም መጡ</h2>
+        <h3 id="authSubtitle">መመዝገቢያ</h3>
+        
+        <input type="text" id="signupName" placeholder="ሙሉ ስም (ለምሳሌ: አበበ ከበደ)" required>
+        <input type="tel" id="signupPhone" placeholder="ስልክ ቁጥር (ለምሳሌ: 0911223344)" required>
+        <input type="email" id="email" placeholder="ኢሜይል (ለምሳሌ: example@gmail.com)" required>
+        <input type="password" id="password" placeholder="ፓስወርድ (ቢያንስ 6 ቁምፊዎች)" required>
+  
+        <select id="userRole" required>
+            <option value="" disabled selected>ሚናዎን ይምረጡ</option>
+            <option value="buyer">ገዢ ነኝ</option>
+            <option value="seller">ሻጭ ነኝ</option>
+        </select>
+      <button id="authBtn" class="gold-btn" type="button" data-action="sell-auth-submit">ተመዝገብ</button>
+ <p id="toggleText">አካውንት አለህ? <a href="#" data-action="sell-switch-auth-mode" style="color:#d4af37;">ግባ</a></p>
+   <button type="button" data-action="sell-google-login" style=" display: flex;  align-items: center;  justify-content: center;  gap: 12px; 
+    width: 100%;  padding: 10px;  background-color: white;  border: 1px solid #dadce0;  border-radius: 5px;  cursor: pointer;
+"> <i class="fa-brands fa-google" style="color: #DB4437; font-size: 18px;"></i> <span>ከ Google ጋር ይግቡ</span>
+</button>
+    </div>
+
+</div>
+
+
+</header>
+  <div id="postPropFormContainer" style="max-width: 800px; margin: 20px auto; padding: 20px; background: #fff; border-radius: 10px; border: 1px solid #ddd;">
+    <h2 id="postTitleText">Post New Property</h2>
+    
+    <div class="pricing-banner" style="background: #fdf7e2; padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px dashed #f39c12; text-align: center;">
+        <div class="banner-icon" style="font-size: 24px; color: #f39c12; margin-bottom: 5px;">
+            <i class="fas fa-gem"></i>
+        </div>
+        <div class="banner-text">
+            <span style="display: block; margin-bottom: 10px; font-weight: bold;">ምርጥ አማራጮችን ይምረጡ!</span>
+            <a href="../pricing.html" class="post-property-btn" style="background: #27ae60; color: white; padding: 8px 15px; text-decoration: none; border-radius: 5px; display: inline-block;">
+                የአገልግሎት ዋጋ ዝርዝር እዚህ ይገኛል <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <hr>
+    <form id="propertyForm">
+        <div class="form-group">
+            <label for="pDeveloper">Select Real Estate Developer or Category:</label>
+            <select id="pDeveloper" name="developer_id" required style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ccc; border-radius:5px;">
+                <option value="" disabled selected>-- Choose --</option>
+                <optgroup label="ሪል እስቴት አልሚዎች (Developers)">
+                    <option value="1">Noah Real Estate</option>
+                    <option value="2">Gift Real Estate</option>
+                    <option value="3">Ayat Real Estate</option>
+                    <option value="4">Sunshine Real Estate</option>
+                    <option value="5">Metropolitan Real Estate</option>
+                    <option value="6">Flintstone Homes</option>
+                    <option value="7">Ovid Real Estate</option>
+                    <option value="8">Temir Properties</option>
+                    <option value="9">Bora Real Estate</option>
+                    <option value="10">Zemen Real Estate</option>
+                    <option value="11">Tsehay Real Estate</option>
+                </optgroup>
+                <optgroup label="Categories">
+                    <option value="Villa">Villa</option>
+                    <option value="Apartment">Apartment</option>
+                    <option value="condominium">Condominium</option>
+                    <option value="Land">Land</option>
+                </optgroup>
+            </select>
+        </div>
+
+        <div id="re-section" class="special-section" style="display:none; background:#f9f9f9; padding:15px; border-radius:8px; margin-bottom:15px; border-left: 5px solid #1a73e8;">
+            <label>Level of Construction (የግንባታ ደረጃ)</label>
+            <select id="constructionLevel" style="width:100%; margin-bottom:10px;">
+                <option>Excavation (መሬት ቁፋሮ)</option>
+                <option>Structural Work (አፅም ግንባታ)</option>
+                <option>Finishing (ፊኒሺንግ)</option>
+                <option>Ready for Residents (ለነዋሪ ዝግጁ)</option>
+            </select>
+            <label>Floor Plan (የፎቅ ዲዛይን)</label>
+            <input type="file" id="pFloorPlan" accept="image/*">
+        </div>
+
+        <div id="condo-section" class="special-section" style="display:none; background:#fff8e1; padding:15px; border-radius:8px; margin-bottom:15px; border-left: 5px solid #ffc107;">
+            <label>House Type</label>
+            <select id="condoType" style="width:100%; margin-bottom:10px;">
+                <option>Studio</option>
+                <option>1 Bedroom</option>
+                <option>2 Bedroom</option>
+                <option>3 Bedroom</option>
+            </select>
+            <div style="display:flex; gap:10px; margin-bottom:10px;">
+                <input type="text" id="condoSite" placeholder="Site Name" style="flex:1;">
+                <input type="number" id="condoFloor" placeholder="Floor No." style="flex:1;">
+            </div>
+            <label>Bank Loan Status</label>
+            <select id="condoLoan" style="width:100%;">
+                <option>Has Loan (ዕዳ ያለበት)</option>
+                <option>No Loan (ዕዳ የሌለበት)</option>
+            </select>
+        </div>
+
+        <div id="villa-apt-section" class="special-section" style="display:none; background:#f1f8e9; padding:15px; border-radius:8px; margin-bottom:15px; border-left: 5px solid #4caf50;">
+            <div style="display:flex; gap:10px; margin-bottom:10px;">
+                <div style="flex:1;">
+                    <label>Bedrooms (መኝታ)</label>
+                    <input type="number" id="pBedrooms" placeholder="e.g. 3" style="width:100%;">
+                </div>
+                <div style="flex:1;">
+                    <label>Bathrooms (መታጠቢያ)</label>
+                    <input type="number" id="pBathrooms" placeholder="e.g. 2" style="width:100%;">
+                </div>
+            </div>
+            <label>Parking Spaces (የመኪና ማቆሚያ)</label>
+            <input type="number" id="pParking" placeholder="Number of cars" style="width:100%;">
+        </div>
+
+        <div class="form-group">
+            <label id="lblPropTitle">Property Title</label>
+            <input type="text" id="pTitle" placeholder="e.g. Noah Garden Apartment" required style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ccc; border-radius:5px;">
+        </div>
+
+        <div class="form-group">
+            <label id="lblPrice">Price (ETB)</label>
+            <input type="number" id="pPrice" placeholder="e.g. 15000000" required style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ccc; border-radius:5px;">
+        </div>
+
+        <div class="form-group">
+            <label id="lblLocation">Location</label>
+            <input type="text" id="pLocation" placeholder="e.g. Bole, Addis Ababa" required style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ccc; border-radius:5px;">
+        </div>
+
+        <div class="form-group">
+            <label>Size (Square Meters / ካሬ ሜትር)</label>
+            <input type="number" id="pSize" placeholder="e.g. 120" style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ccc; border-radius:5px;">
+        </div>
+
+        <div class="form-group">
+            <label>ተጨማሪ ማብራሪያ (Detailed Description)</label>
+            <textarea id="pDescription" rows="4" style="width:100%; border-radius:5px; padding:10px; border:1px solid #ccc; margin-bottom:15px;" placeholder="ስለ ንብረቱ ዝርዝር መረጃ እዚህ ይፃፉ..."></textarea>
+        </div>
+        
+        <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 15px;">
+            <h4 style="margin-top: 0; color: #333;">የሻጭ መረጃ (Seller Info)</h4>
+            <input type="text" id="sellerName" placeholder="የሻጭ ስም (ለምሳሌ፡ አቶ ካሳሁን)" required style="width:100%; padding:10px; margin-bottom:10px; border:1px solid #ccc;">
+            <input type="tel" id="sellerPhone" placeholder="የስልክ ቁጥር (ለምሳሌ፡ 0911...)" required style="width:100%; padding:10px; border:1px solid #ccc;">
+        </div>
+
+        <div class="form-group">
+            <label>ምስል የመጫኛ መንገድ ይምረጡ</label>
+            <select id="imageOption" style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ccc;">
+                <option value="link">በሊንክ (Image URL)</option>
+                <option value="upload">ከኮምፒውተር ይጫኑ (Upload File)</option>
+            </select>
+        </div>
+
+        <div id="urlInputArea" class="form-group">
+            <label>የምስል ሊንክ (URL)</label>
+            <input type="text" id="pImageLink" placeholder="https://example.com/photo.jpg" style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ccc;">
+        </div>
+
+        <div id="fileInputArea" class="form-group" style="display:none;">
+            <label>ምስል ይምረጡ</label>
+            <input type="file" id="pImageFile" accept="image/*" style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ccc;">
+        </div>
+
+        <button type="submit" class="btn-submit" id="btnSubmitPost" style="width:100%; padding:15px; background:#2c3e50; color:#fff; border:none; border-radius:5px; cursor:pointer;">Post Property</button>
+    </form>
+</div>
+
+<div id="postPaymentModal" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10001; justify-content: center; align-items: center;">
+    <div class="registration-card" style="max-width: 450px; text-align: center; background: white; padding: 25px; border-radius: 15px;">
+        <div style="font-size: 50px; color: #27ae60; margin-bottom: 15px;">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <h3>የቤት መረጃው ተሞልቷል!</h3>
+        <p style="color: #666; margin-bottom: 20px;">ማስታወቂያው ለህዝብ እንዲታይ እባክዎ ክፍያ ይፈጽሙ።</p>
+        
+        <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: left;">
+            <p><strong>ፓኬጅ:</strong> Standard Listing</p>
+            <p><strong>ዋጋ:</strong> 500 ETB</p>
+        </div>
+
+        <button class="pay-btn" style="background: #0066ff; color: white; width: 100%; padding: 12px; border: none; border-radius: 5px; margin-bottom: 10px;">ቴሌብርር</button>
+        <button class="pay-btn" style="background: #27ae60; color: white; width: 100%; padding: 12px; border: none; border-radius: 5px;">ቻፓ (Chapa)</button>
+        
+        <button type="button" data-action="sell-close-post-payment" style="margin-top: 15px; background: none; border: none; color: #999; cursor: pointer;">ለጊዜው ይቆይ</button>
+    </div>
+</div>
+
+<script type="module" src="/js/pages/sell-page.js"></script>
+</body>
+</html>

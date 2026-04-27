@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+    <meta charset="UTF-8">
+    <title>Tamagn Bet - Login/Signup</title>
+    <style>
+        body { background: white; color: black; font-family: sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .reg-container { background: white; border: 1px solid #d4af37; padding: 30px; border-radius: 15px; width: 350px; text-align: center; }
+        input, select { width: 100%; padding: 12px; margin: 10px 0; background: white; border: 3px solid #333; color: black; border-radius: 8px; box-sizing: border-box; }
+        .gold-btn { width: 100%; padding: 12px; background: #d4af37; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+   .modal {
+    display: none; /* መጀመሪያ ላይ አይታይም */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white; /* የደበዘዘ ዳራ */
+}
+.modal-content {
+    background-color: white;
+    margin: 10% auto;
+    padding: 20px;
+    width: 300px;
+    border: 1px solid #d4af37;
+    border-radius: 10px;
+}
+/* Glassmorphism እና አረንጓዴ ብርሃን */
+.reg-container, .modal-content {
+    background: rgba(255, 255, 255, 0.05); 
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    
+    /* እዚህ ጋር ነው ደማቅ አረንጓዴ ብርሃን የተጨመረው */
+    box-shadow: 0 0 25px 5px rgba(0, 255, 65, 0.4); 
+    
+    padding: 30px;
+    border-radius: 20px;
+    width: 350px;
+    text-align: center;
+}
+ </style>
+</head>
+<body>
+
+<div class="reg-container">
+    <h2>ወደ ታማኝ ቤት እንኳን በሰላም መጡ</h2>
+    <input type="email" id="email" placeholder="ኢሜይል አድራሻ">
+    <input type="password" id="password" placeholder="ሚስጥራዊ ቁጥር (Password)">
+    <select id="userRole">
+        <option value="buyer">ገዢ ነኝ</option>
+        <option value="seller">ሻጭ ነኝ</option>
+    </select>
+    <button id="loginBtn" class="gold-btn">ግባ (Login)</button>
+    <p>አካውንት የለህም? <a href="#" id="signupBtn" style="color:#d4af37;">አሁኑኑ ተመዝገብ</a></p>
+</div>
+<div id="signupModal" class="modal">
+    <div class="modal-content">
+        <span id="closeModal" style="float:right; cursor:pointer; font-size:24px;">&times;</span>
+         <h2>ወደ ታማኝ ቤት እንኳን በሰላም መጡ</h2>
+        <h3>አዲስ መመዝገቢያ</h3>
+        <input type="text" id="signupName" placeholder="ለምሳሌ: አበበ ከበደ" required>
+         <input type="tel" id="signupPhone" placeholder="ለምሳሌ: 0911223344" required>
+        <input type="email" id="signupEmail" placeholder="ለምሳሌ: example@gmail.com" required>
+        <input type="password" id="signupPassword" placeholder="የይለፍ ቃልዎን ያስገቡ" required>
+        <select id="signupRole">
+            <option value="buyer">ገዢ</option>
+            <option value="seller">ሻጭ</option>
+        </select>
+        <button id="confirmSignup" class="gold-btn">ተመዝገብ</button>
+    </div>
+</div>
+<script type="module" src="/js/pages/login-page.js"></script>
+</body>
+</html>

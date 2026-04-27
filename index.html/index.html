@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tamagn-Bet | ታማኝ-ቤት</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header class="header">
+    <div style="display: flex; align-items: center; gap: 15px;">
+        <button class="menu-trigger" type="button" data-action="toggle-menu"><i class="fas fa-bars"></i></button>
+        <a href="#" class="logo">
+            <span id="l1">Tamagn</span><span id="l2">-Bet</span>
+        </a>
+    </div>
+<div class="nav-right">
+ <button class="toggle-bttn" type="button" data-action="navigate" data-href="../login.html">sign in</button>
+
+  <button id="langBtn">አማርኛ</button>
+    
+    </div>    
+  
+</header>
+
+      
+<div class="overlay" id="overlay" data-action="toggle-menu"></div>
+
+<nav class="side-drawer" id="sideDrawer">
+    </nav>
+
+      <!-- Post Property Modal -->
+<div id="postPropModal" class="modal">
+    <div class="modal-content">
+        <span class="close" data-action="toggle-modal" data-modal-id="postPropModal">&times;</span>
+        <h2 id="postTitleText">Post New Property</h2>
+        
+        <div class="pricing-banner" style="background: #fdf7e2; padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px dashed #f39c12; text-align: center;">
+            <div class="banner-icon" style="font-size: 24px; color: #f39c12; margin-bottom: 5px;">
+                <i class="fas fa-gem"></i>
+            </div>
+            <div class="banner-text">
+                <span style="display: block; margin-bottom: 10px; font-weight: bold;">ምርጥ አማራጮችን ይምረጡ!</span>
+                <a href="../pricing.html" class="post-property-btn" style="background: #27ae60; color: white; padding: 8px 15px; text-decoration: none; border-radius: 5px; display: inline-block;">
+                    የአገልግሎት ዋጋ ዝርዝር እዚህ ይገኛል <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+
+        <hr>
+        <form id="propertyForm">
+            <div class="form-group">
+                <label for="pDeveloper">Select Real Estate Developer or Category:</label>
+                <select id="pDeveloper" name="developer_id" required>
+                    <option value="" disabled selected>-- Choose --</option>
+                    <optgroup label="ሪል እስቴት አልሚዎች (Developers)">
+                        <option value="1">Noah Real Estate</option>
+                        <option value="2">Gift Real Estate</option>
+                        <option value="3">Ayat Real Estate</option>
+                        <option value="4">Sunshine Real Estate</option>
+                        <option value="5">Metropolitan Real Estate</option>
+                        <option value="6">Flintstone Homes</option>
+                        <option value="7">Ovid Real Estate</option>
+                        <option value="8">Temir Properties</option>
+                        <option value="9">Bora Real Estate</option>
+                        <option value="10">Zemen Real Estate</option>
+                        <option value="11">Tsehay Real Estate</option>
+                    </optgroup>
+                    <optgroup label="Categories">
+                        <option value="Villa">Villa</option>
+                        <option value="Apartment">Apartment</option>
+                        <option value="condominium">Condominium</option>
+                        <option value="Land">Land</option>
+                    </optgroup>
+                </select>
+            </div>
+
+            <div id="re-section" class="special-section" style="display:none; background:#f9f9f9; padding:15px; border-radius:8px; margin-bottom:15px; border-left: 5px solid #1a73e8;">
+                <label>Level of Construction (የግንባታ ደረጃ)</label>
+                <select id="constructionLevel" style="width:100%; margin-bottom:10px;">
+                    <option>Excavation (መሬት ቁፋሮ)</option>
+                    <option>Structural Work (አፅም ግንባታ)</option>
+                    <option>Finishing (ፊኒሺንግ)</option>
+                    <option>Ready for Residents (ለነዋሪ ዝግጁ)</option>
+                </select>
+                <label>Floor Plan (የፎቅ ዲዛይን)</label>
+                <input type="file" id="pFloorPlan" accept="image/*">
+            </div>
+
+            <div id="condo-section" class="special-section" style="display:none; background:#fff8e1; padding:15px; border-radius:8px; margin-bottom:15px; border-left: 5px solid #ffc107;">
+                <label>House Type</label>
+                <select id="condoType" style="width:100%; margin-bottom:10px;">
+                    <option>Studio</option>
+                    <option>1 Bedroom</option>
+                    <option>2 Bedroom</option>
+                    <option>3 Bedroom</option>
+                </select>
+                <div style="display:flex; gap:10px; margin-bottom:10px;">
+                    <input type="text" id="condoSite" placeholder="Site Name" style="flex:1;">
+                    <input type="number" id="condoFloor" placeholder="Floor No." style="flex:1;">
+                </div>
+                <label>Bank Loan Status</label>
+                <select id="condoLoan" style="width:100%;">
+                    <option>Has Loan (ዕዳ ያለበት)</option>
+                    <option>No Loan (ዕዳ የሌለበት)</option>
+                </select>
+            </div>
+
+            <div id="villa-apt-section" class="special-section" style="display:none; background:#f1f8e9; padding:15px; border-radius:8px; margin-bottom:15px; border-left: 5px solid #4caf50;">
+                <div style="display:flex; gap:10px; margin-bottom:10px;">
+                    <div style="flex:1;">
+                        <label>Bedrooms (መኝታ)</label>
+                        <input type="number" id="pBedrooms" placeholder="e.g. 3" style="width:100%;">
+                    </div>
+                    <div style="flex:1;">
+                        <label>Bathrooms (መታጠቢያ)</label>
+                        <input type="number" id="pBathrooms" placeholder="e.g. 2" style="width:100%;">
+                    </div>
+                </div>
+                <label>Parking Spaces (የመኪና ማቆሚያ)</label>
+                <input type="number" id="pParking" placeholder="Number of cars" style="width:100%;">
+            </div>
+
+            <div class="form-group">
+                <label id="lblPropTitle">Property Title</label>
+                <input type="text" id="pTitle" placeholder="e.g. Noah Garden Apartment" required>
+            </div>
+
+            <div class="form-group">
+                <label id="lblPrice">Price (ETB)</label>
+                <input type="number" id="pPrice" placeholder="e.g. 15000000" required>
+            </div>
+
+            <div class="form-group">
+                <label id="lblLocation">Location</label>
+                <input type="text" id="pLocation" placeholder="e.g. Bole, Addis Ababa" required>
+            </div>
+
+            <div class="form-group">
+                <label>Size (Square Meters / ካሬ ሜትር)</label>
+                <input type="number" id="pSize" placeholder="e.g. 120">
+            </div>
+
+            <div class="form-group">
+                <label>ተጨማሪ ማብራሪያ (Detailed Description)</label>
+                <textarea id="pDescription" rows="4" style="width:100%; border-radius:5px; padding:10px; border:1px solid #ccc;" placeholder="ስለ ንብረቱ ዝርዝር መረጃ እዚህ ይፃፉ..."></textarea>
+            </div>
+<div style="background: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 15px;">
+    <h4 style="margin-top: 0; color: #333;">የሻጭ መረጃ (Seller Info)</h4>
+    <input type="text" id="sellerName" placeholder="የሻጭ ስም (ለምሳሌ፡ አቶ ካሳሁን)" required style="width:100%; padding:10px; margin-bottom:10px; border:1px solid #ccc;">
+    <input type="tel" id="sellerPhone" placeholder="የስልክ ቁጥር (ለምሳሌ፡ 0911...)" required style="width:100%; padding:10px; border:1px solid #ccc;">
+</div>
+            <div class="form-group">
+                <label>ምስል የመጫኛ መንገድ ይምረጡ</label>
+                <select id="imageOption">
+                    <option value="link">በሊንክ (Image URL)</option>
+                    <option value="upload">ከኮምፒውተር ይጫኑ (Upload File)</option>
+                </select>
+            </div>
+
+            <div id="urlInputArea" class="form-group">
+                <label>የምስል ሊንክ (URL)</label>
+                <input type="text" id="pImageLink" placeholder="https://example.com/photo.jpg">
+            </div>
+
+            <div id="fileInputArea" class="form-group" style="display:none;">
+                <label>ምስል ይምረጡ</label>
+                <input type="file" id="pImageFile" accept="image/*">
+            </div>
+
+            <button type="submit" class="btn-submit" id="btnSubmitPost">Post Property</button>
+        </form>
+    </div>
+</div>
+
+<!-- 2. Post ካደረገ በኋላ የሚመጣ የክፍያ ሳጥን (በ CSS የተስተካከለ) -->
+<div id="postPaymentModal" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10001; justify-content: center; align-items: center;">
+    <div class="registration-card" style="max-width: 450px; text-align: center; background: white; padding: 25px; border-radius: 15px;">
+        <div style="font-size: 50px; color: #27ae60; margin-bottom: 15px;">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <h3>የቤት መረጃው ተሞልቷል!</h3>
+        <p style="color: #666; margin-bottom: 20px;">ማስታወቂያው ለህዝብ እንዲታይ እባክዎ ክፍያ ይፈጽሙ።</p>
+        
+        <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: left;">
+            <p><strong>ፓኬጅ:</strong> Standard Listing</p>
+            <p><strong>ዋጋ:</strong> 500 ETB</p>
+        </div>
+
+        <button class="pay-btn" style="background: #0066ff; color: white; width: 100%; padding: 12px; border: none; border-radius: 5px; margin-bottom: 10px;">ቴሌብርር</button>
+        <button class="pay-btn" style="background: #27ae60; color: white; width: 100%; padding: 12px; border: none; border-radius: 5px;">ቻፓ (Chapa)</button>
+        
+        <button type="button" data-action="close-post-payment" style="margin-top: 15px; background: none; border: none; color: #999; cursor: pointer;">ለጊዜው ይቆይ</button>
+    </div>
+</div>
+<div id="agentRegModal" class="modal">
+    <div class="modal-content profile-card">
+        <span class="close" data-action="toggle-modal" data-modal-id="agentRegModal">&times;</span>
+        
+        <div class="modal-header">
+            <i class="fas fa-user-plus"></i>
+            <h2>Agent Registration</h2>
+            <p>Create an account to start listing properties</p>
+        </div>
+
+        <form id="agentRegForm" class="auth-form">
+            <div class="form-row">
+                <div class="input-group">
+                    <label><i class="fas fa-user"></i> Full Name</label>
+                    <input type="text" id="regFullName" placeholder="Enter your full name" required>
+                </div>
+                <div class="input-group">
+                    <label><i class="fas fa-building"></i> Company Name</label>
+                    <input type="text" id="regBusName" placeholder="e.g. Tamagn Real Estate">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label><i class="fas fa-envelope"></i> Email Address</label>
+                <input type="email" id="regEmail" placeholder="name@example.com" required>
+            </div>
+
+            <div class="input-group">
+                <label><i class="fas fa-phone"></i> Phone Number</label>
+                <input type="tel" id="regPhone" placeholder="+251 9..." required>
+            </div>
+
+            <div class="input-group">
+                <label><i class="fas fa-lock"></i> Password</label>
+                <input type="password" id="regPass" placeholder="Min. 6 characters" minlength="6" required>
+            </div>
+
+            <div class="input-group">
+                <label><i class="fas fa-image"></i> Business Logo / Profile Photo</label>
+                <input type="file" id="regLogo" accept="image/*">
+            </div>
+
+            <button type="submit" class="btn-main">Create Agent Account</button>
+        </form>
+    </div>
+</div>
+    <div id="aboutModal" class="modal"><div class="modal-content"><span class="close-btn" data-action="toggle-modal" data-modal-id="aboutModal">&times;</span><h2 id="abH">About Us</h2><p id="abP"></p><strong>Developed by Horizon Web Tech</strong></div></div>
+    <div id="visModal" class="modal"><div class="modal-content"><span class="close-btn" data-action="toggle-modal" data-modal-id="visModal">&times;</span><h2 id="vH">Vision</h2><p id="vP"></p></div></div>
+    <div id="missModal" class="modal"><div class="modal-content"><span class="close-btn" data-action="toggle-modal" data-modal-id="missModal">&times;</span><h2 id="mH">Mission</h2><p id="mP"></p></div></div>
+    <div id="valModal" class="modal"><div class="modal-content"><span class="close-btn" data-action="toggle-modal" data-modal-id="valModal">&times;</span><h2 id="valH">Values</h2><p id="valP"></p></div></div>
+    <section class="hero">
+        <h1 id="heroH">Ethiopia's Trusted Property Hub</h1>
+        <p id="heroP">Rent, Buy, and Explore Real Estate.</p>
+    </section>
+<div class="search-wrapper">
+        <input type="text" id="searchInput" placeholder="Search..." class="search-input">
+    </div>
+
+    <div class="filter-bar">
+        <button class="filter-btn active" type="button" data-action="set-category" data-category="All" id="fAll">All</button>
+        <button class="filter-btn" type="button" data-action="set-category" data-category="Villa" id="fVilla">Villa</button>
+        <button class="filter-btn" type="button" data-action="set-category" data-category="Apartment" id="fApart">Apartment</button>
+        <button class="filter-btn" type="button" data-action="set-category" data-category="condominium" id="fcond">Condominium</button>
+        <button class="filter-btn" type="button" data-action="set-category" data-category="rent" id="frent">Rent</button>
+        <button class="filter-btn" type="button" data-action="set-category" data-category="sale" id="fSale">Sale</button>
+    </div>
+
+<div id="house-listings-grid">
+    </div>
+<section class="properties-section">
+    <h2 style="text-align: center;">የሚሸጡ ቤቶች</h2>
+    <div id="property-container" class="property-grid"></div>
+</section>
+<div id="tamagn-display-grid" class="property-grid">
+    </div>
+<div class="section-container" style="background: #ececec; border-radius: 30px; padding: 40px 5%;">
+        <h2 class="section-title" id="reTitle">Real Estate Developers</h2>
+        <div class="grid" id="reGrid"></div>
+    </div>
+<section class="loan-calculator-section">
+    <h2><i class="fas fa-calculator"></i> የቤት ብድር ካልኩሌተር</h2>
+
+    <div class="calc-type-selector" style="display: flex; gap: 20px; justify-content: center; margin-bottom: 25px;">
+        <label style="cursor:pointer; font-weight:bold;">
+            <input type="radio" name="loanType" value="conventional" checked> መደበኛ (Conventional)
+        </label>
+        <label style="cursor:pointer; font-weight:bold;">
+            <input type="radio" name="loanType" value="sharia"> ከወለድ ነፃ (Interest-Free)
+        </label>
+    </div>
+
+    <div class="input-group">
+        <label>የቤቱ ዋጋ (ETB)</label>
+        <input type="number" id="housePrice" placeholder="ለምሳሌ: 5,000,000">
+    </div>
+
+    <div class="input-group">
+        <label>የቅድመ ክፍያ (%)</label>
+        <input type="number" id="downPaymentPercent" value="20">
+    </div>
+
+    <div class="input-group">
+        <label id="rateLabel">የባንክ ወለድ በዓመት (%)</label>
+        <input type="number" id="interestRate" value="16.5">
+    </div>
+
+    <div class="input-group">
+        <label>የብድር ጊዜ (በዓመት)</label>
+        <input type="number" id="loanTerm" value="20">
+    </div>
+
+    <div class="calc-results-container">
+        <p>ወርሃዊ ክፍያ</p>
+        <h3 id="monthlyPayment">0.00 ETB</h3>
+        
+        <div class="calc-details-grid">
+            <div>
+                <p>የቤቱ ዋጋ</p>
+                <p id="resHousePrice">0 ETB</p>
+            </div>
+            <div>
+                <p>ቅድመ ክፍያ</p>
+                <p id="resDownPayment">0 ETB</p>
+            </div>
+            <div>
+                <p>የባንክ ብድር</p>
+                <p id="resLoanAmount">0 ETB</p>
+            </div>
+            <div>
+                <p id="resInterestLabel">ጠቅላላ ወለድ</p>
+                <p id="resTotalInterest">0 ETB</p>
+            </div>
+        </div>
+    </div>
+</section>
+<div id="detailsModal" class="modal" style="display:none; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.7);">
+    <div class="modal-content" style="background:#fff; margin:5% auto; padding:20px; width:90%; max-width:600px; border-radius:12px; position:relative;">
+        <span data-action="close-details-modal" style="position:absolute; right:20px; top:10px; font-size:28px; cursor:pointer;">&times;</span>
+        
+        <h2 id="modalTitle">የቤት ዝርዝር</h2>
+        <div id="modalInfo"></div>
+
+        <h3 style="margin-top:20px;">መገኛ (Location on Map)</h3>
+        <div id="map-container" style="width: 100%; height: 300px; border-radius: 8px; overflow: hidden; border: 1px solid #ddd;">
+            <iframe id="google-map" width="100%" height="100%" frameborder="0" style="border:0" allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+    <footer>
+        <div class="footer-content">
+            <h3 id="footerLogo">Tamagn-Bet</h3>
+            <p id="footerDesc">Ethiopia's Digital Real Estate Marketplace</p>
+            <div class="social-links">
+                <i class="fab fa-facebook"></i>
+                <i class="fab fa-telegram"></i>
+                <i class="fab fa-linkedin"></i>
+                <i class="fab fa-instagram"></i>
+            </div>
+            <hr style="opacity: 0.1; margin: 20px 0;">
+            <p id="footerCopy">&copy; 2026 Tamagn-Bet | Developed by Horizon Web Tech</p>
+        </div>
+    </footer>
+<div class="chatbot-wrapper">
+    <div class="chat-box" id="chatBox">
+        <div class="chat-header">
+            <span>Tamagn-Bet AI</span>
+            <button type="button" data-action="toggle-chat">&times;</button>
+        </div>
+        <div class="chat-body" id="chatBody">
+            <div class="bot-msg">Welcome! How can we help you today?</div>
+        </div>
+        <div class="chat-footer">
+            <input type="text" id="chatInput" placeholder="Ask a question...">
+            <button type="button" data-action="send-chat-message">ላክ</button> 
+<i class="fas fa-paper-plane" data-action="send-chat-message"></i>
+        </div>
+    </div>
+    <button class="chat-trigger" type="button" data-action="toggle-chat">
+        <i class="fas fa-comments"></i>
+    </button>
+</div>
+<div id="listModal" class="modal">
+    <div class="modal-content">
+        <span class="close" data-action="toggle-modal" data-modal-id="listModal">&times;</span>
+        <h2><i class="fas fa-th-list"></i> Property Listings</h2>
+        <p>Manage and view all current property listings here.</p>
+        <div id="listContent"></div>
+    </div>
+</div>
+
+<div id="repoModal" class="modal">
+    <div class="modal-content">
+        <span class="close" data-action="toggle-modal" data-modal-id="repoModal">&times;</span>
+        <h2><i class="fas fa-chart-line"></i> Market Reports</h2>
+        <p>View analytics and price trends for Addis Ababa real estate.</p>
+    </div>
+</div>
+
+<div id="authModal" class="modal">
+    <div class="modal-content">
+        <span class="close" data-action="close-auth-modal">&times;</span>
+        
+        <div id="loginFormSection">
+            <h3>እንኳን ደህና መጡ!</h3>
+            <form id="loginForm">
+                <input type="email" placeholder="ኢሜይል" required>
+                <input type="password" placeholder="የይለፍ ቃል" required>
+                <button type="submit" class="btn-action">ይግቡ</button>
+            </form>
+            <p>አካውንት የለዎትም? <span class="link" data-action="show-form" data-form="signup">ተመዝገቡ</span></p>
+        </div>
+
+        <div id="signupFormSection" style="display: none;">
+            <h3>አዲስ አካውንት ይክፈቱ</h3>
+            <form id="signupForm">
+                <input type="text" placeholder="ሙሉ ስም" required>
+                <input type="email" placeholder="ኢሜይል" required>
+                <input type="password" placeholder="የይለፍ ቃል" required>
+                <select id="userRole">
+                    <option value="user">buyer</option>
+                    <option value="agent">agent</option>
+                </select>
+                <button type="submit" class="btn-action">አሁን ተመዝገቡ</button>
+            </form>
+            <p>አካውንት አለዎት? <span class="link" data-action="show-form" data-form="login">ይግቡ</span></p>
+        </div>
+    </div>
+</div>
+<script type="module" src="/js/main.js"></script>
+</body>
+</html>

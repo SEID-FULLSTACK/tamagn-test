@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="am" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tamagn Bet | Tender System</title>
+    <style>
+        :root {
+            --primary-color: #003366;
+            --secondary-color: #d35400;
+            --bg-color: #eef2f5;
+            --sidebar-color: #2c3e50;
+            --text-color: #333;
+        }
+
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; background-color: var(--bg-color); color: var(--text-color); }
+
+        /* Header */
+       /* header { position: fixed; top: 0; width: 100%; height: 60px; background: #2c2c2c; color: white; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; z-index: 1000; box-sizing: border-box; }
+        .logo { font-size: 24px; font-weight: 800; color: #fff; text-decoration: none; }*/
+.header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; border-bottom: 1px solid #ddd;position: relative; }
+        .logo { font-size: 24px; font-weight: 800; color: var(--primary-blue); justify-content: center;align-items: center;text-decoration-line: none;position: absolute;left: 50%;}
+        .lang-btn { background: #444; border: 1px solid var(--secondary-color); color: white; padding: 5px 15px; cursor: pointer; border-radius: 4px;position: absolute; right: 20px; }
+        .menu-toggle { background: var(--secondary-color); color: white; border: none; padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 18px; }
+
+        /* Sidebar */
+        .sidebar { width: 260px; height: 100vh; background-color: white; color: black; position: fixed; left: -260px; top: 0; padding-top: 20px; transition: 0.3s; z-index: 1001; overflow-y: auto; }
+        .sidebar.active { left: 0; }
+        .sidebar a { padding: 12px 20px; text-decoration: none; display: block; color: black; cursor: pointer; transition: 0.3s; font-size: 16px; display: flex; align-items: center; gap: 10px; }
+        .sidebar a:hover { background-color: #34495e; color: white; }
+        .sub-menu { padding-left: 40px !important; font-size: 16px !important; color: black !important; }
+        .close-sidebar { background: none; border: none; color: black; font-size: 24px; cursor: pointer; padding: 0 20px; margin-bottom: 20px; }
+        .sidebar-header { padding: 10px 20px; font-size: 12px; color: black; font-weight: bold; margin-top: 10px; text-transform: uppercase; }
+
+        /* Main Content */
+        .main-content { padding: 30px; margin-top: 60px; }
+        .page { display: none; }
+        .page.active { display: block; }
+        
+        /* Stats & Cards */
+        .stats-container { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 30px; }
+        .stat-card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); flex: 1; min-width: 200px; text-align: center; }
+        .tender-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .tender-card { background: #fff; padding: 20px; border-radius: 8px; border-left: 5px solid var(--primary-color); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        /* Forms */
+        .section { background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); max-width: 700px; margin: auto; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        
+        /* File Upload Styles */
+        input[type="file"] { padding: 8px; background: #f9f9f9; border: 1px dashed #ccc; }
+        .image-preview-container { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+        .image-preview-item { width: 80px; height: 80px; border-radius: 4px; overflow: hidden; border: 1px solid #eee; position: relative; }
+        .image-preview-item img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .btn { width: 100%; padding: 12px; color: white; border: none; border-radius: 4px; cursor: pointer; background-color: var(--primary-color); font-size: 16px; transition: background 0.2s; }
+        .btn:hover { background-color: #002244; }
+
+        @media (max-width: 768px) {
+            .sidebar { width: 230px; }
+            .main-content { padding: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <button class="menu-toggle" type="button" data-action="banks-toggle-sidebar">☰</button>
+        <div class="logo">
+    <span style="color: #007bff; font-weight: bold;">Tamagn</span><span style="color: #28a745; font-weight: 800;">-Bet</span>
+</div>
+    </div>
+    <button id="lang-btn" class="lang-btn" type="button" data-action="banks-toggle-language">English</button>
+</header>
+
+<div class="sidebar" id="sidebar">
+    <button class="close-sidebar" type="button" data-action="banks-toggle-sidebar">←</button>
+    <a href="#" data-action="banks-show-page" data-page-id="dashboard">📊 <span data-i18n="dashboard">ዳሽቦርድ</span></a>
+    <a href="#" data-action="banks-show-page" data-page-id="tenders-list">📋 <span data-i18n="tenders_list">የጨረታዎች ዝርዝር</span></a>
+    
+    <div class="sidebar-header" data-i18n="tender_cats">የጨረታ ምድቦች</div>
+    <a href="#" class="sub-menu">🏠 <span data-i18n="house_tender">የቤት ጨረታ</span></a>
+    <a href="#" class="sub-menu">🚗 <span data-i18n="car_tender">የመኪና ጨረታ</span></a>
+    <a href="#" class="sub-menu">📄 <span data-i18n="stationery_tender">የፅህፈት መሳሪያ</span></a>
+    <a href="#" class="sub-menu">💻 <span data-i18n="elec_tender">የኢሌክትሮኒክ ጨረታ</span></a>
+    <a href="#" class="sub-menu">🗄 <span data-i18n="office_tender">የቢሮ እቃወች</span></a>
+    
+    <div class="sidebar-header" data-i18n="actions">ተግባራት</div>
+    <a href="#" data-action="banks-show-page" data-page-id="post-tender">➕ <span data-i18n="post_tender">ጨረታ ይለጥፉ</span></a>
+    <a href="#" data-action="banks-show-page" data-page-id="vendors">🤝 <span data-i18n="register_vendor">አቅራቢ ይመዝግቡ</span></a>
+    <a href="#" style="color: #e74c3c;">🚪 <span data-i18n="logout">መውጫ</span></a>
+</div>
+
+<div class="main-content">
+    <div id="dashboard" class="page active">
+        <h2 data-i18n="welcome">ወደ Tamagn Bet በሰላም መጡ!</h2>
+        <div class="stats-container">
+            <div class="stat-card"><h3 data-i18n="in_progress">በሂደት ላይ</h3><p>124</p></div>
+            <div class="stat-card"><h3 data-i18n="completed">የተጠናቀቀ</h3><p>58</p></div>
+        </div>
+        <div class="tender-grid">
+            <div class="tender-card"><h3>🏠 <span data-i18n="house_tender">የቤት ጨረታ</span></h3><p data-i18n="desc_house">ቦሌ ለቡ አካባቢ የሚገኝ መኖሪያ ቤት።</p></div>
+            <div class="tender-card"><h3>🚗 <span data-i18n="car_tender">የመኪና ጨረታ</span></h3><p data-i18n="desc_car">Toyota Hilux 2022 ሞዴል፣ በጥሩ ሁኔታ ላይ።</p></div>
+            <div class="tender-card"><h3>📄 <span data-i18n="stationery_tender">የፅህፈት መሳሪያ</span></h3><p data-i18n="desc_stationery">የ2017 በጀት ዓመት የቢሮ አቅርቦቶች።</p></div>
+            <div class="tender-card"><h3>💻 <span data-i18n="elec_tender">የኢሌክትሮኒክ ጨረታ</span></h3><p data-i18n="desc_elec">ላፕቶፕ እና ዴስክቶፕ ኮምፒውተሮች።</p></div>
+            <div class="tender-card"><h3>🗄 <span data-i18n="office_tender">የቢሮ እቃወች</span></h3><p data-i18n="desc_office">የቢሮ ወንበሮች እና ጠረጴዛዎች።</p></div>
+        </div>
+    </div>
+
+    <div id="tenders-list" class="page">
+        <h2 data-i18n="tenders_list">የጨረታዎች ዝርዝር</h2>
+        <p data-i18n="list_desc">ሁሉም በስርዓቱ ውስጥ ያሉ ንቁ ጨረታዎች።</p>
+    </div>
+
+    <div id="post-tender" class="page">
+        <div class="section">
+            <h2 data-i18n="post_tender">አዲስ ጨረታ መለጠፊያ</h2>
+            <form id="tenderForm">
+                <div class="form-group"><label data-i18n="title">የጨረታ ርዕስ</label><input type="text" required></div>
+                <div class="form-group">
+                    <label data-i18n="bank_name">ባንክ ይምረጡ</label>
+                    <select required>
+                        <option value="cbe">የኢትዮጵያ ንግድ ባንክ</option>
+                        <option value="awash">አዋሽ ባንክ</option>
+                        <option value="abyssinia">የአቢሲኒያ ባንክ</option>
+                        <option value="dashen">ዳሽን ባንክ</option>
+                        <option value="nib">ኒብ ኢንተርናሽናል ባንክ</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="category">ምድብ</label>
+                    <select>
+                        <option data-i18n="house_tender">የቤት ጨረታ</option>
+                        <option data-i18n="car_tender">የመኪና ጨረታ</option>
+                        <option data-i18n="stationery_tender">የፅህፈት መሳሪያ</option>
+                        <option data-i18n="elec_tender">የኢሌክትሮኒክ ጨረታ</option>
+                        <option data-i18n="office_tender">የቢሮ እቃወች</option>
+                    </select>
+                </div>
+                <div class="form-group"><label data-i18n="starting_price">መነሻ ዋጋ</label><input type="number" required></div>
+                <div class="form-group"><label data-i18n="closing_date">የሚጠናቀቀቅበት ቀን</label><input type="date" required></div>
+                
+                <div class="form-group">
+                    <label data-i18n="tender_images">የጨረታ ምስሎች (JPG, PNG)</label>
+                    <input type="file" id="tenderImages" accept="image/jpeg, image/png" multiple>
+                    <div class="image-preview-container" id="imagePreview"></div>
+                </div>
+
+                <div class="form-group">
+                    <label data-i18n="tender_doc">የጨረታ ሰነድ (PDF, Word)</label>
+                    <input type="file" id="tenderDoc" accept=".pdf,.doc,.docx,.zip">
+                </div>
+                
+                <button type="submit" class="btn" data-i18n="post">ጨረታውን ይለጥፉ</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="vendors" class="page">
+        <div class="section">
+            <h2 data-i18n="register_vendor">የአቅራቢዎች ምዝገባ</h2>
+            <form>
+                <div class="form-group"><label data-i18n="company_name">የድርጅት ስም</label><input type="text" required></div>
+                <button type="submit" class="btn" data-i18n="register">ይመዝገቡ</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="module" src="/js/pages/banks-page.js"></script>
+</body>
+</html>
