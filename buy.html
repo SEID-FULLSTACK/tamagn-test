@@ -21,8 +21,8 @@
             }
         };
     </script>
-    <link rel="stylesheet" href="global-nav.css">
-    <link rel="stylesheet" href="chatbot.css">
+    <link rel="stylesheet" href="css/global-nav.css">
+    <link rel="stylesheet" href="css/chatbot.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
     <style>#buy-property-map-host .tamagn-gmaps-surface{width:100%;height:100%;min-height:300px;border-radius:12px;overflow:hidden;box-shadow:0 4px 15px rgba(0,0,0,0.1)}.tb-hybrid-calculator-stack{position:relative;z-index:10}.tb-hybrid-calculator-host{position:relative;z-index:10;display:block!important;visibility:visible!important}</style>
 </head>
@@ -42,7 +42,7 @@
             </div>
             <div class="col-start-1 row-start-1 flex min-w-0 justify-self-start md:col-start-2 md:justify-self-center">
                 <a href="index.html" class="logo-container relative z-0 max-w-full shrink-0 overflow-visible" aria-label="Tamagn-Bet Home">
-                    <img src="tamagn_logo.PNG" alt="Tamagn Bet" width="400" height="160" loading="eager" decoding="async" />
+                    <img src="image/tamagn_logo.PNG" alt="Tamagn Bet" width="400" height="160" loading="eager" decoding="async" />
                 </a>
             </div>
             <div class="col-start-2 row-start-1 flex min-w-0 flex-wrap items-center justify-end justify-self-end gap-x-2 gap-y-2 md:col-start-3 md:row-start-1">
@@ -188,14 +188,14 @@
     <script type="module">
         import { collection, getDocs, query, orderBy, where, or, getDoc, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { signInWithEmailAndPassword, onAuthStateChanged, createUserWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { db, auth } from "/js/core/firebase.js";
+        import { db, auth } from "./js/core/firebase.js";
         import {
             resolveListingImageUrl,
             escapeAttrUrl,
             listingImageOnerrorAttr,
             hasValidListingImageForPublicGrid,
-        } from "/js/listing-image-utils.js";
-        import { renderPropertyMap, clearPropertyMap, normalizePropertyDataForMap } from "/js/property-map.js";
+        } from "./js/listing-image-utils.js";
+        import { renderPropertyMap, clearPropertyMap, normalizePropertyDataForMap } from "./js/property-map.js";
 
         const FAV_KEY = "tamagn_favorite_listing_ids";
         let allListings = [];
@@ -628,7 +628,7 @@
             <a href="dashboard.html"><i class="fas fa-bars font-normal" aria-hidden="true"></i><span>Menu</span></a>
         </div>
     </nav>
-    <script type="module" src="chatbot.js"></script>
-    <script type="module" src="calculator.js"></script>
+    <script type="module" src="js/chatbot.js"></script>
+    <script type="module" src="js/calculator.js"></script>
 </body>
 </html>

@@ -56,7 +56,7 @@ app.post("/chat", async (req, res) => {
 });
 
 app.get("/", (_req, res) => {
-    res.sendFile(path.join(__dirname, "index.html", "index.html"));
+    res.sendFile(path.join(__dirname, "index.html"));
 });
 
 app.use(express.static(path.join(__dirname)));

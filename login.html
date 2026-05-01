@@ -21,8 +21,8 @@
             }
         };
     </script>
-    <link rel="stylesheet" href="global-nav.css">
-    <link rel="stylesheet" href="chatbot.css">
+    <link rel="stylesheet" href="css/global-nav.css">
+    <link rel="stylesheet" href="css/chatbot.css">
 </head>
 <body class="min-h-screen bg-slate-50 pb-20 font-sans text-slate-800 antialiased md:pb-0">
     <header class="sticky top-0 z-50 border-b border-slate-200/80 bg-white/95 backdrop-blur-md">
@@ -36,7 +36,7 @@
             </nav>
             <div class="flex justify-center">
                 <a href="index.html" class="logo-container" aria-label="Tamagn-Bet Home">
-                    <img src="tamagn_logo.PNG" alt="Tamagn Bet" width="400" height="160" loading="eager" decoding="async" />
+                    <img src="image/tamagn_logo.PNG" alt="Tamagn Bet" width="400" height="160" loading="eager" decoding="async" />
                 </a>
             </div>
             <div class="flex justify-end" aria-hidden="true">
@@ -140,7 +140,7 @@
 <script type="module">
     import { createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
     import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-    import { auth, db } from "/js/core/firebase.js";
+    import { auth, db } from "./js/core/firebase.js";
 
     // 2. እዚህ ጋር ነው ፋንክሽኑን የምናስቀምጠው (Scope ችግር እንዳይኖር)
    // 1. መግቢያ (Login) Inputs
@@ -240,6 +240,6 @@ document.getElementById("confirmSignup").onclick = async () => {
             <a href="dashboard.html" class="tb-mobile-nav__active"><i class="fas fa-bars font-normal" aria-hidden="true"></i><span>Menu</span></a>
         </div>
     </nav>
-    <script type="module" src="chatbot.js"></script>
+    <script type="module" src="js/chatbot.js"></script>
 </body>
 </html>

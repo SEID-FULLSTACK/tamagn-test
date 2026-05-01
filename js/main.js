@@ -9,8 +9,8 @@ import {
     listingImageOnerrorAttr,
     hasValidListingImageForPublicGrid,
     publicationStateFromImageData,
-} from "/js/listing-image-utils.js";
-import { renderPropertyMap, clearPropertyMap, normalizePropertyDataForMap } from "/js/property-map.js";
+} from "./listing-image-utils.js";
+import { renderPropertyMap, clearPropertyMap, normalizePropertyDataForMap } from "./property-map.js";
 // 1. መጀመሪያ Config-ህን ግለጽ
 const firebaseConfig = {
     apiKey: "AIzaSyCiPdbWkA2oUqu1ONy6R3BdDom6lC8_mnI",
@@ -467,7 +467,7 @@ const data = {
             {
                 id: 1,
                 name: "Noah Real Estate",
-                logo: "noah_logo.PNG",
+                logo: "image/noah_logo.PNG",
                 about:
                     "Since its establishment in 2013, Noah Real Estate PLC has become a cornerstone of real estate in Ethiopia, delivering 32 landmark projects (15 residential, 6 commercial, and 11 mixed-use) across Addis Ababa. With 12 projects under development, we continue redefining urban living and commercial excellence in Ethiopia’s vibrant capital.Renowned for our strong financial foundation and cutting-edge design innovation, Noah Real Estate PLC crafts spaces that blend functionality, luxury, and sustainability. From modern apartments to dynamic mixed-use complexes, our projects inspire communities and elevate lifestyles in Addis Ababa.Choose Noah Real Estate PLC for trusted expertise in Ethiopia’s real estate sector, where vision, quality, and innovation converge to create lasting value.",
                 aboutAm:
@@ -476,7 +476,7 @@ const data = {
             {
                 id: 2,
                 name: "Gift Real Estate",
-                logo: "gift_logo.PNG",
+                logo: "image/gift_logo.PNG",
                 about:
                     "It has established a solid reputation as a result of its substantial contributions throughout the years to the growth of Ethiopia's real estate market. Its ambitious goal is to provide services to several cities in Ethiopia and other African nations.Gift Real Estate is renowned for producing a broad variety of homes that cater to various target market segments. Its offerings to the Addis Ababa market comprise, but are not restricted to, opulent villas, villa apartments, row houses, and apartments that are renowned for being diverse, exquisitely designed, and equipped with all the amenities one could want. Its renown and popularity are mostly due to its emphasis on creating designs for lifestyles and future generations, as well as to fulfilling its promise to build dream homes in the most desirable and practical parts of the city, such the CMC and its environs.Medhanialem, Teklehaymanot, Atlas Urael, at the nearby Meklit building around 22, Figa, and Siddist Kilo.",
                 aboutAm:
@@ -485,7 +485,7 @@ const data = {
             {
                 id: 3,
                 name: "Ayat Real Estate",
-                logo: "ayat_logo.PNG",
+                logo: "image/ayat_logo.PNG",
                 about:
                     "Located in the heart of Addis Ababa, Ayat represents more than just a real estate firm; it stands as a legacy of passion and innovation. With over 25 years of experience, we have pioneered the industry by creating not only houses but homes, integrating innovative development, construction, and financial solutions.Ayat, a proudly Ethiopian-owned company, has fulfilled the dreams of thousands of families by delivering over 5,000 homes and 1,000 commercial properties.In addition to our construction endeavors, we have generated employment opportunities for over 15,000 individuals.",
                 aboutAm:
@@ -494,7 +494,7 @@ const data = {
             {
                 id: 4,
                 name: "Sunshine Real Estate",
-                logo: "sunshine_logo.PNG",
+                logo: "image/sunshine_logo.PNG",
                 about:
                     "Sunshine Construction PLC originated in 1984, converted to a private limited company in 1993, and sits at the core of Sunshine Investment Group—one of Ethiopia’s largest construction conglomerates spanning roads, buildings, and hospitality. Real-estate marketing highlights gated residential villages and major apartment blocks in CMC, Gerji, Bole Beshale, and Meri Luke, often referenced next to flagship hospitality such as Marriott Executive Apartments. The brand’s long operating history underpins broad technical capacity and nationwide project logistics.",
                 aboutAm:
@@ -503,7 +503,7 @@ const data = {
             {
                 id: 5,
                 name: "Metropolitan Real Estate",
-                logo: "met_logo.PNG",
+                logo: "image/met_logo.PNG",
                 about:
                     "Metropolitan is an established property development company focused on creating homes packed with functionality, convenience and comfort for today’s modern lifestyle seeker and savvy investor.The innovation-led, future-focused Metropolitan Real Estate established in 1995, the company is responsible for more than 450 large-scale projects worldwide. Metropolitan Real Estate has been operating in Ethiopia since 2016 G.C. Metropolitan Real Estate is introducing world-class luxury high-end apartments to Addis Ababa’s key areas.  In doing so, we strive to fulfill the needs of luxury living in Ethiopia and provide long term profitable investment opportunities in real estate.",
                 aboutAm:
@@ -512,7 +512,7 @@ const data = {
             {
                 id: 6,
                 name: "Flintstone Homes",
-                logo: "flint_logo.PNG",
+                logo: "image/flint_logo.PNG",
                 about:
                     "Flintstone Homes was chartered in 2008 as the real-estate division of Flintstone Engineering, whose construction lineage extends to 1991 under engineer Tsedeke Yihune. The mission statement centers on quality, integrity, innovation, and broadly affordable homes for Ethiopia’s growing cities—backed by public claims of more than 1,500 completed units with active pipelines across Gerji, Summit, Kazanchis, CMC, and other core sub-cities. Buyers frequently encounter milestone-based payment schedules designed to widen access to mid-rise condominiums.",
                 aboutAm:
@@ -521,7 +521,7 @@ const data = {
             {
                 id: 7,
                 name: "Ovid Real Estate",
-                logo: "ovid_logo.PNG",
+                logo: "image/ovid_logo.PNG",
                 about:
                     "Ovid Real Estate PLC operates under the Ovid Group from Djibouti Street HQ in Addis Ababa, promoting residential and commercial inventory that spans mid-market through luxury price bands. Corporate messaging highlights modern construction methods for shorter cycles, smart-home features on select schemes, and landscaped compounds such as the Chaka Housing plan with thousands of units and extensive amenity space. International-standard Bole VIP apartments are a flagship marketing line for urban investors seeking central convenience.",
                 aboutAm:
@@ -530,7 +530,7 @@ const data = {
             {
                 id: 8,
                 name: "Temir Properties",
-                logo: "temir_logo.PNG",
+                logo: "image/temir_logo.PNG",
                 about:
                     "Temir Properties (marketed as Temer Real Estate) was founded in Ethiopian calendar year 2010 and reports delivering 350+ apartment and villa units across more than ten flagship sites in Addis Ababa. Project marketing clusters around Piassa, Sarbet, Ayat, Aware, Garment, and Lycée corridors under brands like Blue Point and Lycee phases. The developer emphasizes creative planning, dependable construction quality, and competitive pricing for buyers seeking turnkey apartments or ground-floor retail shells.",
                 aboutAm:
@@ -539,7 +539,7 @@ const data = {
             {
                 id: 9,
                 name: "Bora Real Estate",
-                logo: "bora_logo.PNG",
+                logo: "image/bora_logo.PNG",
                 about:
                     "Boran Real Estate S.C. (commonly referenced as “Bora”) is a long-standing Addis Ababa share company noted in trade press for early luxury condominium towers near the Old Airport / Nefas Silk-Lafto corridor, pairing residential floors with street-front commercial. Marketing from the 2010s celebrated rapid sell-outs, spacious floor plans, and structured owners’ bylaws—positioning Bora among the first movers that popularized high-rise condominium living in southwestern Addis.",
                 aboutAm:
@@ -548,7 +548,7 @@ const data = {
             {
                 id: 10,
                 name: "Zemen Real Estate",
-                logo: "zemen_logo.PNG",
+                logo: "image/zemen_logo.PNG",
                 about:
                     "Zemen Real Estate PLC is described as Zemen Group’s dedicated urban-housing platform, prioritizing affordable studios through three-bedroom apartments to ease Ethiopia’s housing backlog—particularly in regional cities such as Mekelle and Shire where hundreds of units are under development. Rather than boutique super-luxury towers alone, corporate narratives stress inclusive planning, disaster-resilient design goals, and future growth into additional secondary cities.",
                 aboutAm:
@@ -557,7 +557,7 @@ const data = {
             {
                 id: 11,
                 name: "Tsehay Real Estate",
-                logo: "tsehay_logo.PNG",
+                logo: "image/tsehay_logo.PNG",
                 about:
                     "Tsehay Real Estate was incorporated on 11 June 2011 as a partnership involving CGC Overseas Construction (Ethiopia) Ltd. and invests heavily in the CMC roundabout district—among Addis Ababa’s busiest condominium corridors. The signature Polychrome / Poli Lotus International Centre features roughly a dozen high-rise residential blocks, large-format commercial space, underground parking, and substantial shared amenities, making Tsehay synonymous with ultra-high-density mixed-use living in eastern Addis.",
                 aboutAm:
@@ -589,17 +589,17 @@ const data = {
             { title: "መሬት - ለገጣፎ", price: "5 ሚሊዮን ብር", tag: "sale", cat: "Land", image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=900&q=80" }
         ],
         devs: [
-            { id: 1, name: "ኖህ ሪል እስቴት", logo: "/images/noah_logo.PNG" },
-            { id: 2, name: "ጊፍት ሪል እስቴት", logo: "/images/gift_logo.PNG" },
-            { id: 3, name: "አያት ሪል እስቴት", logo: "/images/ayat_logo.PNG" },
-            { id: 4, name: "ሳንሻይን ሪል እስቴት", logo: "/images/sunshine_logo.PNG" },
-            { id: 5, name: "ሜትሮፖሊታን ሪል እስቴት", logo: "/images/met_logo.PNG" },
-            { id: 6, name: "ፍሊንትስቶን ሆምስ", logo: "/images/flint_logo.PNG" },
-            { id: 7, name: "ኦቪድ ሪል እስቴት", logo: "/images/ovid_logo.PNG" },
-            { id: 8, name: "ተምር ፕሮፐርቲስ", logo: "/images/temir_logo.PNG" },
-            { id: 9, name: "ቦራ ሪል እስቴት", logo: "/images/bora_logo.PNG" },
-            { id: 10, name: "ዘመን ሪል እስቴት", logo: "/images/zemen_logo.PNG" },
-            { id: 11, name: "ፀሐይ ሪል እስቴት", logo: "/images/tsehay_logo.PNG" }
+            { id: 1, name: "ኖህ ሪል እስቴት", logo: "image/noah_logo.PNG" },
+            { id: 2, name: "ጊፍት ሪል እስቴት", logo: "image/gift_logo.PNG" },
+            { id: 3, name: "አያት ሪል እስቴት", logo: "image/ayat_logo.PNG" },
+            { id: 4, name: "ሳንሻይን ሪል እስቴት", logo: "image/sunshine_logo.PNG" },
+            { id: 5, name: "ሜትሮፖሊታን ሪል እስቴት", logo: "image/met_logo.PNG" },
+            { id: 6, name: "ፍሊንትስቶን ሆምስ", logo: "image/flint_logo.PNG" },
+            { id: 7, name: "ኦቪድ ሪል እስቴት", logo: "image/ovid_logo.PNG" },
+            { id: 8, name: "ተምር ፕሮፐርቲስ", logo: "image/temir_logo.PNG" },
+            { id: 9, name: "ቦራ ሪል እስቴት", logo: "image/bora_logo.PNG" },
+            { id: 10, name: "ዘመን ሪል እስቴት", logo: "image/zemen_logo.PNG" },
+            { id: 11, name: "ፀሐይ ሪል እስቴት", logo: "image/tsehay_logo.PNG" }
         ]
     }
 };
@@ -631,10 +631,10 @@ function renderSidebar() {
     const strings = menuData[lang];
 
     const pathname = typeof window !== "undefined" && window.location.pathname ? window.location.pathname : "";
-    const isDevelopersHome =
-        /index\.html\/index\.html$/i.test(pathname) ||
-        pathname.endsWith("/index.html/index.html");
-    const developersHref = isDevelopersHome ? "#developers-section" : "index.html/index.html#developers-section";
+    const pathSegments = pathname.replace(/\/$/, "").split("/").filter(Boolean);
+    const pathLeaf = pathSegments.length ? pathSegments[pathSegments.length - 1] : "";
+    const isDevelopersHome = !pathLeaf || pathLeaf === "index.html";
+    const developersHref = isDevelopersHome ? "#developers-section" : "index.html#developers-section";
 
     // ይዘቱን ብቻ ነው የምናዘምነው (innerHTML) - የsideDrawer ኤለመንቱ ግን ሳይጠፋ ይቀራል
     const postLabel = strings['postproperty'] || strings['post property'] || 'Post Property';
@@ -644,13 +644,13 @@ function renderSidebar() {
         <div class="zillow-drawer-brand"><span class="zillow-drawer-brand-a">Tamagn</span><span class="zillow-drawer-brand-b">-Bet</span></div>
     </div>
     <div class="zillow-drawer-nav font-sans" role="navigation" aria-label="Site">
-        <a href="../sell.html" class="zillow-drawer-link"><span data-key="postproperty">${postLabel}</span></a>
-        <a href="../buy.html" class="zillow-drawer-link"><span data-key="buy">${strings['buy']}</span></a>
-        <a href="../sell.html" class="zillow-drawer-link"><span data-key="sell">${strings['sell']}</span></a>
+        <a href="sell.html" class="zillow-drawer-link"><span data-key="postproperty">${postLabel}</span></a>
+        <a href="buy.html" class="zillow-drawer-link"><span data-key="buy">${strings['buy']}</span></a>
+        <a href="sell.html" class="zillow-drawer-link"><span data-key="sell">${strings['sell']}</span></a>
         <a href="${developersHref}" class="zillow-drawer-link" onclick="if(typeof toggleMenu==='function'){ toggleMenu(); }"><span data-key="real-estate-developers">${strings['real-estate-developers']}</span></a>
-        <a href="../fhc.html" class="zillow-drawer-link"><span data-key="federal-housing-corporation">${strings['federal-housing-corporation']}</span></a>
-        <a href="../banks.html" class="zillow-drawer-link"><span data-key="banks">${strings['banks']}</span></a>
-        <a href="../agent-portal.html" class="zillow-drawer-link" onclick="if(typeof toggleMenu==='function'){ toggleMenu(); }"><span data-key="agent-registration">${strings['agent-registration']}</span></a>
+        <a href="fhc.html" class="zillow-drawer-link"><span data-key="federal-housing-corporation">${strings['federal-housing-corporation']}</span></a>
+        <a href="banks.html" class="zillow-drawer-link"><span data-key="banks">${strings['banks']}</span></a>
+        <a href="agent-portal.html" class="zillow-drawer-link" onclick="if(typeof toggleMenu==='function'){ toggleMenu(); }"><span data-key="agent-registration">${strings['agent-registration']}</span></a>
         <div class="menu-section">
             <button type="button" class="toggle-btn zillow-drawer-toggle zillow-drawer-toggle--report" onclick="toggleSection(this)" aria-expanded="false">
                 <span class="zillow-drawer-toggle-label"><span data-key="report">${strings['report']}</span></span>
