@@ -11,9 +11,7 @@ import { auth, db, TAMAGN_LISTINGS_COLLECTION } from "../core/firebase.js";
 import { initSharedAuthModal } from "../features/auth-modal-shared.js";
 import { getUserDisplayProfile } from "../features/auth-user-profile.js";
 import { byId, getValue, normalizeRootPageHref, onClickActions, onIfPresent, setDisplay } from "./page-utils.js";
-import { hasValidListingImageForPublicGrid, publicationStateFromImageData } from "../listing-image-utils.js";
-
-alert("JavaScript is running!");
+import { publicationStateFromImageData } from "../listing-image-utils.js";
 
 if (typeof db === "undefined" || db === null) {
     console.error("[Sell] EMERGENCY: Firestore `db` is undefined or null — check ../core/firebase.js import.");
@@ -41,6 +39,40 @@ if (TAMAGN_LISTINGS_COLLECTION !== LISTINGS_COLLECTION_ID) {
         "expected",
         LISTINGS_COLLECTION_ID
     );
+}
+
+const SELL_POST_SUCCESS_AM = "ቤቱ በትክክል ተመዝግቧል!";
+const SELL_REDIRECT_MS = 2000;
+
+/**
+ * Non-blocking toast; does not use alert().
+ * @param {"success" | "error"} variant
+ */
+function showSellToast(message, variant = "success") {
+    let host = byId("sell-feedback-toast");
+    if (!host) {
+        host = document.createElement("div");
+        host.id = "sell-feedback-toast";
+        host.setAttribute("role", "status");
+        host.setAttribute("aria-live", "polite");
+        host.className =
+            "pointer-events-none fixed bottom-6 left-1/2 z-[10002] w-[calc(100%-2rem)] max-w-md -translate-x-1/2 px-2";
+        document.body.appendChild(host);
+    }
+    const bar = document.createElement("div");
+    bar.className =
+        variant === "success"
+            ? "pointer-events-auto rounded-2xl border border-emerald-500/30 bg-emerald-600 px-4 py-3 text-center text-sm font-bold text-white shadow-xl"
+            : "pointer-events-auto rounded-2xl border border-red-500/30 bg-red-600 px-4 py-3 text-center text-sm font-semibold text-white shadow-xl";
+    bar.textContent = message;
+    host.replaceChildren(bar);
+}
+
+function clearSellToast() {
+    const host = byId("sell-feedback-toast");
+    if (host) {
+        host.replaceChildren();
+    }
 }
 
 /** Browser static pages do not load `.env`; Cloudinary values come from the constants above only. */
@@ -122,9 +154,8 @@ function showPostPaymentModal() {
  * When `SELL_TEST_BYPASS_PAYMENT` is true, posts skip the payment modal and set `approvalStatus: "approved"`.
  */
 async function createNewListingFromForm() {
-    console.log("--- SUBMIT BUTTON CLICKED --- (createNewListingFromForm)");
     if (!currentUser) {
-        alert("እባክዎ መጀመሪያ ይግቡ።");
+        showSellToast("እባክዎ መጀመሪያ ይግቡ።", "error");
         return;
     }
     if (propertyForm && typeof propertyForm.checkValidity === "function" && !propertyForm.checkValidity()) {
@@ -132,18 +163,19 @@ async function createNewListingFromForm() {
         return;
     }
     if (!getInputValue("pTitle", "").trim()) {
-        alert("የንብረት ርዕስ ያስገቡ።");
+        showSellToast("የንብረት ርዕስ ያስገቡ።", "error");
         return;
     }
 
     let submitButton = submitBtn;
+    let postingSucceeded = false;
     if (submitButton) {
         submitButton.disabled = true;
-        submitButton.innerText = "Processing...";
+        submitButton.innerText = "Posting...";
     }
 
     hidePostPaymentModal();
-    alert("Processing...");
+    clearSellToast();
 
     try {
         logCloudinaryConfigContext();
@@ -154,7 +186,7 @@ async function createNewListingFromForm() {
             console.error(
                 "[Sell] Firebase addDoc blocked: imageUrl is empty or undefined. Set an image URL or complete Cloudinary upload."
             );
-            alert("Please add a valid image link or upload a file. Nothing was saved to Firebase.");
+            showSellToast("Please add a valid image link or upload a file. Nothing was saved.", "error");
             return;
         }
 
@@ -174,29 +206,31 @@ async function createNewListingFromForm() {
             const exact =
                 [addErr?.code, addErr?.message, addErr?.name, String(addErr)].filter(Boolean).join(" | ") || "Unknown error";
             console.error("[Sell] addDoc failed (exact):", addErr);
-            alert("Firebase addDoc failed:\n" + exact);
+            showSellToast("Firebase: " + exact, "error");
             return;
         }
 
         hidePostPaymentModal();
-        alert("Data sent to Firebase successfully!");
-
-        if (!hasValidListingImageForPublicGrid(payload)) {
-            alert(
-                "መዝገብ ተጠናቋል። በ Buy/Lisitings ላይ ለመታየት የሚሰራ የምስል ሊንክ ወይም ምስል ያስገቡ (የህዝብ ዝርዝር ከተረጋገጠ ምስል በኋላ ብቻ ይታያል)።"
-            );
-        } else {
-            alert("ንብረቱ በተሳካ ሁኔታ ተመዝግቧል!");
-        }
+        postingSucceeded = true;
+        showSellToast(SELL_POST_SUCCESS_AM, "success");
         clearEditingMode(true);
+        if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.innerText = "Posting...";
+        }
+
+        const buyPage = normalizeRootPageHref("buy.html");
+        setTimeout(() => {
+            window.location.href = buyPage;
+        }, SELL_REDIRECT_MS);
     } catch (err) {
         hidePostPaymentModal();
         console.error("[Sell] create listing:", err?.code || "", err?.message || err, err);
         const exact =
             [err?.code, err?.message, err?.name, String(err)].filter(Boolean).join(" | ") || "Unknown error";
-        alert("ስህተት (full): " + exact);
+        showSellToast(exact, "error");
     } finally {
-        if (submitButton) {
+        if (submitButton && !postingSucceeded) {
             submitButton.disabled = false;
             refreshSubmitButtonLabel();
         }
@@ -452,20 +486,20 @@ async function tryLoadEditListingFromUrl() {
         const listingSnapshot = await getDoc(listingRef);
 
         if (!listingSnapshot.exists()) {
-            alert("ይህ ንብረት አልተገኘም።");
+            showSellToast("ይህ ንብረት አልተገኘም።", "error");
             return;
         }
 
         const listingData = listingSnapshot.data();
         if (!listingData.userId || listingData.userId !== currentUser.uid) {
-            alert("የራስዎን ንብረት ብቻ ማስተካከል ይችላሉ።");
+            showSellToast("የራስዎን ንብረት ብቻ ማስተካከል ይችላሉ።", "error");
             return;
         }
 
         prefillPropertyForm(editListingIdFromUrl, listingData);
     } catch (error) {
         console.error("Error loading listing for edit:", error);
-        alert("ማስተካከያ ፎርሙን ለመክፈት ችግር ተፈጥሯል።");
+        showSellToast("ማስተካከያ ፎርሙን ለመክፈት ችግር ተፈጥሯል።", "error");
     }
 }
 
@@ -522,7 +556,6 @@ refreshSubmitButtonLabel();
 
 onIfPresent(propertyForm, "submit", async (e) => {
     e.preventDefault();
-    console.log("--- SUBMIT BUTTON CLICKED ---");
 
     if (!editingListingId) {
         if (SELL_TEST_BYPASS_PAYMENT) {
@@ -541,6 +574,7 @@ onIfPresent(propertyForm, "submit", async (e) => {
     submitBtn.disabled = true;
     submitBtn.innerText = "በማዘመን ላይ...";
 
+    let editSucceeded = false;
     try {
         const imageUrl = await resolveImageUrlForSubmit(propertyForm.dataset.editImageUrl || "");
         const trimmedUrl =
@@ -549,22 +583,24 @@ onIfPresent(propertyForm, "submit", async (e) => {
             console.error(
                 "[Sell] Firebase updateDoc blocked: imageUrl is empty or undefined. Set an image URL or complete Cloudinary upload."
             );
-            alert("Please add a valid image link or upload a file. Nothing was saved to Firebase.");
+            showSellToast("Please add a valid image link or upload a file. Nothing was saved.", "error");
             return;
         }
         const updatedData = buildPropertyData(trimmedUrl);
         await updateProperty(editingListingId, updatedData);
 
-        alert("ንብረቱ በተሳካ ሁኔታ ተዘምኗል!");
+        editSucceeded = true;
         clearEditingMode(false);
         window.history.replaceState({}, "", "sell.html");
         window.location.href = getSafeReturnPath(returnToFromUrl);
     } catch (error) {
         console.error("Error updating listing:", error);
-        alert("ስህተት ተከስቷል፦ " + error.message);
+        showSellToast(error?.message || String(error), "error");
     } finally {
-        submitBtn.disabled = false;
-        refreshSubmitButtonLabel();
+        if (!editSucceeded) {
+            submitBtn.disabled = false;
+            refreshSubmitButtonLabel();
+        }
     }
 });
 
@@ -587,11 +623,9 @@ onClickActions({
         handleLogout();
     },
     "sell-close-post-payment": () => {
-        console.log("--- SUBMIT BUTTON CLICKED --- (sell-close-post-payment → createNewListingFromForm)");
         void createNewListingFromForm();
     },
     "sell-confirm-post": () => {
-        console.log("--- SUBMIT BUTTON CLICKED --- (sell-confirm-post → createNewListingFromForm)");
         void createNewListingFromForm();
     }
 });
