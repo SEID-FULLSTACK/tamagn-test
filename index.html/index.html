@@ -21,9 +21,9 @@
             }
         };
     </script>
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/global-nav.css">
-    <link rel="stylesheet" href="/css/chatbot.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="global-nav.css">
+    <link rel="stylesheet" href="chatbot.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
     <style>
         .filter-btn { border: 1px solid #e2e8f0; background: #fff; color: #334155; transition: background 0.2s, color 0.2s, border-color 0.2s; }
@@ -262,14 +262,14 @@
 
 <aside class="fixed left-0 top-0 z-[90] hidden h-screen w-16 flex-col border-r border-gray-200 bg-white md:flex md:w-20" aria-label="Section navigation">
     <a href="index.html" class="logo-container logo-container--rail" aria-label="Tamagn Bet Home">
-        <img src="/image/tamagn_logo.PNG" alt="" width="280" height="112" loading="eager" decoding="async" />
+        <img src="tamagn_logo.PNG" alt="" width="280" height="112" loading="eager" decoding="async" />
     </a>
     <nav class="flex flex-col items-stretch px-1.5 pb-4 pt-2" aria-label="Primary vertical">
         <a href="index.html" class="flex flex-col items-center gap-0.5 rounded-lg py-2.5 text-center text-[10px] font-semibold leading-tight text-[#006AFF] transition hover:opacity-90">
             <i class="fas fa-house text-[1.125rem] font-normal leading-none text-[#006AFF]" aria-hidden="true"></i>
             <span class="max-w-[4.25rem] truncate">Home</span>
         </a>
-        <a href="../buy.html" class="group flex flex-col items-center gap-0.5 rounded-lg py-2.5 text-center text-[10px] font-semibold leading-tight text-gray-500 transition hover:text-[#006AFF]">
+        <a href="buy.html" class="group flex flex-col items-center gap-0.5 rounded-lg py-2.5 text-center text-[10px] font-semibold leading-tight text-gray-500 transition hover:text-[#006AFF]">
             <i class="fas fa-building text-[1.125rem] font-normal leading-none text-gray-400 transition group-hover:text-[#006AFF]" aria-hidden="true"></i>
             <span class="max-w-[4.25rem] truncate">Listings</span>
         </a>
@@ -277,11 +277,11 @@
             <i class="fas fa-handshake text-[1.125rem] font-normal leading-none text-gray-400 transition group-hover:text-[#006AFF]" aria-hidden="true"></i>
             <span class="max-w-[4.25rem] truncate">Developers</span>
         </a>
-        <a href="../dashboard.html" class="group flex flex-col items-center gap-0.5 rounded-lg py-2.5 text-center text-[10px] font-semibold leading-tight text-gray-500 transition hover:text-[#006AFF]">
+        <a href="dashboard.html" class="group flex flex-col items-center gap-0.5 rounded-lg py-2.5 text-center text-[10px] font-semibold leading-tight text-gray-500 transition hover:text-[#006AFF]">
             <i class="fas fa-heart text-[1.125rem] font-normal leading-none text-gray-400 transition group-hover:text-[#006AFF]" aria-hidden="true"></i>
             <span class="max-w-[4.25rem] truncate">Saved</span>
         </a>
-        <a href="../dashboard.html" class="group flex flex-col items-center gap-0.5 rounded-lg py-2.5 text-center text-[10px] font-semibold leading-tight text-gray-500 transition hover:text-[#006AFF]">
+        <a href="dashboard.html" class="group flex flex-col items-center gap-0.5 rounded-lg py-2.5 text-center text-[10px] font-semibold leading-tight text-gray-500 transition hover:text-[#006AFF]">
             <i class="fas fa-comments text-[1.125rem] font-normal leading-none text-gray-400 transition group-hover:text-[#006AFF]" aria-hidden="true"></i>
             <span class="max-w-[4.25rem] truncate">Chat</span>
         </a>
@@ -303,20 +303,20 @@
         <div class="relative z-10 flex min-w-0 flex-1 items-center justify-start gap-4 lg:gap-8">
             <button type="button" id="menuBtn" class="menu-trigger -ml-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-md text-slate-700 transition hover:bg-slate-100 md:hidden" onclick="toggleMenu()" aria-label="Open menu"><i class="fas fa-bars text-base" aria-hidden="true"></i></button>
             <nav class="hidden min-w-0 items-center gap-6 lg:gap-10 md:flex" aria-label="Primary desktop">
-                <a href="../buy.html" class="whitespace-nowrap text-sm font-medium text-gray-800 transition hover:text-[#006AFF]">Buy</a>
-                <a href="../buy.html" class="whitespace-nowrap text-sm font-medium text-gray-800 transition hover:text-[#006AFF]">Rent</a>
-                <a href="../sell.html" class="whitespace-nowrap text-sm font-medium text-gray-800 transition hover:text-[#006AFF]">Sell</a>
+                <a href="buy.html" class="whitespace-nowrap text-sm font-medium text-gray-800 transition hover:text-[#006AFF]">Buy</a>
+                <a href="buy.html" class="whitespace-nowrap text-sm font-medium text-gray-800 transition hover:text-[#006AFF]">Rent</a>
+                <a href="sell.html" class="whitespace-nowrap text-sm font-medium text-gray-800 transition hover:text-[#006AFF]">Sell</a>
                 <a href="#developers-section" class="whitespace-nowrap text-sm font-medium text-gray-800 transition hover:text-[#006AFF]">Developers</a>
                 <a href="#mortgage-calculator" class="whitespace-nowrap text-sm font-medium text-gray-800 transition hover:text-[#006AFF]">Budget Calculator</a>
-                <a href="../dashboard.html" class="whitespace-nowrap text-sm font-medium text-gray-800 transition hover:text-[#006AFF]">Saved</a>
+                <a href="dashboard.html" class="whitespace-nowrap text-sm font-medium text-gray-800 transition hover:text-[#006AFF]">Saved</a>
             </nav>
         </div>
         <a href="index.html" class="logo-container absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2" aria-label="Tamagn-Bet Home">
-            <img src="/image/tamagn_logo.PNG" alt="Tamagn Bet" width="400" height="160" loading="eager" decoding="async" />
+            <img src="tamagn_logo.PNG" alt="Tamagn Bet" width="400" height="160" loading="eager" decoding="async" />
         </a>
         <div class="relative z-10 flex min-w-0 flex-1 items-center justify-end gap-2 sm:gap-3">
             <button type="button" id="langBtn" class="rounded-md border border-gray-200 bg-white px-2.5 py-1.5 text-xs font-medium text-gray-800 transition hover:border-gray-300 sm:text-sm">አማርኛ</button>
-            <button type="button" class="inline-flex items-center justify-center rounded-md border border-[#005ecd] bg-[#006AFF] px-4 py-1.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#0053d6]" onclick="window.location.href='../login.html'">Sign in</button>
+            <button type="button" class="inline-flex items-center justify-center rounded-md border border-[#005ecd] bg-[#006AFF] px-4 py-1.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#0053d6]" onclick="window.location.href='login.html'">Sign in</button>
         </div>
     </div>
 </header>
@@ -337,7 +337,7 @@
             </div>
             <div class="banner-text">
                 <span style="display: block; margin-bottom: 10px; font-weight: bold;">ምርጥ አማራጮችን ይምረጡ!</span>
-                <a href="../pricing.html" class="post-property-btn" style="background: #27ae60; color: white; padding: 8px 15px; text-decoration: none; border-radius: 5px; display: inline-block;">
+                <a href="pricing.html" class="post-property-btn" style="background: #27ae60; color: white; padding: 8px 15px; text-decoration: none; border-radius: 5px; display: inline-block;">
                     የአገልግሎት ዋጋ ዝርዝር እዚህ ይገኛል <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
@@ -615,10 +615,10 @@
     <nav class="tb-mobile-nav md:hidden" aria-label="Primary mobile">
         <div class="tb-mobile-nav__inner">
             <a href="index.html" class="tb-mobile-nav__active"><i class="fas fa-house font-normal" aria-hidden="true"></i><span>Home</span></a>
-            <a href="../buy.html"><i class="fas fa-building font-normal" aria-hidden="true"></i><span>Listings</span></a>
+            <a href="buy.html"><i class="fas fa-building font-normal" aria-hidden="true"></i><span>Listings</span></a>
             <a href="#developers-section"><i class="fas fa-handshake font-normal" aria-hidden="true"></i><span>Developers</span></a>
-            <a href="../dashboard.html"><i class="fas fa-heart font-normal" aria-hidden="true"></i><span>Saved</span></a>
-            <a href="../dashboard.html"><i class="fas fa-comments font-normal" aria-hidden="true"></i><span>Chat</span></a>
+            <a href="dashboard.html"><i class="fas fa-heart font-normal" aria-hidden="true"></i><span>Saved</span></a>
+            <a href="dashboard.html"><i class="fas fa-comments font-normal" aria-hidden="true"></i><span>Chat</span></a>
             <a href="#mortgage-calculator"><i class="fas fa-calculator font-normal" aria-hidden="true"></i><span>Budget</span></a>
             <button type="button" onclick="toggleMenu()"><i class="fas fa-bars font-normal" aria-hidden="true"></i><span>Menu</span></button>
         </div>
@@ -628,7 +628,7 @@
             <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-12 lg:gap-12">
                 <div class="sm:col-span-2 lg:col-span-4 lg:max-w-sm">
                     <a href="index.html" id="footerLogo" class="logo-container logo-container--footer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#006AFF]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white" aria-label="Tamagn-Bet Home">
-                        <img src="/image/tamagn_logo.PNG" alt="Tamagn Bet" width="400" height="160" loading="lazy" decoding="async" />
+                        <img src="tamagn_logo.PNG" alt="Tamagn Bet" width="400" height="160" loading="lazy" decoding="async" />
                     </a>
                     <p id="footerDesc" class="mt-5 text-sm font-normal leading-relaxed text-gray-600">Ethiopia's Digital Real Estate Marketplace</p>
                 </div>
@@ -636,7 +636,7 @@
                     <h3 class="text-sm font-semibold tracking-wide text-gray-900">Company</h3>
                     <ul class="mt-5 space-y-3 text-sm">
                         <li>
-                            <a href="../about.html" class="text-gray-600 transition hover:text-[#006AFF]">About</a>
+                            <a href="about.html" class="text-gray-600 transition hover:text-[#006AFF]">About</a>
                         </li>
                     </ul>
                 </div>
@@ -644,10 +644,10 @@
                     <h3 class="text-sm font-semibold tracking-wide text-gray-900">Legal</h3>
                     <ul class="mt-5 space-y-3 text-sm">
                         <li>
-                            <a href="../terms.html" class="text-gray-600 transition hover:text-[#006AFF]">Terms</a>
+                            <a href="terms.html" class="text-gray-600 transition hover:text-[#006AFF]">Terms</a>
                         </li>
                         <li>
-                            <a href="../privacy.html" class="text-gray-600 transition hover:text-[#006AFF]">Privacy</a>
+                            <a href="privacy.html" class="text-gray-600 transition hover:text-[#006AFF]">Privacy</a>
                         </li>
                     </ul>
                 </div>
@@ -765,9 +765,9 @@
         }
     };
 </script>
-<script type="module" src="/js/main.js"></script>
-<script type="module" src="/js/calculator.js"></script>
-<script type="module" src="/js/chatbot.js"></script>
+<script type="module" src="main.js"></script>
+<script type="module" src="calculator.js"></script>
+<script type="module" src="chatbot.js"></script>
 </div>
 </body>
 </html>

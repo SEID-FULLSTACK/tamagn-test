@@ -467,7 +467,7 @@ const data = {
             {
                 id: 1,
                 name: "Noah Real Estate",
-                logo: "/images/noah_logo.PNG",
+                logo: "noah_logo.PNG",
                 about:
                     "Since its establishment in 2013, Noah Real Estate PLC has become a cornerstone of real estate in Ethiopia, delivering 32 landmark projects (15 residential, 6 commercial, and 11 mixed-use) across Addis Ababa. With 12 projects under development, we continue redefining urban living and commercial excellence in Ethiopia’s vibrant capital.Renowned for our strong financial foundation and cutting-edge design innovation, Noah Real Estate PLC crafts spaces that blend functionality, luxury, and sustainability. From modern apartments to dynamic mixed-use complexes, our projects inspire communities and elevate lifestyles in Addis Ababa.Choose Noah Real Estate PLC for trusted expertise in Ethiopia’s real estate sector, where vision, quality, and innovation converge to create lasting value.",
                 aboutAm:
@@ -476,7 +476,7 @@ const data = {
             {
                 id: 2,
                 name: "Gift Real Estate",
-                logo: "/images/gift_logo.PNG",
+                logo: "gift_logo.PNG",
                 about:
                     "It has established a solid reputation as a result of its substantial contributions throughout the years to the growth of Ethiopia's real estate market. Its ambitious goal is to provide services to several cities in Ethiopia and other African nations.Gift Real Estate is renowned for producing a broad variety of homes that cater to various target market segments. Its offerings to the Addis Ababa market comprise, but are not restricted to, opulent villas, villa apartments, row houses, and apartments that are renowned for being diverse, exquisitely designed, and equipped with all the amenities one could want. Its renown and popularity are mostly due to its emphasis on creating designs for lifestyles and future generations, as well as to fulfilling its promise to build dream homes in the most desirable and practical parts of the city, such the CMC and its environs.Medhanialem, Teklehaymanot, Atlas Urael, at the nearby Meklit building around 22, Figa, and Siddist Kilo.",
                 aboutAm:
@@ -485,7 +485,7 @@ const data = {
             {
                 id: 3,
                 name: "Ayat Real Estate",
-                logo: "/images/ayat_logo.PNG",
+                logo: "ayat_logo.PNG",
                 about:
                     "Located in the heart of Addis Ababa, Ayat represents more than just a real estate firm; it stands as a legacy of passion and innovation. With over 25 years of experience, we have pioneered the industry by creating not only houses but homes, integrating innovative development, construction, and financial solutions.Ayat, a proudly Ethiopian-owned company, has fulfilled the dreams of thousands of families by delivering over 5,000 homes and 1,000 commercial properties.In addition to our construction endeavors, we have generated employment opportunities for over 15,000 individuals.",
                 aboutAm:
@@ -494,7 +494,7 @@ const data = {
             {
                 id: 4,
                 name: "Sunshine Real Estate",
-                logo: "/images/sunshine_logo.PNG",
+                logo: "sunshine_logo.PNG",
                 about:
                     "Sunshine Construction PLC originated in 1984, converted to a private limited company in 1993, and sits at the core of Sunshine Investment Group—one of Ethiopia’s largest construction conglomerates spanning roads, buildings, and hospitality. Real-estate marketing highlights gated residential villages and major apartment blocks in CMC, Gerji, Bole Beshale, and Meri Luke, often referenced next to flagship hospitality such as Marriott Executive Apartments. The brand’s long operating history underpins broad technical capacity and nationwide project logistics.",
                 aboutAm:
@@ -503,7 +503,7 @@ const data = {
             {
                 id: 5,
                 name: "Metropolitan Real Estate",
-                logo: "/images/met_logo.PNG",
+                logo: "met_logo.PNG",
                 about:
                     "Metropolitan is an established property development company focused on creating homes packed with functionality, convenience and comfort for today’s modern lifestyle seeker and savvy investor.The innovation-led, future-focused Metropolitan Real Estate established in 1995, the company is responsible for more than 450 large-scale projects worldwide. Metropolitan Real Estate has been operating in Ethiopia since 2016 G.C. Metropolitan Real Estate is introducing world-class luxury high-end apartments to Addis Ababa’s key areas.  In doing so, we strive to fulfill the needs of luxury living in Ethiopia and provide long term profitable investment opportunities in real estate.",
                 aboutAm:
@@ -512,7 +512,7 @@ const data = {
             {
                 id: 6,
                 name: "Flintstone Homes",
-                logo: "/images/flint_logo.PNG",
+                logo: "flint_logo.PNG",
                 about:
                     "Flintstone Homes was chartered in 2008 as the real-estate division of Flintstone Engineering, whose construction lineage extends to 1991 under engineer Tsedeke Yihune. The mission statement centers on quality, integrity, innovation, and broadly affordable homes for Ethiopia’s growing cities—backed by public claims of more than 1,500 completed units with active pipelines across Gerji, Summit, Kazanchis, CMC, and other core sub-cities. Buyers frequently encounter milestone-based payment schedules designed to widen access to mid-rise condominiums.",
                 aboutAm:
@@ -521,7 +521,7 @@ const data = {
             {
                 id: 7,
                 name: "Ovid Real Estate",
-                logo: "/images/ovid_logo.PNG",
+                logo: "ovid_logo.PNG",
                 about:
                     "Ovid Real Estate PLC operates under the Ovid Group from Djibouti Street HQ in Addis Ababa, promoting residential and commercial inventory that spans mid-market through luxury price bands. Corporate messaging highlights modern construction methods for shorter cycles, smart-home features on select schemes, and landscaped compounds such as the Chaka Housing plan with thousands of units and extensive amenity space. International-standard Bole VIP apartments are a flagship marketing line for urban investors seeking central convenience.",
                 aboutAm:
@@ -530,7 +530,7 @@ const data = {
             {
                 id: 8,
                 name: "Temir Properties",
-                logo: "/images/temir_logo.PNG",
+                logo: "temir_logo.PNG",
                 about:
                     "Temir Properties (marketed as Temer Real Estate) was founded in Ethiopian calendar year 2010 and reports delivering 350+ apartment and villa units across more than ten flagship sites in Addis Ababa. Project marketing clusters around Piassa, Sarbet, Ayat, Aware, Garment, and Lycée corridors under brands like Blue Point and Lycee phases. The developer emphasizes creative planning, dependable construction quality, and competitive pricing for buyers seeking turnkey apartments or ground-floor retail shells.",
                 aboutAm:
@@ -539,7 +539,7 @@ const data = {
             {
                 id: 9,
                 name: "Bora Real Estate",
-                logo: "/images/bora_logo.PNG",
+                logo: "bora_logo.PNG",
                 about:
                     "Boran Real Estate S.C. (commonly referenced as “Bora”) is a long-standing Addis Ababa share company noted in trade press for early luxury condominium towers near the Old Airport / Nefas Silk-Lafto corridor, pairing residential floors with street-front commercial. Marketing from the 2010s celebrated rapid sell-outs, spacious floor plans, and structured owners’ bylaws—positioning Bora among the first movers that popularized high-rise condominium living in southwestern Addis.",
                 aboutAm:
@@ -548,7 +548,7 @@ const data = {
             {
                 id: 10,
                 name: "Zemen Real Estate",
-                logo: "/images/zemen_logo.PNG",
+                logo: "zemen_logo.PNG",
                 about:
                     "Zemen Real Estate PLC is described as Zemen Group’s dedicated urban-housing platform, prioritizing affordable studios through three-bedroom apartments to ease Ethiopia’s housing backlog—particularly in regional cities such as Mekelle and Shire where hundreds of units are under development. Rather than boutique super-luxury towers alone, corporate narratives stress inclusive planning, disaster-resilient design goals, and future growth into additional secondary cities.",
                 aboutAm:
@@ -557,7 +557,7 @@ const data = {
             {
                 id: 11,
                 name: "Tsehay Real Estate",
-                logo: "/images/tsehay_logo.PNG",
+                logo: "tsehay_logo.PNG",
                 about:
                     "Tsehay Real Estate was incorporated on 11 June 2011 as a partnership involving CGC Overseas Construction (Ethiopia) Ltd. and invests heavily in the CMC roundabout district—among Addis Ababa’s busiest condominium corridors. The signature Polychrome / Poli Lotus International Centre features roughly a dozen high-rise residential blocks, large-format commercial space, underground parking, and substantial shared amenities, making Tsehay synonymous with ultra-high-density mixed-use living in eastern Addis.",
                 aboutAm:
