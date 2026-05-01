@@ -1,3 +1,20 @@
+/**
+ * Flatten internal links for static hosts (e.g. GitHub Pages in a subpath).
+ * "/buy.html" and "../buy.html" become "buy.html". Leaves http(s), #anchors, ?query as-is.
+ */
+export function normalizeRootPageHref(href) {
+    if (!href || typeof href !== "string") return href;
+    const t = href.trim();
+    if (!t) return t;
+    if (/^[a-z][a-z0-9+.-]*:/i.test(t) || t.startsWith("//")) return t;
+    if (t.startsWith("#") || t.startsWith("?")) return t;
+    let p = t.replace(/^\/+/, "");
+    while (p.startsWith("../")) {
+        p = p.slice(3);
+    }
+    return p || "index.html";
+}
+
 export function byId(id) {
     return document.getElementById(id);
 }

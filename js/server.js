@@ -55,11 +55,13 @@ app.post("/chat", async (req, res) => {
     }
 });
 
+const repoRoot = path.join(__dirname, "..");
+
 app.get("/", (_req, res) => {
-    res.sendFile(path.join(__dirname, "index.html"));
+    res.sendFile(path.join(repoRoot, "index.html"));
 });
 
-app.use(express.static(path.join(__dirname)));
+app.use(express.static(repoRoot));
 
 const PORT = Number(process.env.PORT) || 3000;
 app.listen(PORT, () => console.log(`ሰርቨሩ በ Port ${PORT} እየሰራ ነው...`));

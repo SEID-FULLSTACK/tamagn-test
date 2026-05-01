@@ -3,7 +3,7 @@ import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/
 import { auth, db } from "../core/firebase.js";
 import { initSharedAuthModal } from "../features/auth-modal-shared.js";
 import { getUserDisplayProfile } from "../features/auth-user-profile.js";
-import { byId, getValue, onClickActions, onIfPresent, setDisplay } from "./page-utils.js";
+import { byId, getValue, normalizeRootPageHref, onClickActions, onIfPresent, setDisplay } from "./page-utils.js";
 import { publicationStateFromImageData } from "../listing-image-utils.js";
 
 const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/ddrhpcljy/image/upload";
@@ -23,8 +23,10 @@ function getSafeReturnPath(path) {
     const fallback = "buy.html";
     if (!path) return fallback;
     if (path.includes("://") || path.startsWith("//")) return fallback;
-    if (!/^[a-zA-Z0-9\-_/?.=&.#]+$/.test(path)) return fallback;
-    return path;
+    const p = normalizeRootPageHref(path);
+    if (!p || p.includes("://")) return fallback;
+    if (!/^[a-zA-Z0-9\-_/?.=&.#]+$/.test(p)) return fallback;
+    return p;
 }
 
 const handleLogout = async () => {

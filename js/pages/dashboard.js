@@ -1,7 +1,7 @@
 import { collection, deleteDoc, doc, getDoc, getDocs, orderBy, or, query, serverTimestamp, updateDoc, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { auth, db } from "../core/firebase.js";
-import { byId, onClickActions, setDisplay } from "./page-utils.js";
+import { byId, normalizeRootPageHref, onClickActions, setDisplay } from "./page-utils.js";
 import { createLanguageToggle } from "./i18n-utils.js";
 import { mountHybridMortgageCalculator } from "../hybrid-mortgage-calculator.js";
 import { ensurePropertyStatusBadgeStyles, renderPropertyStatusBadge } from "../utils/ui-helpers.js";
@@ -944,7 +944,7 @@ onClickActions({
     "dashboard-navigate": ({ actionEl }) => {
         const href = actionEl.getAttribute("data-href") || actionEl.dataset.href;
         if (href) {
-            window.location.href = href;
+            window.location.href = normalizeRootPageHref(href);
         }
     },
     "dashboard-show-section": ({ actionEl }) => {
