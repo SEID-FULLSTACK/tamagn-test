@@ -188,7 +188,7 @@
     <script type="module">
         import { collection, getDocs, query, orderBy, where, or, getDoc, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { signInWithEmailAndPassword, onAuthStateChanged, createUserWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { db, auth } from "./js/core/firebase.js";
+        import { db, auth, TAMAGN_LISTINGS_COLLECTION } from "./js/core/firebase.js";
         import {
             resolveListingImageUrl,
             escapeAttrUrl,
@@ -364,6 +364,7 @@
                 }
                 if (nameDisplay) nameDisplay.innerText = displayName;
                 if (avatar) avatar.innerText = displayName.charAt(0).toUpperCase();
+                await loadTamagnListings();
             } else {
                 authActions?.classList.remove("hidden");
                 userProfile?.classList.add("hidden");
@@ -579,7 +580,7 @@
 
             try {
                 const q = query(
-                    collection(db, "tamagn_listings"),
+                    collection(db, TAMAGN_LISTINGS_COLLECTION),
                     or(where("scope", "==", "all"), where("scope", "==", "dashboard")),
                     orderBy("createdAt", "desc")
                 );
@@ -603,7 +604,12 @@
                 }
                 applyFilters();
             } catch (error) {
-                console.error(error);
+                console.error(
+                    "[Buy] loadTamagnListings failed:",
+                    error?.code || "",
+                    error?.message || error,
+                    error
+                );
             }
         }
 
@@ -615,7 +621,6 @@
             if (e.key === "Enter") applyFilters();
         });
 
-        window.addEventListener("DOMContentLoaded", loadTamagnListings);
     </script>
     <nav class="tb-mobile-nav md:hidden" aria-label="Primary mobile">
         <div class="tb-mobile-nav__inner">

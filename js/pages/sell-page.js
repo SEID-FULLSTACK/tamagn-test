@@ -1,13 +1,56 @@
-import { doc, getDoc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import {
+    addDoc,
+    collection,
+    doc,
+    getDoc,
+    serverTimestamp,
+    updateDoc,
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import { auth, db } from "../core/firebase.js";
+import { auth, db, TAMAGN_LISTINGS_COLLECTION } from "../core/firebase.js";
 import { initSharedAuthModal } from "../features/auth-modal-shared.js";
 import { getUserDisplayProfile } from "../features/auth-user-profile.js";
 import { byId, getValue, normalizeRootPageHref, onClickActions, onIfPresent, setDisplay } from "./page-utils.js";
-import { publicationStateFromImageData } from "../listing-image-utils.js";
+import { hasValidListingImageForPublicGrid, publicationStateFromImageData } from "../listing-image-utils.js";
+
+alert("JavaScript is running!");
+
+if (typeof db === "undefined" || db === null) {
+    console.error("[Sell] EMERGENCY: Firestore `db` is undefined or null — check ../core/firebase.js import.");
+} else {
+    console.log("[Sell] Firestore db reference OK:", db);
+}
 
 const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/ddrhpcljy/image/upload";
 const CLOUDINARY_UPLOAD_PRESET = "snwisake";
+
+/** Exact Firestore collection id (lowercase); must match Firebase Console. */
+const LISTINGS_COLLECTION_ID = "tamagn_listings";
+
+/**
+ * When true: new listings save to Firestore immediately on submit (no payment modal),
+ * `approvalStatus` is set to "approved", and `scope` is "all" so the home grid can show them.
+ * Set to `false` to restore the Telebirr/Chapa modal flow and dashboard-only scope.
+ */
+const SELL_TEST_BYPASS_PAYMENT = true;
+
+if (TAMAGN_LISTINGS_COLLECTION !== LISTINGS_COLLECTION_ID) {
+    console.error(
+        "[Sell] firebase.js TAMAGN_LISTINGS_COLLECTION mismatch:",
+        TAMAGN_LISTINGS_COLLECTION,
+        "expected",
+        LISTINGS_COLLECTION_ID
+    );
+}
+
+/** Browser static pages do not load `.env`; Cloudinary values come from the constants above only. */
+function logCloudinaryConfigContext() {
+    console.log("[Sell] Cloudinary config (from code constants — not from .env in browser):", {
+        cloudName: cloudinaryCloudNameFromApiUrl(CLOUDINARY_URL),
+        uploadPreset: CLOUDINARY_UPLOAD_PRESET,
+        apiEndpoint: CLOUDINARY_URL,
+    });
+}
 
 let currentUser = auth.currentUser;
 let editingListingId = null;
@@ -55,6 +98,109 @@ function refreshSubmitButtonLabel() {
     if (!submitBtn) return;
     const defaultText = submitBtn.dataset.defaultText || "Post Property";
     submitBtn.innerText = editingListingId ? "ንብረት አዘምን" : defaultText;
+}
+
+function hidePostPaymentModal() {
+    const el = byId("postPaymentModal");
+    if (!el) return;
+    el.style.display = "none";
+    el.classList.add("hidden");
+    el.classList.remove("flex");
+}
+
+function showPostPaymentModal() {
+    const el = byId("postPaymentModal");
+    if (!el) return;
+    el.classList.remove("hidden");
+    el.classList.add("flex");
+    el.style.display = "flex";
+}
+
+/**
+ * Persist a new listing to Firestore collection `tamagn_listings` (see `LISTINGS_COLLECTION_ID`).
+ * Buy page: `scope` in ("all","dashboard") + `orderBy` createdAt; cards need a valid image + `published`.
+ * When `SELL_TEST_BYPASS_PAYMENT` is true, posts skip the payment modal and set `approvalStatus: "approved"`.
+ */
+async function createNewListingFromForm() {
+    console.log("--- SUBMIT BUTTON CLICKED --- (createNewListingFromForm)");
+    if (!currentUser) {
+        alert("እባክዎ መጀመሪያ ይግቡ።");
+        return;
+    }
+    if (propertyForm && typeof propertyForm.checkValidity === "function" && !propertyForm.checkValidity()) {
+        propertyForm.reportValidity();
+        return;
+    }
+    if (!getInputValue("pTitle", "").trim()) {
+        alert("የንብረት ርዕስ ያስገቡ።");
+        return;
+    }
+
+    let submitButton = submitBtn;
+    if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.innerText = "Processing...";
+    }
+
+    hidePostPaymentModal();
+    alert("Processing...");
+
+    try {
+        logCloudinaryConfigContext();
+        const imageUrl = await resolveImageUrlForSubmit("");
+        const trimmedUrl =
+            imageUrl !== undefined && imageUrl !== null ? String(imageUrl).trim() : "";
+        if (!trimmedUrl) {
+            console.error(
+                "[Sell] Firebase addDoc blocked: imageUrl is empty or undefined. Set an image URL or complete Cloudinary upload."
+            );
+            alert("Please add a valid image link or upload a file. Nothing was saved to Firebase.");
+            return;
+        }
+
+        const data = buildPropertyData(trimmedUrl);
+        const payload = {
+            ...data,
+            userId: currentUser.uid,
+            createdAt: serverTimestamp(),
+            scope: SELL_TEST_BYPASS_PAYMENT ? "all" : "dashboard",
+            ...(SELL_TEST_BYPASS_PAYMENT ? { approvalStatus: "approved" } : {}),
+        };
+        console.log("[Sell] addDoc → collection:", LISTINGS_COLLECTION_ID, "imageUrl:", trimmedUrl.slice(0, 80) + (trimmedUrl.length > 80 ? "…" : ""));
+
+        try {
+            await addDoc(collection(db, LISTINGS_COLLECTION_ID), payload);
+        } catch (addErr) {
+            const exact =
+                [addErr?.code, addErr?.message, addErr?.name, String(addErr)].filter(Boolean).join(" | ") || "Unknown error";
+            console.error("[Sell] addDoc failed (exact):", addErr);
+            alert("Firebase addDoc failed:\n" + exact);
+            return;
+        }
+
+        hidePostPaymentModal();
+        alert("Data sent to Firebase successfully!");
+
+        if (!hasValidListingImageForPublicGrid(payload)) {
+            alert(
+                "መዝገብ ተጠናቋል። በ Buy/Lisitings ላይ ለመታየት የሚሰራ የምስል ሊንክ ወይም ምስል ያስገቡ (የህዝብ ዝርዝር ከተረጋገጠ ምስል በኋላ ብቻ ይታያል)።"
+            );
+        } else {
+            alert("ንብረቱ በተሳካ ሁኔታ ተመዝግቧል!");
+        }
+        clearEditingMode(true);
+    } catch (err) {
+        hidePostPaymentModal();
+        console.error("[Sell] create listing:", err?.code || "", err?.message || err, err);
+        const exact =
+            [err?.code, err?.message, err?.name, String(err)].filter(Boolean).join(" | ") || "Unknown error";
+        alert("ስህተት (full): " + exact);
+    } finally {
+        if (submitButton) {
+            submitButton.disabled = false;
+            refreshSubmitButtonLabel();
+        }
+    }
 }
 
 function setEditingMode(listingId, existingImageUrl = "") {
@@ -132,25 +278,104 @@ function buildPropertyData(imageUrl) {
     return { ...base, ...publicationStateFromImageData(base) };
 }
 
+function cloudinaryCloudNameFromApiUrl(apiUrl) {
+    try {
+        const m = String(apiUrl).match(/\/v1_1\/([^/]+)\//);
+        return m ? m[1] : "(unknown)";
+    } catch {
+        return "(unknown)";
+    }
+}
+
+function formatCloudinaryFailureMessage(httpStatus, rawBody, parsed) {
+    const cloud = cloudinaryCloudNameFromApiUrl(CLOUDINARY_URL);
+    const preset = CLOUDINARY_UPLOAD_PRESET;
+    if (parsed && typeof parsed === "object" && parsed.error) {
+        const inner = parsed.error.message || String(parsed.error);
+        const hint =
+            /preset|not found|Invalid/i.test(inner)
+                ? ` Verify unsigned upload_preset "${preset}" in Cloudinary dashboard (Settings → Upload) matches this app.`
+                : "";
+        return `Cloudinary (${cloud}, preset "${preset}"): ${inner}.${hint}`;
+    }
+    const snippet = rawBody ? String(rawBody).slice(0, 240) : "";
+    return `Cloudinary upload failed (HTTP ${httpStatus}, cloud "${cloud}", preset "${preset}"). ${snippet}`.trim();
+}
+
+/**
+ * Resolves the listing image URL: Cloudinary upload (await until secure_url exists) or pasted link.
+ * Firebase writes must run only after this returns; throws on failed/partial Cloudinary responses.
+ */
 async function resolveImageUrlForSubmit(existingImageUrl = "") {
-    let imageUrl = existingImageUrl;
+    let imageUrl = typeof existingImageUrl === "string" ? existingImageUrl.trim() : "";
     const imageOption = getInputValue("imageOption", "link");
 
     if (imageOption === "upload") {
         const fileInput = byId("pImageFile");
         if (fileInput && fileInput.files && fileInput.files.length > 0) {
-            const file = fileInput.files[0];
-            const formData = new FormData();
-            formData.append("file", file);
-            formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+            try {
+                console.log("Starting Cloudinary Upload...");
+                console.log("[Sell] Using preset/cld:", CLOUDINARY_UPLOAD_PRESET, cloudinaryCloudNameFromApiUrl(CLOUDINARY_URL));
 
-            const cloudRes = await fetch(CLOUDINARY_URL, { method: "POST", body: formData });
-            if (!cloudRes.ok) {
-                throw new Error("Cloudinary upload failed");
+                const formData = new FormData();
+                formData.append("file", fileInput.files[0]);
+                formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+
+                console.table(formData);
+
+                let cloudRes;
+                try {
+                    cloudRes = await fetch(CLOUDINARY_URL, { method: "POST", body: formData });
+                } catch (netErr) {
+                    console.error("[Sell] Cloudinary upload failed — network / fetch error (exact):", netErr);
+                    throw netErr;
+                }
+
+                const rawBody = await cloudRes.text();
+                let parsed = null;
+                try {
+                    parsed = rawBody ? JSON.parse(rawBody) : null;
+                } catch (parseErr) {
+                    console.error("[Sell] Cloudinary upload failed — JSON parse error (exact):", parseErr);
+                    console.error("[Sell] Cloudinary raw response (first 400 chars):", rawBody?.slice?.(0, 400));
+                    throw new Error(
+                        formatCloudinaryFailureMessage(cloudRes.status, rawBody, null) +
+                            " Response was not valid JSON."
+                    );
+                }
+
+                if (!cloudRes.ok || (parsed && parsed.error)) {
+                    const msg = formatCloudinaryFailureMessage(cloudRes.status, rawBody, parsed);
+                    console.error("[Sell] Cloudinary upload failed — API error (exact body):", parsed || rawBody);
+                    throw new Error(msg);
+                }
+
+                const secure =
+                    parsed && typeof parsed === "object"
+                        ? (typeof parsed.secure_url === "string" && parsed.secure_url.trim()) ||
+                          (typeof parsed.url === "string" && parsed.url.trim())
+                        : "";
+                if (!secure) {
+                    console.error("[Sell] Cloudinary upload failed — missing secure_url/url (exact parsed):", parsed);
+                    throw new Error(
+                        `Cloudinary: upload returned no secure_url (cloud "${cloudinaryCloudNameFromApiUrl(
+                            CLOUDINARY_URL
+                        )}", preset "${CLOUDINARY_UPLOAD_PRESET}").`
+                    );
+                }
+                imageUrl = secure.startsWith("http://")
+                    ? secure.replace(/^http:\/\//i, "https://")
+                    : secure;
+                console.log("Cloudinary Success:", imageUrl);
+            } catch (cloudErr) {
+                console.error("[Sell] Cloudinary upload failed — caught error (exact):", cloudErr);
+                if (cloudErr && typeof cloudErr === "object") {
+                    console.error("[Sell] message:", cloudErr.message, "name:", cloudErr.name, "stack:", cloudErr.stack);
+                }
+                throw cloudErr;
             }
-
-            const cloudData = await cloudRes.json();
-            imageUrl = cloudData.secure_url;
+        } else if (!imageUrl) {
+            console.warn("[Sell] Image mode is upload but no file selected; imageUrl remains empty until link or file is provided.");
         }
     } else {
         const imageLink = getInputValue("pImageLink", "").trim();
@@ -167,7 +392,7 @@ async function updateProperty(listingId, updatedData) {
         throw new Error("You must be logged in to edit this listing.");
     }
 
-    const listingRef = doc(db, "tamagn_listings", listingId);
+    const listingRef = doc(db, LISTINGS_COLLECTION_ID, listingId);
     const listingSnapshot = await getDoc(listingRef);
 
     if (!listingSnapshot.exists()) {
@@ -223,7 +448,7 @@ async function tryLoadEditListingFromUrl() {
     hasTriedEditPrefill = true;
 
     try {
-        const listingRef = doc(db, "tamagn_listings", editListingIdFromUrl);
+        const listingRef = doc(db, LISTINGS_COLLECTION_ID, editListingIdFromUrl);
         const listingSnapshot = await getDoc(listingRef);
 
         if (!listingSnapshot.exists()) {
@@ -297,9 +522,15 @@ refreshSubmitButtonLabel();
 
 onIfPresent(propertyForm, "submit", async (e) => {
     e.preventDefault();
+    console.log("--- SUBMIT BUTTON CLICKED ---");
 
     if (!editingListingId) {
-        setDisplay("postPaymentModal", "flex");
+        if (SELL_TEST_BYPASS_PAYMENT) {
+            hidePostPaymentModal();
+            await createNewListingFromForm();
+        } else {
+            showPostPaymentModal();
+        }
         return;
     }
 
@@ -312,7 +543,16 @@ onIfPresent(propertyForm, "submit", async (e) => {
 
     try {
         const imageUrl = await resolveImageUrlForSubmit(propertyForm.dataset.editImageUrl || "");
-        const updatedData = buildPropertyData(imageUrl);
+        const trimmedUrl =
+            imageUrl !== undefined && imageUrl !== null ? String(imageUrl).trim() : "";
+        if (!trimmedUrl) {
+            console.error(
+                "[Sell] Firebase updateDoc blocked: imageUrl is empty or undefined. Set an image URL or complete Cloudinary upload."
+            );
+            alert("Please add a valid image link or upload a file. Nothing was saved to Firebase.");
+            return;
+        }
+        const updatedData = buildPropertyData(trimmedUrl);
         await updateProperty(editingListingId, updatedData);
 
         alert("ንብረቱ በተሳካ ሁኔታ ተዘምኗል!");
@@ -347,6 +587,11 @@ onClickActions({
         handleLogout();
     },
     "sell-close-post-payment": () => {
-        setDisplay("postPaymentModal", "none");
+        console.log("--- SUBMIT BUTTON CLICKED --- (sell-close-post-payment → createNewListingFromForm)");
+        void createNewListingFromForm();
+    },
+    "sell-confirm-post": () => {
+        console.log("--- SUBMIT BUTTON CLICKED --- (sell-confirm-post → createNewListingFromForm)");
+        void createNewListingFromForm();
     }
 });

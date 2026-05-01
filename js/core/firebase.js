@@ -15,3 +15,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
+
+/** Firestore collection id — must be exactly `tamagn_listings` (all lowercase, no spaces). Same string in Firebase Console. */
+export const TAMAGN_LISTINGS_COLLECTION = "tamagn_listings";

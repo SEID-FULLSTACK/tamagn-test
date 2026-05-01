@@ -1,6 +1,6 @@
 import { collection, deleteDoc, doc, getDoc, getDocs, orderBy, or, query, serverTimestamp, updateDoc, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import { auth, db } from "../core/firebase.js";
+import { auth, db, TAMAGN_LISTINGS_COLLECTION } from "../core/firebase.js";
 import { byId, normalizeRootPageHref, onClickActions, setDisplay } from "./page-utils.js";
 import { createLanguageToggle } from "./i18n-utils.js";
 import { mountHybridMortgageCalculator } from "../hybrid-mortgage-calculator.js";
@@ -648,7 +648,7 @@ function renderSavedCards() {
 async function fetchListingsFromBuyPageLogic() {
     // Migrated directly from buy-page.js query logic
     const q = query(
-        collection(db, "tamagn_listings"),
+        collection(db, TAMAGN_LISTINGS_COLLECTION),
         or(where("scope", "==", "all"), where("scope", "==", "dashboard")),
         orderBy("createdAt", "desc")
     );
@@ -683,11 +683,11 @@ async function loadUserListings() {
     try {
         console.log("[Dashboard] Querying Firestore listings by userId and ownerId", { ownerUid });
         const qByUserId = query(
-            collection(db, "tamagn_listings"),
+            collection(db, TAMAGN_LISTINGS_COLLECTION),
             where("userId", "==", ownerUid)
         );
         const qByOwnerId = query(
-            collection(db, "tamagn_listings"),
+            collection(db, TAMAGN_LISTINGS_COLLECTION),
             where("ownerId", "==", ownerUid)
         );
 
@@ -790,7 +790,7 @@ async function markListingAsSold(listingId) {
     }
 
     try {
-        const listingRef = doc(db, "tamagn_listings", listingId);
+        const listingRef = doc(db, TAMAGN_LISTINGS_COLLECTION, listingId);
         const listingSnapshot = await getDoc(listingRef);
 
         if (!listingSnapshot.exists()) {
@@ -858,7 +858,7 @@ async function deleteListing(listingId) {
     }
 
     try {
-        await deleteDoc(doc(db, "tamagn_listings", listingId));
+        await deleteDoc(doc(db, TAMAGN_LISTINGS_COLLECTION, listingId));
         currentListings = currentListings.filter((item) => item.id !== listingId);
         currentSavedListings = currentSavedListings.filter((item) => item.id !== listingId);
         renderListingsCards();
