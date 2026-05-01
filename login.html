@@ -2,76 +2,244 @@
 <html lang="am">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tamagn Bet - Login/Signup</title>
-    <style>
-        body { background: white; color: black; font-family: sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        .reg-container { background: white; border: 1px solid #d4af37; padding: 30px; border-radius: 15px; width: 350px; text-align: center; }
-        input, select { width: 100%; padding: 12px; margin: 10px 0; background: white; border: 3px solid #333; color: black; border-radius: 8px; box-sizing: border-box; }
-        .gold-btn { width: 100%; padding: 12px; background: #d4af37; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
-   .modal {
-    display: none; /* መጀመሪያ ላይ አይታይም */
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: white; /* የደበዘዘ ዳራ */
-}
-.modal-content {
-    background-color: white;
-    margin: 10% auto;
-    padding: 20px;
-    width: 300px;
-    border: 1px solid #d4af37;
-    border-radius: 10px;
-}
-/* Glassmorphism እና አረንጓዴ ብርሃን */
-.reg-container, .modal-content {
-    background: rgba(255, 255, 255, 0.05); 
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    
-    /* እዚህ ጋር ነው ደማቅ አረንጓዴ ብርሃን የተጨመረው */
-    box-shadow: 0 0 25px 5px rgba(0, 255, 65, 0.4); 
-    
-    padding: 30px;
-    border-radius: 20px;
-    width: 350px;
-    text-align: center;
-}
- </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        zillow: { DEFAULT: "#006AFF", dark: "#0053B3", light: "#E8F2FF", subtle: "#F5F9FF" }
+                    },
+                    fontFamily: { sans: ["Inter", "system-ui", "sans-serif"] }
+                }
+            }
+        };
+    </script>
+    <link rel="stylesheet" href="/css/global-nav.css">
+    <link rel="stylesheet" href="/css/chatbot.css">
 </head>
-<body>
+<body class="min-h-screen bg-slate-50 pb-20 font-sans text-slate-800 antialiased md:pb-0">
+    <header class="sticky top-0 z-50 border-b border-slate-200/80 bg-white/95 backdrop-blur-md">
+        <div class="mx-auto grid min-h-[6.5rem] max-w-7xl grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 px-4 py-2 sm:min-h-[7.5rem] sm:gap-3 sm:px-6 md:py-3">
+            <nav class="hidden min-w-0 items-center gap-0.5 md:flex lg:gap-1" aria-label="Primary desktop">
+                <a href="index.html/index.html" class="whitespace-nowrap rounded-full px-3 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-zillow lg:px-4 lg:text-sm">Home</a>
+                <a href="buy.html" class="whitespace-nowrap rounded-full px-3 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-zillow lg:px-4 lg:text-sm">Listings</a>
+                <a href="dashboard.html" class="whitespace-nowrap rounded-full px-3 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-zillow lg:px-4 lg:text-sm">Saved</a>
+                <a href="dashboard.html" class="whitespace-nowrap rounded-full px-3 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-zillow lg:px-4 lg:text-sm">Chat</a>
+                <a href="dashboard.html" class="whitespace-nowrap rounded-full px-3 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-zillow lg:px-4 lg:text-sm">Menu</a>
+            </nav>
+            <div class="flex justify-center">
+                <a href="index.html/index.html" class="logo-container" aria-label="Tamagn-Bet Home">
+                    <img src="/image/tamagn_logo.PNG" alt="Tamagn Bet" width="400" height="160" loading="eager" decoding="async" />
+                </a>
+            </div>
+            <div class="flex justify-end" aria-hidden="true">
+                <span class="inline-block w-10 md:hidden"></span>
+            </div>
+        </div>
+    </header>
 
-<div class="reg-container">
-    <h2>ወደ ታማኝ ቤት እንኳን በሰላም መጡ</h2>
-    <input type="email" id="email" placeholder="ኢሜይል አድራሻ">
-    <input type="password" id="password" placeholder="ሚስጥራዊ ቁጥር (Password)">
-    <select id="userRole">
-        <option value="buyer">ገዢ ነኝ</option>
-        <option value="seller">ሻጭ ነኝ</option>
-    </select>
-    <button id="loginBtn" class="gold-btn">ግባ (Login)</button>
-    <p>አካውንት የለህም? <a href="#" id="signupBtn" style="color:#d4af37;">አሁኑኑ ተመዝገብ</a></p>
-</div>
-<div id="signupModal" class="modal">
-    <div class="modal-content">
-        <span id="closeModal" style="float:right; cursor:pointer; font-size:24px;">&times;</span>
-         <h2>ወደ ታማኝ ቤት እንኳን በሰላም መጡ</h2>
-        <h3>አዲስ መመዝገቢያ</h3>
-        <input type="text" id="signupName" placeholder="ለምሳሌ: አበበ ከበደ" required>
-         <input type="tel" id="signupPhone" placeholder="ለምሳሌ: 0911223344" required>
-        <input type="email" id="signupEmail" placeholder="ለምሳሌ: example@gmail.com" required>
-        <input type="password" id="signupPassword" placeholder="የይለፍ ቃልዎን ያስገቡ" required>
-        <select id="signupRole">
-            <option value="buyer">ገዢ</option>
-            <option value="seller">ሻጭ</option>
-        </select>
-        <button id="confirmSignup" class="gold-btn">ተመዝገብ</button>
+    <main class="flex min-h-[calc(100vh-7rem)] flex-col items-center justify-center px-4 py-10 sm:px-6 sm:py-12">
+        <div class="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+            <div class="flex justify-center">
+                <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-zillow-light text-zillow">
+                    <i class="fa-solid fa-right-to-bracket text-xl" aria-hidden="true"></i>
+                </div>
+            </div>
+            <h1 class="mt-5 text-center text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">ወደ ታማኝ ቤት እንኳን በሰላም መጡ</h1>
+            <p class="mt-2 text-center text-sm leading-relaxed text-slate-600">መለያዎን በመጠቀም ይግቡ።</p>
+
+            <div class="mt-8 space-y-4 text-left">
+                <div>
+                    <label for="email" class="mb-1 block text-xs font-semibold text-slate-500">ኢሜይል</label>
+                    <input type="email" id="email" name="email" autocomplete="email" placeholder="ኢሜይል አድራሻ" class="h-11 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm font-medium text-slate-900 outline-none ring-zillow transition placeholder:text-slate-400 focus:border-zillow focus:ring-2" />
+                </div>
+                <div>
+                    <label for="password" class="mb-1 block text-xs font-semibold text-slate-500">የይለፍ ቃል</label>
+                    <input type="password" id="password" name="password" autocomplete="current-password" placeholder="ሚስጥራዊ ቁጥር (Password)" class="h-11 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm font-medium text-slate-900 outline-none ring-zillow transition placeholder:text-slate-400 focus:border-zillow focus:ring-2" />
+                </div>
+                <div>
+                    <label for="userRole" class="mb-1 block text-xs font-semibold text-slate-500">ሚና</label>
+                    <select id="userRole" class="h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm font-medium text-slate-800 outline-none ring-zillow transition focus:border-zillow focus:ring-2">
+                        <option value="buyer">ገዢ ነኝ</option>
+                        <option value="seller">ሻጭ ነኝ</option>
+                    </select>
+                </div>
+                <button type="button" id="loginBtn" class="w-full rounded-xl bg-zillow py-3 text-sm font-bold text-white shadow hover:bg-zillow-dark focus:outline-none focus:ring-2 focus:ring-zillow focus:ring-offset-2">ግባ (Login)</button>
+
+                <div class="relative py-1">
+                    <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                        <div class="w-full border-t border-slate-200"></div>
+                    </div>
+                    <div class="relative flex justify-center">
+                        <span class="bg-white px-3 text-xs font-semibold uppercase tracking-wider text-slate-400">ወይም</span>
+                    </div>
+                </div>
+
+                <button type="button" id="googleLoginBtn" class="flex h-11 w-full items-center justify-center gap-3 rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-zillow focus:ring-offset-2">
+                    <svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                    </svg>
+                    <span>በ Google ይግቡ</span>
+                </button>
+            </div>
+
+            <p class="mt-6 text-center text-sm text-slate-600">
+                አካውንት የለህም?
+                <a href="#" id="signupBtn" class="font-semibold text-zillow transition hover:text-zillow-dark hover:underline">አሁኑኑ ተመዝገብ</a>
+            </p>
+        </div>
+    </main>
+
+    <div id="signupModal" class="fixed inset-0 z-[1000] hidden items-center justify-center bg-slate-900/40 p-4 backdrop-blur-sm">
+        <div class="relative max-h-[90vh] w-full max-w-md overflow-y-auto rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+            <button type="button" id="closeModal" onclick="document.getElementById('signupModal').style.display='none'" class="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-xl text-2xl text-slate-500 transition hover:bg-slate-100 hover:text-slate-800 sm:right-4 sm:top-4" aria-label="Close">&times;</button>
+            <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-zillow-light text-xl text-zillow">
+                <i class="fa-solid fa-user-plus" aria-hidden="true"></i>
+            </div>
+            <h2 class="mt-5 text-center text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">ወደ ታማኝ ቤት እንኳን በሰላም መጡ</h2>
+            <p class="mt-1 text-center text-sm font-semibold text-zillow">አዲስ መመዝገቢያ</p>
+
+            <div class="mt-6 space-y-4 text-left">
+                <div>
+                    <label for="signupName" class="mb-1 block text-xs font-semibold text-slate-500">ሙሉ ስም</label>
+                    <input type="text" id="signupName" placeholder="ለምሳሌ: አበበ ከበደ" required class="h-11 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm font-medium text-slate-900 outline-none ring-zillow transition placeholder:text-slate-400 focus:border-zillow focus:ring-2" />
+                </div>
+                <div>
+                    <label for="signupPhone" class="mb-1 block text-xs font-semibold text-slate-500">ስልክ</label>
+                    <input type="tel" id="signupPhone" placeholder="ለምሳሌ: 0911223344" required class="h-11 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm font-medium text-slate-900 outline-none ring-zillow transition placeholder:text-slate-400 focus:border-zillow focus:ring-2" />
+                </div>
+                <div>
+                    <label for="signupEmail" class="mb-1 block text-xs font-semibold text-slate-500">ኢሜይል</label>
+                    <input type="email" id="signupEmail" placeholder="ለምሳሌ: example@gmail.com" required class="h-11 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm font-medium text-slate-900 outline-none ring-zillow transition placeholder:text-slate-400 focus:border-zillow focus:ring-2" />
+                </div>
+                <div>
+                    <label for="signupPassword" class="mb-1 block text-xs font-semibold text-slate-500">የይለፍ ቃል</label>
+                    <input type="password" id="signupPassword" placeholder="የይለፍ ቃልዎን ያስገቡ" required class="h-11 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm font-medium text-slate-900 outline-none ring-zillow transition placeholder:text-slate-400 focus:border-zillow focus:ring-2" />
+                </div>
+                <div>
+                    <label for="signupRole" class="mb-1 block text-xs font-semibold text-slate-500">ሚና</label>
+                    <select id="signupRole" class="h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm font-medium text-slate-800 outline-none ring-zillow transition focus:border-zillow focus:ring-2">
+                        <option value="buyer">ገዢ</option>
+                        <option value="seller">ሻጭ</option>
+                    </select>
+                </div>
+                <button type="button" id="confirmSignup" class="w-full rounded-xl bg-zillow py-3 text-sm font-bold text-white shadow hover:bg-zillow-dark focus:outline-none focus:ring-2 focus:ring-zillow focus:ring-offset-2">ተመዝገብ</button>
+            </div>
+        </div>
     </div>
-</div>
-<script type="module" src="/js/pages/login-page.js"></script>
+<script type="module">
+    import { createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { auth, db } from "/js/core/firebase.js";
+
+    // 2. እዚህ ጋር ነው ፋንክሽኑን የምናስቀምጠው (Scope ችግር እንዳይኖር)
+   // 1. መግቢያ (Login) Inputs
+const getLoginInputs = () => ({
+    email: document.getElementById('email').value,
+    password: document.getElementById('password').value,
+    role: document.getElementById('userRole').value
+});
+
+// 2. ወደ ዳሽቦርድ መላኪያ (Redirect Function)
+const redirectUser = async (uid) => {
+    try {
+        const userDoc = await getDoc(doc(db, "users", uid));
+        if (userDoc.exists()) {
+            const role = userDoc.data().role;
+            window.location.href = role === 'seller' ? 'sell.html' : 'buy.html';
+        } else {
+            console.error("ተጠቃሚው በዳታቤዝ ውስጥ የለም");
+        }
+    } catch (error) {
+        console.error("ዳታ ለማምጣት ችግር ተፈጥሯል:", error);
+    }
+};
+
+// 3. የመግቢያ አዝራር (Login Click)
+document.getElementById('loginBtn').onclick = async () => {
+    const inputs = getLoginInputs();
+    try {
+        const userCredential = await signInWithEmailAndPassword(auth, inputs.email, inputs.password);
+        redirectUser(userCredential.user.uid);
+    } catch (error) { alert("የተሳሳተ መረጃ! እባክዎ እንደገና ይሞክሩ።"); }
+};
+
+document.getElementById('googleLoginBtn').onclick = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
+        const userRef = doc(db, "users", user.uid);
+        const userDoc = await getDoc(userRef);
+        if (!userDoc.exists()) {
+            await setDoc(userRef, {
+                name: user.displayName,
+                email: user.email,
+                role: "buyer",
+                createdAt: new Date()
+            });
+        }
+        await redirectUser(user.uid);
+    } catch (error) {
+        if (error?.code === "auth/popup-closed-by-user") return;
+        console.error(error);
+        alert("ስህተት: " + (error?.message || "Google"));
+    }
+};
+
+// 4. Modal Handling
+const modal = document.getElementById("signupModal");
+const signupLink = document.getElementById("signupBtn"); 
+
+signupLink.onclick = (e) => {
+    e.preventDefault();
+    modal.style.display = "flex"; // "flex" መጠቀም ሞዳሉን መሃል ላይ ያደርገዋል
+};
+
+// 5. የምዝገባ አዝራር (Confirm Signup Click)
+document.getElementById("confirmSignup").onclick = async () => {
+    // የምዝገባ ፎርም IDዎችን ብቻ ነው የሚያነበው
+    const email = document.getElementById("signupEmail").value;
+    const password = document.getElementById("signupPassword").value;
+    const role = document.getElementById("signupRole").value;
+
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        // ዳታቤዝ ላይ መረጃ አስቀምጥ
+        await setDoc(doc(db, "users", userCredential.user.uid), { 
+            role: role, 
+            email: email,
+            createdAt: new Date()
+        });
+        
+        alert("ምዝገባዎ ተሳክቷል!");
+        modal.style.display = "none";
+        redirectUser(userCredential.user.uid); // ተመዝግቦ ሲጨርስ ወደ ዳሽቦርድ ይላክ
+    } catch (error) {
+        alert("ስህተት: " + error.message);
+    }
+};
+
+</script>
+    <nav class="tb-mobile-nav md:hidden" aria-label="Primary mobile">
+        <div class="tb-mobile-nav__inner">
+            <a href="index.html/index.html"><i class="fas fa-house font-normal" aria-hidden="true"></i><span>Home</span></a>
+            <a href="buy.html"><i class="fas fa-building font-normal" aria-hidden="true"></i><span>Listings</span></a>
+            <a href="dashboard.html"><i class="fas fa-heart font-normal" aria-hidden="true"></i><span>Saved</span></a>
+            <a href="dashboard.html"><i class="fas fa-comments font-normal" aria-hidden="true"></i><span>Chat</span></a>
+            <a href="dashboard.html" class="tb-mobile-nav__active"><i class="fas fa-bars font-normal" aria-hidden="true"></i><span>Menu</span></a>
+        </div>
+    </nav>
+    <script type="module" src="/js/chatbot.js"></script>
 </body>
 </html>

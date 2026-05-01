@@ -3,295 +3,632 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <title>Tamagn Bet | Buy Property</title>
-    <style>
-      * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body { margin: 0; background: #f4f6f9; }
-        
-        .header {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 50px;
-    background: white;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-/*.logo { font-size: 24px; font-weight: bold;}*/
-.logo {grid-column: 2; font-size: 24px; font-weight: 800; color: var(--primary-blue); justify-self: center;align-items: center;text-decoration-line: none;
-}
-#l1 { color: #333; }
-#l2 { color: #d4af37; } /* Gold */
-        
-        .auth-btn { background: #0a1f44; color: white; padding: 8px 16px; border-radius: 5px; cursor: pointer; border: none; }
-        
-        /* Modal Styles */
-       /* --- Form & Modal Styles --- */
-
-/* 1. Main Login Form Container */
-.reg-container {
-    max-width: 400px;
-    margin: 40px auto;
-    padding: 30px;
-    background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    border: 1px solid #eee;
-    text-align: center;
-}
-
-/* 4. Modal (የምዝገባ/መግቢያ መደራረቢያ) */
-.modal {
-    display: none; /* በነባሪ ተደብቋል */
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background-color: rgba(0, 0, 0, 0.6); /* ጥቁር የደበዘዘ ዳራ */
-    justify-content: center;
-    align-items: center;
-    z-index: 10000;
-}
-
-.modal-content {
-    background: white;
-    padding: 30px;
-    border-radius: 10px;
-    width: 350px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    text-align: center;
-}
-
-/* 5. Inputs እና Buttons */
-input {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-sizing: border-box; /* ስፋቱ እንዳይበላሽ */
-}
-
-.gold-btn {
-    width: 100%;
-    background-color: #d4af37;
-    color: white;
-    border: none;
-    padding: 12px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    margin-top: 10px;
-}
-.gold-btn:hover {
-    background: #b8962f; /* Slightly darker gold on hover */
-}
-
-/* 6. Typography adjustments */
-.reg-container h2 { margin-bottom: 20px; color: #333; font-size: 22px; }
-.modal-content h2, .modal-content h3 { color: #d4af37; }
-.modal-content h3 { margin-top: 5px; font-size: 16px; }
-
-/* Responsive adjustments */
-@media (max-width: 600px) {
-    .reg-container { margin: 20px; }
-}
-        /* Utility styles from your existing code preserved below... */
-        .tamagn-card { background: white; border-radius: 8px; overflow: hidden; border: 1px solid #eee; transition: 0.3s; display: flex; flex-direction: column; }
-        .tamagn-card img { width: 100%; height: 200px; object-fit: cover; }
-        .tamagn-info { padding: 15px; }
-        .price-text { color: #f39c12; font-weight: bold; font-size: 18px; margin: 10px 0; display: block; }
-        .properties-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; padding: 20px; max-width: 1200px; margin: 0 auto; }
-   
-  /* 3. Avatar */
-.profile-circle {
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    background-color: #d35400;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    font-size: 16px;
-
-}
-
-.logout-btn {
-    padding: 5px 10px;
-    background-color: #ff4757;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-
-}
-.auth-card {
-        background: #ffffff;
-        max-width: 400px;
-        margin: 50px auto;
-        padding: 40px;
-        border-radius: 20px;
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-        text-align: center;
-        border: 1px solid #f0f0f0;
-        font-family: 'Segoe UI', Tahoma, sans-serif;
-    }
-
-    .auth-card .icon-box {
-        font-size: 45px;
-        color: #4a90e2;
-        margin-bottom: 20px;
-    }
-
-    .auth-card h3 {
-        color: #333;
-        margin-bottom: 15px;
-        font-size: 22px;
-    }
-
-    .auth-card p {
-        color: #666;
-        margin-bottom: 30px;
-        line-height: 1.6;
-        font-size: 15px;
-    }
-
-    .auth-card .login-btn {
-        background-color: #4a90e2;
-        color: white;
-        border: none;
-        padding: 14px 30px;
-        border-radius: 10px;
-        font-weight: 600;
-        cursor: pointer;
-        width: 100%;
-        transition: transform 0.2s, background 0.3s;
-    }
-
-    .auth-card .login-btn:hover {
-        background-color: #357abd;
-        transform: translateY(-2px);
-    }
-/* ለሁሉም የAuth ቁልፎች የሚሆን መሠረታዊ ስታይል */
-/* አሁን ያለውን .auth-btn እና .btn-login/signup ስታይል በዚህ ቀይረው */
-.auth-btn {
-grid-column: 3;
-justify-self: end;
-display: flex;
-align-items: center;
-    padding: 8px 20px;
-    border-radius: 20px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border: none;
-margin-left: auto;
-
-
-
-    /* absolute ቦታውን አውጥተነዋል */
-}
-
-.btn-login {
-    background-color: #007bff;
-    color: white;
-}
-
-.btn-signup {
-    background-color: #007bff;
-    color: white;
-}
-.btn-signup:hover {
-    background-color: #0056b3;
-}
-@media (max-width: 600px) {
-    .auth-btn {
-        padding: 6px 12px;   /* Smaller padding */
-        font-size: 12px;     /* Smaller font size */
-        margin-left: 5px;    /* Reduce space between buttons */
-    }
-
-    /* Optional: If your header layout breaks, use this to adjust the buttons container */
-    #auth-btns {
-        gap: 5px !important; /* Reduces gap between buttons on mobile */
-    }
-}
-/* Dashboard-ው በነባሪነት እንዲደበቅ */
-#tamagn-display-grid {
-    display: none; 
-}
-</style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        zillow: { DEFAULT: "#006AFF", dark: "#0053B3", light: "#E8F2FF", subtle: "#F5F9FF" }
+                    },
+                    fontFamily: { sans: ["Inter", "system-ui", "sans-serif"] }
+                }
+            }
+        };
+    </script>
+    <link rel="stylesheet" href="/css/global-nav.css">
+    <link rel="stylesheet" href="/css/chatbot.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+    <style>#buy-property-map-host .tamagn-gmaps-surface{width:100%;height:100%;min-height:300px;border-radius:12px;overflow:hidden;box-shadow:0 4px 15px rgba(0,0,0,0.1)}.tb-hybrid-calculator-stack{position:relative;z-index:10}.tb-hybrid-calculator-host{position:relative;z-index:10;display:block!important;visibility:visible!important}</style>
 </head>
-<body>
+<body class="min-h-screen bg-slate-50 pb-20 font-sans text-slate-800 antialiased md:pb-0">
+    <!-- Header -->
+    <header class="sticky top-0 z-[1000] isolate border-b border-slate-200 bg-white shadow-sm">
+        <div class="mx-auto grid min-h-[6.5rem] w-full max-w-7xl grid-cols-2 items-center gap-x-4 gap-y-2 px-6 py-2 md:min-h-[7.5rem] md:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] md:gap-x-3 md:py-3 lg:px-8">
+            <div class="hidden min-w-0 md:col-start-1 md:row-start-1 md:flex md:flex-wrap md:items-center md:gap-0.5 lg:gap-1">
+                <nav class="flex flex-wrap items-center gap-0.5 lg:gap-1" aria-label="Primary desktop">
+                    <a href="index.html/index.html" class="whitespace-nowrap rounded-full px-3 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-zillow lg:px-4 lg:text-sm">Home</a>
+                    <a href="buy.html" class="whitespace-nowrap rounded-full px-3 py-2 text-xs font-semibold text-zillow lg:px-4 lg:text-sm">Listings</a>
+                    <a href="#mortgage-calculator" class="whitespace-nowrap rounded-full px-3 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-zillow lg:px-4 lg:text-sm">Budget Calculator</a>
+                    <a href="dashboard.html" class="whitespace-nowrap rounded-full px-3 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-zillow lg:px-4 lg:text-sm">Saved</a>
+                    <a href="dashboard.html" class="whitespace-nowrap rounded-full px-3 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-zillow lg:px-4 lg:text-sm">Chat</a>
+                    <a href="dashboard.html" class="whitespace-nowrap rounded-full px-3 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-zillow lg:px-4 lg:text-sm">Menu</a>
+                </nav>
+            </div>
+            <div class="col-start-1 row-start-1 flex min-w-0 justify-self-start md:col-start-2 md:justify-self-center">
+                <a href="index.html/index.html" class="logo-container relative z-0 max-w-full shrink-0 overflow-visible" aria-label="Tamagn-Bet Home">
+                    <img src="/image/tamagn_logo.PNG" alt="Tamagn Bet" width="400" height="160" loading="eager" decoding="async" />
+                </a>
+            </div>
+            <div class="col-start-2 row-start-1 flex min-w-0 flex-wrap items-center justify-end justify-self-end gap-x-2 gap-y-2 md:col-start-3 md:row-start-1">
+                <div id="auth-btns" class="flex flex-shrink-0 flex-wrap items-center justify-end gap-2">
+                    <button type="button" class="rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-zillow hover:text-zillow" onclick="openAuthModal('login')">መግቢያ</button>
+                    <button type="button" class="rounded-full bg-zillow px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-zillow-dark" onclick="openAuthModal('signup')">አዲስ ተጠቃሚ</button>
+                </div>
+                <div id="user-profile" class="hidden max-w-full min-w-0 flex-col items-stretch gap-2 sm:flex-row sm:items-center sm:justify-end sm:gap-3">
+                    <a href="dashboard.html" class="hidden shrink-0 text-sm font-semibold text-zillow hover:underline sm:inline">ዳሽቦርድ</a>
+                    <div class="flex min-w-0 flex-wrap items-center justify-end gap-2 sm:gap-3">
+                        <div id="avatar" class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-zillow text-xs font-bold text-white sm:h-9 sm:w-9 sm:text-sm" aria-hidden="true"></div>
+                        <p id="userNameDisplay" class="max-w-[min(28vw,7.5rem)] truncate text-right text-xs font-medium text-slate-800 sm:max-w-[120px] sm:text-sm md:max-w-[180px]"></p>
+                        <button type="button" id="logoutBtn" class="shrink-0 rounded-full border border-rose-200 bg-white px-2.5 py-1.5 text-[11px] font-semibold text-rose-600 transition hover:bg-rose-50 sm:px-3 sm:text-xs">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
 
-<header class="header">
-<div class="logo">
-    <span style="color: #007bff; font-weight: bold;">Tamagn</span><span style="color: #28a745; font-weight: 800;  ">-Bet</span>
-</div>
-    
-  <div id="auth-btns" style="display: flex;">
-        <button class="auth-btn btn-login" type="button" data-action="buy-open-auth-modal" data-mode="login">መግቢያ</button>
-        <button class="auth-btn btn-signup" type="button" data-action="buy-open-auth-modal" data-mode="signup">አዲስ ተጠቃሚ</button>
+    <!-- Login prompt -->
+    <div id="login-prompt" class="relative z-0 mx-auto max-w-md px-4 py-16 text-center max-md:mt-28 md:mt-0">
+        <div class="rounded-3xl border border-slate-200/80 bg-white/70 p-10 shadow-xl shadow-slate-200/50 backdrop-blur-xl">
+            <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-zillow-light text-2xl text-zillow">
+                <i class="fa-solid fa-lock" aria-hidden="true"></i>
+            </div>
+            <h2 class="mt-6 text-xl font-bold text-slate-900">እንኳን ደህና መጡ</h2>
+            <p class="mt-3 text-sm leading-relaxed text-slate-600">የንብረት ዝርዝርን ሙሉ በሙሉ ለማየት እና አዳዲስ መረጃዎችን ለማግኘት እባክዎ ይግቡ።</p>
+            <button type="button" class="mt-8 w-full rounded-full bg-zillow py-3.5 text-sm font-bold text-white shadow-md transition hover:bg-zillow-dark" onclick="openAuthModal('login')">አሁን ይግቡ</button>
+        </div>
     </div>
-        
-    <div id="user-profile" style="display: none; align-items: center; gap: 10px;">
-        <div id="avatar" class="profile-circle"></div>
-        <p id="userNameDisplay" style="margin: 0;"></p>
-        <button id="logoutBtn" class="logout-btn">Logout</button>
-    </div>
-</header>
-<div id="login-prompt" class="auth-card">
-    <div class="icon-box">
-        <i class="fa-solid fa-lock"></i>
-    </div>
-    <h3>እንኳን ደህና መጡ</h3>
-    <p>የንብረት ዝርዝርን ሙሉ በሙሉ ለማየት እና አዳዲስ መረጃዎችን ለማግኘት እባክዎ ይግቡ።</p>
-    <button type="button" data-action="buy-open-auth-modal" data-mode="login" class="login-btn">አሁን ይግቡ</button>
-</div>
-<div id="tamagn-display-grid" class="properties-grid">
-    </div>
-<div id="authModal" class="modal">
-    <div class="modal-content">
-        <span id="closeModal" style="float:right; cursor:pointer; font-size:24px;">&times;</span>
-        
-        <h2 id="authTitle">ወደ ታማኝ ቤት እንኳን በሰላም መጡ</h2>
-        <h3 id="authSubtitle">መመዝገቢያ</h3>
-        
-        <input type="text" id="signupName" placeholder="ሙሉ ስም (ለምሳሌ: አበበ ከበደ)" required>
-        <input type="tel" id="signupPhone" placeholder="ስልክ ቁጥር (ለምሳሌ: 0911223344)" required>
-        
-        <input type="email" id="email" placeholder="ኢሜይል (ለምሳሌ: example@gmail.com)" required>
-        <input type="password" id="password" placeholder="ፓስወርድ (ቢያንስ 6 ቁምፊዎች)" required>
-        
-        <select id="userRole" required>
-            <option value="" disabled selected>ሚናዎን ይምረጡ</option>
-            <option value="buyer">ገዢ ነኝ</option>
-            <option value="seller">ሻጭ ነኝ</option>
-        </select>
-        
-        <button id="authBtn" class="gold-btn" type="button" data-action="buy-auth-submit">ተመዝገብ</button>
-        
-        <p id="toggleText">አካውንት አለህ? <a href="#" data-action="buy-switch-auth-mode" style="color:#d4af37;">ግባ</a></p>
-<button type="button" data-action="buy-google-login" style=" display: flex;  align-items: center;  justify-content: center;  gap: 12px; 
-    width: 100%;  padding: 10px;  background-color: white;  border: 1px solid #dadce0;  border-radius: 5px;  cursor: pointer;
-"> <i class="fa-brands fa-google" style="color: #DB4437; font-size: 18px;"></i> <span>ከ Google ጋር ይግቡ</span>
-</button>
-    </div>
-</div>
 
-<script type="module" src="/js/pages/buy-page.js"></script>
-<div id="propertyModal" style="display:none; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.5);">
-    <div style="background:white; margin:10% auto; padding:20px; width:80%; max-width:500px; border-radius:8px; position:relative;">
-        <span data-action="buy-close-property-modal" style="cursor:pointer; float:right; font-size:24px;">&times;</span>
-        <div id="modal-body"></div>
+    <section id="mortgage-calculator" class="tb-hybrid-calculator-stack w-full border-t border-slate-200 bg-slate-100 py-8 sm:py-10">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="mx-auto max-w-lg sm:max-w-xl">
+                <div id="hybrid-calculator-container" class="tb-hybrid-calculator-host"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search & filters (visible when logged in via JS) -->
+    <div id="buy-main" class="relative z-0 hidden max-md:mt-28 md:mt-0">
+        <section class="border-b border-slate-200 bg-white">
+            <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+                <p class="text-xs font-semibold uppercase tracking-wider text-zillow">Find your next home</p>
+                <h1 class="mt-1 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">ንብረት ይፈልጉ</h1>
+                <div class="mt-6 flex flex-col gap-3 lg:flex-row lg:items-stretch">
+                    <div class="relative min-h-[52px] flex-1">
+                        <i class="fa-solid fa-magnifying-glass pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" aria-hidden="true"></i>
+                        <label for="searchQuery" class="sr-only">Search</label>
+                        <input type="search" id="searchQuery" placeholder="አድራሻ፣ ርዕድ ወይም ቁልፍ ቃል…" autocomplete="off"
+                            class="h-12 w-full rounded-2xl border border-slate-200 bg-slate-50 pl-11 pr-4 text-sm font-medium text-slate-900 outline-none ring-zillow transition placeholder:text-slate-400 focus:border-zillow focus:bg-white focus:ring-2" />
+                    </div>
+                    <button type="button" id="searchBtn" class="h-12 shrink-0 rounded-2xl bg-zillow px-8 text-sm font-bold text-white shadow-md transition hover:bg-zillow-dark">መፈለግ</button>
+                </div>
+                <div class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                    <div>
+                        <label for="filterPrice" class="mb-1 block text-xs font-semibold text-slate-500">ዋጋ</label>
+                        <select id="filterPrice" class="h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm font-medium text-slate-800 outline-none ring-zillow focus:ring-2">
+                            <option value="">ሁሉም</option>
+                            <option value="0-3000000">እስከ 3M ETB</option>
+                            <option value="3000000-8000000">3M – 8M ETB</option>
+                            <option value="8000000-15000000">8M – 15M ETB</option>
+                            <option value="15000000-999999999999">15M+ ETB</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="filterBeds" class="mb-1 block text-xs font-semibold text-slate-500">መኝታ</label>
+                        <select id="filterBeds" class="h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm font-medium text-slate-800 outline-none ring-zillow focus:ring-2">
+                            <option value="">ማንኛውም</option>
+                            <option value="1">1+</option>
+                            <option value="2">2+</option>
+                            <option value="3">3+</option>
+                            <option value="4">4+</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="filterBaths" class="mb-1 block text-xs font-semibold text-slate-500">መታጠቢያ</label>
+                        <select id="filterBaths" class="h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm font-medium text-slate-800 outline-none ring-zillow focus:ring-2">
+                            <option value="">ማንኛውም</option>
+                            <option value="1">1+</option>
+                            <option value="2">2+</option>
+                            <option value="3">3+</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="filterType" class="mb-1 block text-xs font-semibold text-slate-500">የንብረት አይነት</label>
+                        <select id="filterType" class="h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm font-medium text-slate-800 outline-none ring-zillow focus:ring-2">
+                            <option value="">ሁሉም</option>
+                            <option value="house">ቤት / ቪላ</option>
+                            <option value="apartment">አፓርታማ</option>
+                            <option value="condo">ኮንዶሚኒየም</option>
+                        </select>
+                    </div>
+                </div>
+                <p id="resultsCount" class="mt-4 text-sm text-slate-500"></p>
+            </div>
+        </section>
+
+        <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+            <div id="tamagn-display-grid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
+        </div>
     </div>
-</div>
 
+    <!-- Auth modal (glass) -->
+    <div id="authModal" class="fixed inset-0 z-[10000] hidden items-center justify-center bg-slate-900/40 p-4 backdrop-blur-sm">
+        <div class="relative max-h-[90vh] w-full max-w-md overflow-y-auto rounded-3xl border border-white/40 bg-white/85 p-8 shadow-2xl backdrop-blur-xl">
+            <button type="button" id="closeModal" class="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full text-slate-500 transition hover:bg-white/80 hover:text-slate-800" aria-label="Close">&times;</button>
+            <h2 id="authTitle" class="text-center text-lg font-bold text-slate-900">ወደ ታማኝ ቤት እንኳን በሰላም መጡ</h2>
+            <h3 id="authSubtitle" class="mt-1 text-center text-sm font-medium text-zillow">መመዝገቢያ</h3>
+            <div class="mt-6 space-y-3 text-left">
+                <input type="text" id="signupName" placeholder="ሙሉ ስም" class="w-full rounded-xl border border-slate-200 bg-white/90 px-4 py-3 text-sm outline-none ring-zillow focus:ring-2" />
+                <input type="tel" id="signupPhone" placeholder="ስልክ ቁጥር" class="w-full rounded-xl border border-slate-200 bg-white/90 px-4 py-3 text-sm outline-none ring-zillow focus:ring-2" />
+                <input type="email" id="email" placeholder="ኢሜይል" required class="w-full rounded-xl border border-slate-200 bg-white/90 px-4 py-3 text-sm outline-none ring-zillow focus:ring-2" />
+                <input type="password" id="password" placeholder="ፓስወርድ" required class="w-full rounded-xl border border-slate-200 bg-white/90 px-4 py-3 text-sm outline-none ring-zillow focus:ring-2" />
+                <select id="userRole" required class="w-full rounded-xl border border-slate-200 bg-white/90 px-4 py-3 text-sm outline-none ring-zillow focus:ring-2">
+                    <option value="" disabled selected>ሚናዎን ይምረጡ</option>
+                    <option value="buyer">ገዢ ነኝ</option>
+                    <option value="seller">ሻጭ ነኝ</option>
+                </select>
+                <button type="button" id="authBtn" class="w-full rounded-full bg-zillow py-3 text-sm font-bold text-white shadow-md transition hover:bg-zillow-dark">ተመዝገብ</button>
+                <p id="toggleText" class="text-center text-sm text-slate-600">አካውንት አለህ? <a href="#" class="font-semibold text-zillow hover:underline" onclick="switchMode(); return false;">ግባ</a></p>
+                <button type="button" onclick="handleGoogleLogin()" class="flex w-full items-center justify-center gap-3 rounded-full border border-[#dadce0] bg-white py-3 font-sans text-sm font-semibold text-slate-800 transition hover:bg-slate-50">
+                    <svg class="h-[18px] w-[18px] shrink-0" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                    </svg>
+                    <span class="leading-none">Continue with Google</span>
+                </button>
+            </div>
+        </div>
+    </div>
 
+    <!-- Property detail modal (glass) -->
+    <div id="propertyModal" class="fixed inset-0 z-[9999] hidden overflow-y-auto overflow-x-hidden bg-slate-900/45 p-4 sm:p-6 backdrop-blur-sm">
+        <div class="relative mx-auto my-6 w-full max-w-3xl min-w-0 overflow-hidden rounded-3xl border border-white/30 bg-white/90 shadow-2xl backdrop-blur-xl sm:my-8">
+            <button type="button" onclick="closePropertyModal()" class="absolute right-3 top-3 z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-2xl text-slate-500 transition hover:bg-white/90 sm:right-4 sm:top-4" aria-label="Close">&times;</button>
+            <div id="modal-body" class="min-w-0 overflow-x-hidden overflow-y-visible px-6 pb-10 pt-12 text-slate-800 sm:px-9 sm:pb-12 sm:pt-14 md:px-11 md:pb-14"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { collection, getDocs, query, orderBy, where, or, getDoc, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { signInWithEmailAndPassword, onAuthStateChanged, createUserWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { db, auth } from "/js/core/firebase.js";
+        import {
+            resolveListingImageUrl,
+            escapeAttrUrl,
+            listingImageOnerrorAttr,
+            hasValidListingImageForPublicGrid,
+        } from "/js/listing-image-utils.js";
+        import { renderPropertyMap, clearPropertyMap, normalizePropertyDataForMap } from "/js/property-map.js";
+
+        const FAV_KEY = "tamagn_favorite_listing_ids";
+        let allListings = [];
+        let currentMode = "signup";
+
+        function readFavorites() {
+            try {
+                const raw = localStorage.getItem(FAV_KEY);
+                const arr = raw ? JSON.parse(raw) : [];
+                return new Set(Array.isArray(arr) ? arr : []);
+            } catch {
+                return new Set();
+            }
+        }
+
+        function writeFavorites(set) {
+            localStorage.setItem(FAV_KEY, JSON.stringify([...set]));
+        }
+
+        window.toggleFavorite = function (listingId, btn) {
+            if (!listingId) return;
+            const favs = readFavorites();
+            const on = favs.has(listingId);
+            if (on) favs.delete(listingId);
+            else favs.add(listingId);
+            writeFavorites(favs);
+            const icon = btn?.querySelector("i");
+            if (icon) {
+                const nowFav = favs.has(listingId);
+                icon.classList.remove("fa-solid", "fa-regular", "text-rose-500", "text-white");
+                icon.classList.add(nowFav ? "fa-solid" : "fa-regular", "fa-heart", nowFav ? "text-rose-500" : "text-white");
+            }
+        };
+
+        function inferType(title, description) {
+            const t = `${title || ""} ${description || ""}`.toLowerCase();
+            if (t.includes("ኮንዶ") || t.includes("condo")) return "condo";
+            if (t.includes("አፓር") || t.includes("apartment") || t.includes("flat")) return "apartment";
+            if (t.includes("ቪላ") || t.includes("villa") || t.includes("ቤት") || t.includes("house")) return "house";
+            return "";
+        }
+
+        function matchesPropertyType(data, typeFilter) {
+            if (!typeFilter) return true;
+            const inferred = inferType(data.title, data.description);
+            if (inferred === typeFilter) return true;
+            const blob = `${data.title || ""} ${data.description || ""}`.toLowerCase();
+            if (typeFilter === "house") return /villa|house|ቤት|ቪላ|ሰፊ ቤት/.test(blob);
+            if (typeFilter === "apartment") return /apartment|አፓር|flat|አፓርታማ/.test(blob);
+            if (typeFilter === "condo") return /condo|ኮንዶ|condominium/.test(blob);
+            return true;
+        }
+
+        function getBeds(d) {
+            const n = Number(d?.details?.bedrooms);
+            return Number.isFinite(n) ? n : 0;
+        }
+
+        function getBaths(d) {
+            const n = Number(d?.details?.bathrooms);
+            return Number.isFinite(n) ? n : 0;
+        }
+
+        function applyFilters() {
+            const q = (document.getElementById("searchQuery")?.value || "").trim().toLowerCase();
+            const priceVal = document.getElementById("filterPrice")?.value || "";
+            const bedsMin = parseInt(document.getElementById("filterBeds")?.value || "0", 10) || 0;
+            const bathsMin = parseInt(document.getElementById("filterBaths")?.value || "0", 10) || 0;
+            const typeFilter = document.getElementById("filterType")?.value || "";
+
+            let minP = 0;
+            let maxP = Infinity;
+            if (priceVal) {
+                const [a, b] = priceVal.split("-").map(Number);
+                minP = a || 0;
+                maxP = b || Infinity;
+            }
+
+            const filtered = allListings.filter(({ id: _id, data }) => {
+                if (!hasValidListingImageForPublicGrid(data)) return false;
+                const price = Number(data.price) || 0;
+                if (price < minP || price > maxP) return false;
+                if (getBeds(data) < bedsMin) return false;
+                if (getBaths(data) < bathsMin) return false;
+                if (!matchesPropertyType(data, typeFilter)) return false;
+                if (!q) return true;
+                const blob = `${data.title || ""} ${data.location || ""} ${data.description || ""}`.toLowerCase();
+                return blob.includes(q);
+            });
+
+            renderGrid(filtered);
+            const rc = document.getElementById("resultsCount");
+            if (rc) rc.textContent = `${filtered.length} ንብረቶች ተገኝተዋል`;
+        }
+
+        function renderGrid(items) {
+            const displayContainer = document.getElementById("tamagn-display-grid");
+            if (!displayContainer) return;
+
+            if (!items.length) {
+                displayContainer.innerHTML = `<p class="col-span-full py-16 text-center text-slate-500">ለማጣሪያዎ ተዛማጅ ንብረት የለም።</p>`;
+                return;
+            }
+
+            const favs = readFavorites();
+            displayContainer.innerHTML = items
+                .map(({ id, data }) => {
+                    const dataString = encodeURIComponent(JSON.stringify(data));
+                    const img = escapeAttrUrl(resolveListingImageUrl(data));
+                    const priceStr = data.price ? Number(data.price).toLocaleString() : "—";
+                    const beds = data.details?.bedrooms ?? "—";
+                    const baths = data.details?.bathrooms ?? "—";
+                    const area = data.size ? `${data.size} m²` : "—";
+                    const addr = data.location || "ቦታ አልተገለጸም";
+                    const isFav = favs.has(id);
+                    const heartIconClass = isFav
+                        ? "fa-solid fa-heart text-rose-500"
+                        : "fa-regular fa-heart text-white";
+
+                    return `
+            <article class="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
+                <div class="relative aspect-[4/3] overflow-hidden bg-slate-100">
+                    <img src="${img}" alt="" ${listingImageOnerrorAttr()} class="relative z-0 block h-full w-full object-cover opacity-100 transition duration-500 group-hover:scale-105" loading="lazy" decoding="async" />
+                    <button type="button" onclick="toggleFavorite('${id}', this)" class="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full bg-black/35 text-lg shadow-lg backdrop-blur-sm transition hover:bg-black/50" title="Save to favorites" aria-label="Favorite">
+                        <i class="${heartIconClass} shrink-0 leading-none" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <div class="flex flex-1 flex-col p-4 sm:p-5">
+                    <p class="text-2xl font-extrabold tracking-tight text-slate-900">${priceStr} <span class="text-base font-bold text-slate-500">ETB</span></p>
+                    <h3 class="mt-2 line-clamp-2 text-base font-bold text-slate-900">${data.title || "የንብረት ርዕስ"}</h3>
+                    <p class="mt-1 line-clamp-2 text-sm font-semibold text-slate-600">${addr}</p>
+                    <div class="mt-4 flex flex-wrap gap-3 border-t border-slate-100 pt-4 text-sm font-semibold text-slate-600">
+                        <span><i class="fa-solid fa-bed mr-1 text-zillow" aria-hidden="true"></i>${beds} መኝታ</span>
+                        <span><i class="fa-solid fa-bath mr-1 text-zillow" aria-hidden="true"></i>${baths} መታጠቢያ</span>
+                        <span><i class="fa-solid fa-ruler-combined mr-1 text-zillow" aria-hidden="true"></i>${area}</span>
+                    </div>
+                    <button type="button" onclick="showDetails('${dataString}')" class="mt-5 w-full rounded-xl bg-zillow-light py-3 text-sm font-bold text-zillow transition hover:bg-zillow hover:text-white">ሙሉ መረጃ</button>
+                </div>
+            </article>`;
+                })
+                .join("");
+        }
+
+        onAuthStateChanged(auth, async (user) => {
+            const authActions = document.getElementById("auth-btns");
+            const userProfile = document.getElementById("user-profile");
+            const dashboard = document.getElementById("tamagn-display-grid");
+            const loginPrompt = document.getElementById("login-prompt");
+            const buyMain = document.getElementById("buy-main");
+            const nameDisplay = document.getElementById("userNameDisplay");
+            const avatar = document.getElementById("avatar");
+
+            if (user) {
+                authActions?.classList.add("hidden");
+                userProfile?.classList.remove("hidden");
+                userProfile?.classList.add("flex");
+                loginPrompt?.classList.add("hidden");
+                buyMain?.classList.remove("hidden");
+
+                let displayName = user.email.split("@")[0];
+                try {
+                    const userDoc = await getDoc(doc(db, "users", user.uid));
+                    if (userDoc.exists()) displayName = userDoc.data().name || displayName;
+                } catch (e) {
+                    console.error(e);
+                }
+                if (nameDisplay) nameDisplay.innerText = displayName;
+                if (avatar) avatar.innerText = displayName.charAt(0).toUpperCase();
+            } else {
+                authActions?.classList.remove("hidden");
+                userProfile?.classList.add("hidden");
+                userProfile?.classList.remove("flex");
+                loginPrompt?.classList.remove("hidden");
+                buyMain?.classList.add("hidden");
+            }
+        });
+
+        window.openAuthModal = (mode) => {
+            currentMode = mode;
+            const modal = document.getElementById("authModal");
+            const title = document.getElementById("authTitle");
+            const subtitle = document.getElementById("authSubtitle");
+            const btn = document.getElementById("authBtn");
+            const roleSelect = document.getElementById("userRole");
+            const signupName = document.getElementById("signupName");
+            const signupPhone = document.getElementById("signupPhone");
+
+            if (mode === "login") {
+                title.innerText = "ወደ ታማኝ ቤት እንኳን በሰላም መጡ";
+                subtitle.innerText = "መግቢያ (Login)";
+                btn.innerText = "ግባ";
+                roleSelect.style.display = "none";
+                if (signupName) signupName.style.display = "none";
+                if (signupPhone) signupPhone.style.display = "none";
+            } else {
+                title.innerText = "አዲስ መመዝገቢያ";
+                subtitle.innerText = "አካውንት ይፍጠሩ";
+                btn.innerText = "ተመዝገብ";
+                roleSelect.style.display = "block";
+                if (signupName) signupName.style.display = "block";
+                if (signupPhone) signupPhone.style.display = "block";
+            }
+            modal.classList.remove("hidden");
+            modal.classList.add("flex");
+        };
+
+        window.closeAuthModal = () => {
+            const modal = document.getElementById("authModal");
+            modal.classList.add("hidden");
+            modal.classList.remove("flex");
+        };
+
+        document.getElementById("authBtn")?.addEventListener("click", async () => {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const role = document.getElementById("userRole").value;
+            try {
+                if (currentMode === "login") {
+                    await signInWithEmailAndPassword(auth, email, password);
+                    alert("እንኳን በደህና መጡ!");
+                } else {
+                    const user = await createUserWithEmailAndPassword(auth, email, password);
+                    await setDoc(doc(db, "users", user.user.uid), { role, email });
+                    alert("ምዝገባው ተሳክቷል!");
+                }
+                closeAuthModal();
+            } catch (e) {
+                alert("ስህተት: " + e.message);
+            }
+        });
+
+        window.handleGoogleLogin = async () => {
+            const provider = new GoogleAuthProvider();
+            try {
+                const result = await signInWithPopup(auth, provider);
+                const user = result.user;
+                const userRef = doc(db, "users", user.uid);
+                const userDoc = await getDoc(userRef);
+                if (!userDoc.exists()) {
+                    await setDoc(userRef, {
+                        name: user.displayName,
+                        email: user.email,
+                        role: "buyer"
+                    });
+                }
+                window.location.href = "buy.html";
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        window.switchMode = () => {
+            currentMode = currentMode === "login" ? "signup" : "login";
+            openAuthModal(currentMode);
+        };
+
+        document.getElementById("closeModal")?.addEventListener("click", closeAuthModal);
+
+        document.getElementById("logoutBtn")?.addEventListener("click", async () => {
+            try {
+                await signOut(auth);
+            } catch (error) {
+                console.error(error);
+                alert("Logout failed.");
+            }
+        });
+
+        function escapeHtmlDetail(value) {
+            return String(value ?? "")
+                .replaceAll("&", "&amp;")
+                .replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;")
+                .replaceAll('"', "&quot;")
+                .replaceAll("'", "&#39;");
+        }
+
+        function resolvePropertyType(item) {
+            const raw =
+                item.propertyType ??
+                item.type ??
+                item.categoryName ??
+                item.categoryLabel ??
+                (typeof item.category === "string" ? item.category : null) ??
+                item.details?.propertyType ??
+                null;
+            return raw !== null && raw !== "" ? String(raw) : "—";
+        }
+
+        window.showDetails = async function (encodedData) {
+            try {
+                const prevHost = document.getElementById("buy-property-map-host");
+                if (prevHost) clearPropertyMap(prevHost);
+
+                const item = JSON.parse(decodeURIComponent(encodedData));
+                const modal = document.getElementById("propertyModal");
+                const body = document.getElementById("modal-body");
+                const phoneRaw = item.seller?.phone || "0000000000";
+                const phone = String(phoneRaw).replace(/\D/g, "") || "0000000000";
+
+                const priceDisplay =
+                    item.price !== undefined && item.price !== null && item.price !== ""
+                        ? `${Number(item.price).toLocaleString()} ETB`
+                        : "—";
+                const sellerName = escapeHtmlDetail(item.seller?.name);
+                const sellerPhoneDisplay = escapeHtmlDetail(item.seller?.phone);
+                const description = escapeHtmlDetail(item.description);
+                const bedrooms = escapeHtmlDetail(item.details?.bedrooms ?? "—");
+                const bathrooms = escapeHtmlDetail(item.details?.bathrooms ?? "—");
+                const parking = escapeHtmlDetail(item.details?.parking ?? "—");
+                const sizeVal = item.size !== undefined && item.size !== null && item.size !== "" ? item.size : null;
+                const sizeDisplay = sizeVal !== null ? `${escapeHtmlDetail(sizeVal)} m²` : "—";
+                const location = escapeHtmlDetail(item.location);
+                const propertyType = escapeHtmlDetail(resolvePropertyType(item));
+
+                const rows = [
+                    { label: "የቤት መለኪያ:", value: propertyType },
+                    { label: "ዋጋ:", value: escapeHtmlDetail(priceDisplay) },
+                    { label: "የሻጭ ስም:", value: sellerName || "—" },
+                    { label: "ስልክ ቁጥር:", value: sellerPhoneDisplay || "—" },
+                    { label: "መግለጫ:", value: description || "—", wide: true },
+                    { label: "መኝታ ክፍል:", value: bedrooms },
+                    { label: "መታጠቢያ ቤት:", value: bathrooms },
+                    { label: "መኪና ማቆሚያ:", value: parking },
+                    { label: "ስፋት:", value: sizeDisplay },
+                    { label: "ቦታ:", value: location || "—", wide: true }
+                ];
+
+                const rowHtml = rows
+                    .map(
+                        (row, idx) => `
+                    <div class="${row.wide ? "md:col-span-2" : ""} min-w-0 rounded-xl border px-4 py-3.5 sm:px-5 sm:py-4 ${
+                            idx % 2 === 0 ? "border-slate-100 bg-slate-50" : "border-slate-200/80 bg-white"
+                        }">
+                        <div class="flex min-w-0 flex-col gap-2 md:flex-row md:items-start md:gap-x-6">
+                            <dt class="min-w-0 text-xs font-semibold uppercase tracking-wide text-slate-500 md:w-44 md:shrink-0 md:text-sm md:normal-case md:leading-snug md:tracking-normal">${row.label}</dt>
+                            <dd class="min-w-0 flex-1 break-words text-sm font-semibold leading-relaxed text-slate-900 md:text-base">${row.value}</dd>
+                        </div>
+                    </div>`
+                    )
+                    .join("");
+
+                body.innerHTML = `
+                    <div class="min-w-0 w-full space-y-7">
+                    <header class="min-w-0 border-b border-slate-200/90 pb-5 pr-11 sm:pr-14">
+                        <h2 class="min-w-0 text-xl font-extrabold tracking-tight text-slate-900 break-words sm:text-2xl">የንብረት ዝርዝር መረጃ</h2>
+                        <p class="mt-2 min-w-0 text-xs font-medium leading-relaxed text-slate-500 sm:text-sm">Property Detail Information</p>
+                    </header>
+                    <dl class="grid min-w-0 w-full grid-cols-1 gap-3 md:grid-cols-2 md:gap-x-5 md:gap-y-4">
+                        ${rowHtml}
+                    </dl>
+                    <h3 style="margin-top:20px;">መገኛ (Location on Map)</h3>
+                    <div style="width: 100%; height: 300px; border-radius: 8px; overflow: hidden; border: 1px solid #ddd;">
+                        <div id="buy-property-map-host" style="width:100%;height:100%;min-height:300px;"></div>
+                    </div>
+                    <div class="flex flex-wrap items-center justify-center gap-3 border-t border-slate-200 pt-8 sm:gap-4">
+                        <a href="https://wa.me/${phone}" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2.5 rounded-full border-2 border-emerald-500 px-4 py-2.5 text-sm font-bold text-emerald-600 transition hover:bg-emerald-50"><i class="fa-brands fa-whatsapp shrink-0 text-lg leading-none" aria-hidden="true"></i><span>WhatsApp</span></a>
+                        <a href="https://t.me/${phoneRaw}" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2.5 rounded-full border-2 border-sky-500 px-4 py-2.5 text-sm font-bold text-sky-600 transition hover:bg-sky-50"><i class="fa-brands fa-telegram shrink-0 text-lg leading-none" aria-hidden="true"></i><span>Telegram</span></a>
+                        <a href="tel:${escapeHtmlDetail(phoneRaw)}" class="inline-flex items-center justify-center gap-2.5 rounded-full border-2 border-zillow px-4 py-2.5 text-sm font-bold text-zillow transition hover:bg-zillow-light"><i class="fa-solid fa-phone shrink-0 text-base leading-none" aria-hidden="true"></i><span>Call</span></a>
+                    </div>
+                    </div>`;
+                modal.classList.remove("hidden");
+                modal.classList.add("block");
+                await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+                const mapHost = document.getElementById("buy-property-map-host");
+                await renderPropertyMap(mapHost, normalizePropertyDataForMap(item));
+            } catch (e) {
+                console.error(e);
+            }
+        };
+
+        window.closePropertyModal = function () {
+            clearPropertyMap(document.getElementById("buy-property-map-host"));
+            const modal = document.getElementById("propertyModal");
+            modal.classList.add("hidden");
+            modal.classList.remove("block");
+        };
+
+        async function loadTamagnListings() {
+            const displayContainer = document.getElementById("tamagn-display-grid");
+            if (!displayContainer) return;
+
+            try {
+                const q = query(
+                    collection(db, "tamagn_listings"),
+                    or(where("scope", "==", "all"), where("scope", "==", "dashboard")),
+                    orderBy("createdAt", "desc")
+                );
+                const snapshot = await getDocs(q);
+                if (snapshot.empty) {
+                    allListings = [];
+                    displayContainer.innerHTML = `<p class="col-span-full py-12 text-center text-slate-500">በአሁኑ ሰዓት ምንም ንብረት አልተመዘገበም።</p>`;
+                    return;
+                }
+                allListings = [];
+                snapshot.forEach((docSnap) => {
+                    const data = docSnap.data();
+                    if (!hasValidListingImageForPublicGrid(data)) return;
+                    allListings.push({ id: docSnap.id, data });
+                });
+                if (!allListings.length) {
+                    displayContainer.innerHTML = `<p class="col-span-full py-12 text-center text-slate-500">በአሁኑ ሰዓት በዝርዝሩ ላይ የሚታይ ንብረት የለም።</p>`;
+                    const rc = document.getElementById("resultsCount");
+                    if (rc) rc.textContent = "0 ንብረቶች ተገኝተዋል";
+                    return;
+                }
+                applyFilters();
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        ["filterPrice", "filterBeds", "filterBaths", "filterType"].forEach((id) => {
+            document.getElementById(id)?.addEventListener("change", applyFilters);
+        });
+        document.getElementById("searchBtn")?.addEventListener("click", applyFilters);
+        document.getElementById("searchQuery")?.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") applyFilters();
+        });
+
+        window.addEventListener("DOMContentLoaded", loadTamagnListings);
+    </script>
+    <nav class="tb-mobile-nav md:hidden" aria-label="Primary mobile">
+        <div class="tb-mobile-nav__inner">
+            <a href="index.html/index.html"><i class="fas fa-house font-normal" aria-hidden="true"></i><span>Home</span></a>
+            <a href="buy.html" class="tb-mobile-nav__active"><i class="fas fa-building font-normal" aria-hidden="true"></i><span>Listings</span></a>
+            <a href="index.html/index.html#developers-section"><i class="fas fa-handshake font-normal" aria-hidden="true"></i><span>Developers</span></a>
+            <a href="#mortgage-calculator"><i class="fas fa-calculator font-normal" aria-hidden="true"></i><span>Budget</span></a>
+            <a href="dashboard.html"><i class="fas fa-heart font-normal" aria-hidden="true"></i><span>Saved</span></a>
+            <a href="dashboard.html"><i class="fas fa-comments font-normal" aria-hidden="true"></i><span>Chat</span></a>
+            <a href="dashboard.html"><i class="fas fa-bars font-normal" aria-hidden="true"></i><span>Menu</span></a>
+        </div>
+    </nav>
+    <script type="module" src="/js/chatbot.js"></script>
+    <script type="module" src="/js/calculator.js"></script>
 </body>
 </html>

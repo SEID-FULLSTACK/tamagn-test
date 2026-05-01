@@ -1,63 +1,48 @@
-function defaultApplyText(element, text) {
-    if (element.tagName === "INPUT") {
-        element.placeholder = text;
-    } else {
-        element.innerText = text;
-    }
-}
-
-function applyTranslations({
-    language,
-    translations,
-    selector,
-    keyAttribute,
-    applyText = defaultApplyText
-}) {
-    document.querySelectorAll(selector).forEach((element) => {
-        const key = element.getAttribute(keyAttribute);
-        const text = translations[language]?.[key];
-        if (typeof text === "string") {
-            applyText(element, text);
-        }
-    });
-}
-
 export function createLanguageToggle({
     translations,
-    initialLanguage = "am",
     toggleButtonId,
     selector,
     keyAttribute,
-    applyText = defaultApplyText,
     getToggleButtonText
 }) {
-    let currentLanguage = initialLanguage;
+    let isAmharic = true;
 
-    function refreshUI() {
-        if (toggleButtonId && typeof getToggleButtonText === "function") {
-            const toggleButton = document.getElementById(toggleButtonId);
-            if (toggleButton) {
-                toggleButton.textContent = getToggleButtonText(currentLanguage, translations);
-            }
+    function getCurrentLanguage() {
+        return isAmharic ? "am" : "en";
+    }
+
+    function applyLanguage(lang) {
+        const dict = translations[lang];
+        if (!dict) {
+            return;
         }
 
-        applyTranslations({
-            language: currentLanguage,
-            translations,
-            selector,
-            keyAttribute,
-            applyText
+        document.querySelectorAll(selector).forEach((el) => {
+            const key = el.getAttribute(keyAttribute);
+            if (!key || !dict[key]) {
+                return;
+            }
+            if (el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
+                el.placeholder = dict[key];
+            } else {
+                el.textContent = dict[key];
+            }
         });
+
+        const btn = document.getElementById(toggleButtonId);
+        if (btn && typeof getToggleButtonText === "function") {
+            btn.textContent = getToggleButtonText(lang, translations);
+        }
+    }
+
+    function refreshUI() {
+        applyLanguage(getCurrentLanguage());
     }
 
     function toggleLanguage() {
-        currentLanguage = currentLanguage === "am" ? "en" : "am";
-        refreshUI();
+        isAmharic = !isAmharic;
+        applyLanguage(getCurrentLanguage());
     }
 
-    return {
-        toggleLanguage,
-        refreshUI,
-        getCurrentLanguage: () => currentLanguage
-    };
+    return { toggleLanguage, refreshUI, getCurrentLanguage };
 }

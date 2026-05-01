@@ -2,42 +2,41 @@ export function byId(id) {
     return document.getElementById(id);
 }
 
-export function getValue(id, fallback = "") {
-    const element = byId(id);
-    return element ? element.value : fallback;
+export function getValue(id) {
+    const el = byId(id);
+    return el ? String(el.value || "").trim() : "";
 }
 
-export function setDisplay(target, display) {
-    const element = typeof target === "string" ? byId(target) : target;
-    if (element) {
-        element.style.display = display;
+export function setDisplay(elOrId, display) {
+    const el = typeof elOrId === "string" ? byId(elOrId) : elOrId;
+    if (el) {
+        el.style.display = display;
     }
 }
 
-export function toggleClass(target, className) {
-    const element = typeof target === "string" ? byId(target) : target;
-    if (element) {
-        element.classList.toggle(className);
+export function toggleClass(elOrId, className) {
+    const el = typeof elOrId === "string" ? byId(elOrId) : elOrId;
+    if (el) {
+        el.classList.toggle(className);
     }
 }
 
-export function onIfPresent(element, eventName, handler) {
-    if (element) {
-        element.addEventListener(eventName, handler);
+export function onIfPresent(el, eventName, handler, options) {
+    if (el) {
+        el.addEventListener(eventName, handler, options);
     }
 }
 
-export function onClickActions(actionHandlers) {
+export function onClickActions(handlers) {
     document.addEventListener("click", (event) => {
         const actionEl = event.target.closest("[data-action]");
         if (!actionEl) {
             return;
         }
-
-        const action = actionEl.dataset.action;
-        const handler = actionHandlers[action];
-        if (typeof handler === "function") {
-            handler({ event, actionEl });
+        const action = actionEl.getAttribute("data-action");
+        const fn = handlers[action];
+        if (typeof fn === "function") {
+            fn({ event, actionEl });
         }
     });
 }

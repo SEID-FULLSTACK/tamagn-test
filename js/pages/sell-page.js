@@ -4,6 +4,7 @@ import { auth, db } from "/js/core/firebase.js";
 import { initSharedAuthModal } from "/js/features/auth-modal-shared.js";
 import { getUserDisplayProfile } from "/js/features/auth-user-profile.js";
 import { byId, getValue, onClickActions, onIfPresent, setDisplay } from "./page-utils.js";
+import { publicationStateFromImageData } from "/js/listing-image-utils.js";
 
 const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/ddrhpcljy/image/upload";
 const CLOUDINARY_UPLOAD_PRESET = "snwisake";
@@ -107,7 +108,7 @@ function toggleImageInput() {
 }
 
 function buildPropertyData(imageUrl) {
-    return {
+    const base = {
         category: getInputValue("pDeveloper"),
         status: getInputValue("pStatus", "selling") || "selling",
         title: getInputValue("pTitle"),
@@ -126,6 +127,7 @@ function buildPropertyData(imageUrl) {
             parking: getInputValue("pParking") || null
         }
     };
+    return { ...base, ...publicationStateFromImageData(base) };
 }
 
 async function resolveImageUrlForSubmit(existingImageUrl = "") {

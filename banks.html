@@ -1,128 +1,304 @@
 <!DOCTYPE html>
-<html lang="am" dir="ltr">
+<html lang="am" dir="ltr" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tamagn Bet | Tender System</title>
+    <title>Tamagn Bet | Bank Auctions & Services</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        zillow: { DEFAULT: "#006AFF", dark: "#0053B3", light: "#E8F2FF" },
+                        auction: { navy: "#1e3a5f", gold: "#b45309" }
+                    },
+                    fontFamily: { sans: ["Inter", "system-ui", "sans-serif"] }
+                }
+            }
+        };
+    </script>
+    <link rel="stylesheet" href="/css/global-nav.css">
+    <link rel="stylesheet" href="/css/chatbot.css">
     <style>
-        :root {
-            --primary-color: #003366;
-            --secondary-color: #d35400;
-            --bg-color: #eef2f5;
-            --sidebar-color: #2c3e50;
-            --text-color: #333;
-        }
-
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; background-color: var(--bg-color); color: var(--text-color); }
-
-        /* Header */
-       /* header { position: fixed; top: 0; width: 100%; height: 60px; background: #2c2c2c; color: white; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; z-index: 1000; box-sizing: border-box; }
-        .logo { font-size: 24px; font-weight: 800; color: #fff; text-decoration: none; }*/
-.header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; border-bottom: 1px solid #ddd;position: relative; }
-        .logo { font-size: 24px; font-weight: 800; color: var(--primary-blue); justify-content: center;align-items: center;text-decoration-line: none;position: absolute;left: 50%;}
-        .lang-btn { background: #444; border: 1px solid var(--secondary-color); color: white; padding: 5px 15px; cursor: pointer; border-radius: 4px;position: absolute; right: 20px; }
-        .menu-toggle { background: var(--secondary-color); color: white; border: none; padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 18px; }
-
-        /* Sidebar */
-        .sidebar { width: 260px; height: 100vh; background-color: white; color: black; position: fixed; left: -260px; top: 0; padding-top: 20px; transition: 0.3s; z-index: 1001; overflow-y: auto; }
-        .sidebar.active { left: 0; }
-        .sidebar a { padding: 12px 20px; text-decoration: none; display: block; color: black; cursor: pointer; transition: 0.3s; font-size: 16px; display: flex; align-items: center; gap: 10px; }
-        .sidebar a:hover { background-color: #34495e; color: white; }
-        .sub-menu { padding-left: 40px !important; font-size: 16px !important; color: black !important; }
-        .close-sidebar { background: none; border: none; color: black; font-size: 24px; cursor: pointer; padding: 0 20px; margin-bottom: 20px; }
-        .sidebar-header { padding: 10px 20px; font-size: 12px; color: black; font-weight: bold; margin-top: 10px; text-transform: uppercase; }
-
-        /* Main Content */
-        .main-content { padding: 30px; margin-top: 60px; }
-        .page { display: none; }
-        .page.active { display: block; }
-        
-        /* Stats & Cards */
-        .stats-container { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 30px; }
-        .stat-card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); flex: 1; min-width: 200px; text-align: center; }
-        .tender-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        .tender-card { background: #fff; padding: 20px; border-radius: 8px; border-left: 5px solid var(--primary-color); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        
-        /* Forms */
-        .section { background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); max-width: 700px; margin: auto; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
-        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        
-        /* File Upload Styles */
-        input[type="file"] { padding: 8px; background: #f9f9f9; border: 1px dashed #ccc; }
-        .image-preview-container { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
-        .image-preview-item { width: 80px; height: 80px; border-radius: 4px; overflow: hidden; border: 1px solid #eee; position: relative; }
-        .image-preview-item img { width: 100%; height: 100%; object-fit: cover; }
-        
-        .btn { width: 100%; padding: 12px; color: white; border: none; border-radius: 4px; cursor: pointer; background-color: var(--primary-color); font-size: 16px; transition: background 0.2s; }
-        .btn:hover { background-color: #002244; }
-
-        @media (max-width: 768px) {
-            .sidebar { width: 230px; }
-            .main-content { padding: 15px; }
-        }
+        .banks-sidebar.active { left: 0; }
+        .banks-page { display: none; }
+        .banks-page.active { display: block; }
     </style>
 </head>
-<body>
+<body class="tb-mobile-nav-page-pad min-h-screen bg-slate-50 font-sans text-slate-800 antialiased md:pb-0">
 
-<header>
-    <div style="display: flex; align-items: center; gap: 10px;">
-        <button class="menu-toggle" type="button" data-action="banks-toggle-sidebar">☰</button>
-        <div class="logo">
-    <span style="color: #007bff; font-weight: bold;">Tamagn</span><span style="color: #28a745; font-weight: 800;">-Bet</span>
-</div>
+<!-- Global vertical rail (matches site) -->
+<aside class="fixed left-0 top-0 z-[90] hidden h-screen w-16 flex-col border-r border-gray-200 bg-white md:flex md:w-20" aria-label="Site navigation">
+    <a href="index.html/index.html" class="logo-container logo-container--rail" aria-label="Tamagn Bet Home">
+        <img src="/image/tamagn_logo.PNG" alt="" width="280" height="112" loading="eager" decoding="async" />
+    </a>
+    <nav class="flex flex-col items-stretch px-1.5 pb-4 pt-2" aria-label="Primary">
+        <a href="index.html/index.html" class="group flex flex-col items-center gap-0.5 rounded-lg py-2.5 text-center text-[10px] font-semibold leading-tight text-gray-500 transition hover:text-zillow">
+            <i class="fas fa-house text-[1.125rem] font-normal leading-none text-gray-400 transition group-hover:text-zillow" aria-hidden="true"></i>
+            <span class="max-w-[4.25rem] truncate">Home</span>
+        </a>
+        <a href="buy.html" class="group flex flex-col items-center gap-0.5 rounded-lg py-2.5 text-center text-[10px] font-semibold leading-tight text-gray-500 transition hover:text-zillow">
+            <i class="fas fa-building text-[1.125rem] font-normal leading-none text-gray-400 transition group-hover:text-zillow" aria-hidden="true"></i>
+            <span class="max-w-[4.25rem] truncate">Listings</span>
+        </a>
+        <a href="dashboard.html" class="group flex flex-col items-center gap-0.5 rounded-lg py-2.5 text-center text-[10px] font-semibold leading-tight text-gray-500 transition hover:text-zillow">
+            <i class="fas fa-heart text-[1.125rem] font-normal leading-none text-gray-400 transition group-hover:text-zillow" aria-hidden="true"></i>
+            <span class="max-w-[4.25rem] truncate">Saved</span>
+        </a>
+        <a href="dashboard.html" class="group flex flex-col items-center gap-0.5 rounded-lg py-2.5 text-center text-[10px] font-semibold leading-tight text-gray-500 transition hover:text-zillow">
+            <i class="fas fa-comments text-[1.125rem] font-normal leading-none text-gray-400 transition group-hover:text-zillow" aria-hidden="true"></i>
+            <span class="max-w-[4.25rem] truncate">Chat</span>
+        </a>
+        <button type="button" class="group flex w-full flex-col items-center gap-0.5 rounded-lg py-2.5 text-center text-[10px] font-semibold leading-tight text-gray-500 transition hover:text-zillow" onclick="toggleSidebar()" aria-label="Open auction menu">
+            <i class="fas fa-bars text-[1.125rem] font-normal leading-none text-gray-400 transition group-hover:text-zillow" aria-hidden="true"></i>
+            <span class="max-w-[4.25rem] truncate">Menu</span>
+        </button>
+    </nav>
+</aside>
+
+<div class="relative flex min-h-screen min-w-0 flex-1 flex-col md:ml-20">
+
+<header class="sticky top-0 z-[100] border-b border-gray-200 bg-white">
+    <div class="relative mx-auto flex min-h-[6.5rem] max-w-7xl items-center justify-between gap-4 px-4 py-2 sm:min-h-[7.5rem] sm:px-6 lg:px-8">
+        <div class="flex items-center gap-3">
+            <button type="button" class="flex h-10 w-10 items-center justify-center rounded-lg text-slate-700 transition hover:bg-slate-100 md:hidden" onclick="toggleSidebar()" aria-label="Open menu">
+                <i class="fas fa-bars text-lg" aria-hidden="true"></i>
+            </button>
+            <nav class="hidden items-center gap-1 md:flex lg:gap-2" aria-label="Desktop quick links">
+                <a href="index.html/index.html" class="whitespace-nowrap rounded-full px-3 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-zillow">Home</a>
+                <a href="buy.html" class="whitespace-nowrap rounded-full px-3 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-zillow">Listings</a>
+                <a href="dashboard.html" class="whitespace-nowrap rounded-full px-3 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-zillow">Saved</a>
+                <a href="dashboard.html" class="whitespace-nowrap rounded-full px-3 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-zillow">Chat</a>
+            </nav>
+        </div>
+        <a href="index.html/index.html" class="logo-container absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" aria-label="Tamagn-Bet Home">
+            <img src="/image/tamagn_logo.PNG" alt="Tamagn Bet" width="400" height="160" loading="eager" decoding="async" />
+        </a>
+        <div class="flex items-center gap-2 sm:gap-3">
+            <span class="hidden rounded-full border border-amber-200/80 bg-amber-50 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-amber-900 sm:inline">Bank portal</span>
+            <button id="lang-btn" type="button" class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:border-zillow hover:text-zillow" onclick="toggleLanguage()">English</button>
+        </div>
     </div>
-    <button id="lang-btn" class="lang-btn" type="button" data-action="banks-toggle-language">English</button>
 </header>
 
-<div class="sidebar" id="sidebar">
-    <button class="close-sidebar" type="button" data-action="banks-toggle-sidebar">←</button>
-    <a href="#" data-action="banks-show-page" data-page-id="dashboard">📊 <span data-i18n="dashboard">ዳሽቦርድ</span></a>
-    <a href="#" data-action="banks-show-page" data-page-id="tenders-list">📋 <span data-i18n="tenders_list">የጨረታዎች ዝርዝር</span></a>
-    
-    <div class="sidebar-header" data-i18n="tender_cats">የጨረታ ምድቦች</div>
-    <a href="#" class="sub-menu">🏠 <span data-i18n="house_tender">የቤት ጨረታ</span></a>
-    <a href="#" class="sub-menu">🚗 <span data-i18n="car_tender">የመኪና ጨረታ</span></a>
-    <a href="#" class="sub-menu">📄 <span data-i18n="stationery_tender">የፅህፈት መሳሪያ</span></a>
-    <a href="#" class="sub-menu">💻 <span data-i18n="elec_tender">የኢሌክትሮኒክ ጨረታ</span></a>
-    <a href="#" class="sub-menu">🗄 <span data-i18n="office_tender">የቢሮ እቃወች</span></a>
-    
-    <div class="sidebar-header" data-i18n="actions">ተግባራት</div>
-    <a href="#" data-action="banks-show-page" data-page-id="post-tender">➕ <span data-i18n="post_tender">ጨረታ ይለጥፉ</span></a>
-    <a href="#" data-action="banks-show-page" data-page-id="vendors">🤝 <span data-i18n="register_vendor">አቅራቢ ይመዝግቡ</span></a>
-    <a href="#" style="color: #e74c3c;">🚪 <span data-i18n="logout">መውጫ</span></a>
+<!-- Auction / tender tools slide-over -->
+<div id="sidebar" class="banks-sidebar fixed left-[-280px] top-0 z-[110] flex h-full w-[260px] max-w-[85vw] flex-col border-r border-slate-200 bg-white shadow-xl transition-[left] duration-300 ease-out sm:w-[280px]">
+    <div class="flex items-center justify-between border-b border-slate-100 px-4 py-3">
+        <span class="text-xs font-bold uppercase tracking-wide text-slate-500">Auction menu</span>
+        <button type="button" class="rounded-lg p-2 text-slate-500 hover:bg-slate-100" onclick="toggleSidebar()" aria-label="Close">&larr;</button>
+    </div>
+    <div class="flex-1 overflow-y-auto py-2">
+        <a href="#" onclick="showPage('dashboard'); return false;" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50"><span aria-hidden="true">&#128202;</span> <span data-i18n="dashboard">ዳሽቦርድ</span></a>
+        <a href="#" onclick="showPage('tenders-list'); return false;" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50"><span aria-hidden="true">&#128203;</span> <span data-i18n="tenders_list">የጨረታዎች ዝርዝር</span></a>
+        <div class="px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-slate-400" data-i18n="tender_cats">የጨረታ ምድቦች</div>
+        <a href="#" class="flex items-center gap-3 py-2 pl-8 pr-4 text-sm text-slate-600 hover:bg-slate-50"><span aria-hidden="true">&#127968;</span> <span data-i18n="house_tender">የቤት ጨረታ</span></a>
+        <a href="#" class="flex items-center gap-3 py-2 pl-8 pr-4 text-sm text-slate-600 hover:bg-slate-50"><span aria-hidden="true">&#128663;</span> <span data-i18n="car_tender">የመኪና ጨረታ</span></a>
+        <a href="#" class="flex items-center gap-3 py-2 pl-8 pr-4 text-sm text-slate-600 hover:bg-slate-50"><span aria-hidden="true">&#128196;</span> <span data-i18n="stationery_tender">የፅህፈት መሳሪያ</span></a>
+        <a href="#" class="flex items-center gap-3 py-2 pl-8 pr-4 text-sm text-slate-600 hover:bg-slate-50"><span aria-hidden="true">&#128187;</span> <span data-i18n="elec_tender">የኢሌክትሮኒክ ጨረታ</span></a>
+        <a href="#" class="flex items-center gap-3 py-2 pl-8 pr-4 text-sm text-slate-600 hover:bg-slate-50"><span aria-hidden="true">&#128452;</span> <span data-i18n="office_tender">የቢሮ እቃወች</span></a>
+        <div class="px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-slate-400" data-i18n="actions">ተግባራት</div>
+        <a href="#" onclick="showPage('post-tender'); return false;" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50"><span aria-hidden="true">&#10133;</span> <span data-i18n="post_tender">ጨረታ ይለጥፉ</span></a>
+        <a href="#" onclick="showPage('vendors'); return false;" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50"><span aria-hidden="true">&#129309;</span> <span data-i18n="register_vendor">አቅራቢ ይመዝግቡ</span></a>
+        <a href="#" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-rose-600 hover:bg-rose-50"><span aria-hidden="true">&#128682;</span> <span data-i18n="logout">መውጫ</span></a>
+    </div>
 </div>
+<div id="banks-overlay" class="fixed inset-0 z-[105] hidden bg-slate-900/40 md:hidden" onclick="toggleSidebar()" aria-hidden="true"></div>
 
-<div class="main-content">
-    <div id="dashboard" class="page active">
-        <h2 data-i18n="welcome">ወደ Tamagn Bet በሰላም መጡ!</h2>
-        <div class="stats-container">
-            <div class="stat-card"><h3 data-i18n="in_progress">በሂደት ላይ</h3><p>124</p></div>
-            <div class="stat-card"><h3 data-i18n="completed">የተጠናቀቀ</h3><p>58</p></div>
+<main class="mx-auto w-full max-w-7xl flex-1 px-4 py-10 sm:px-6 sm:py-12 lg:px-8">
+    <div id="dashboard" class="banks-page active">
+        <div class="mb-10 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <div>
+                <p class="text-xs font-bold uppercase tracking-wider text-zillow">Bank auctions</p>
+                <h1 class="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl" data-i18n="welcome">ወደ Tamagn Bet በሰላም መጡ!</h1>
+                <p class="mt-2 max-w-2xl text-sm text-slate-600">Official property auctions and foreclosure listings from partner financial institutions. Review closing dates and minimum bids before participating.</p>
+            </div>
+            <a href="tel:+251911000000" class="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-slate-900 bg-slate-900 px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-slate-800">
+                <i class="fas fa-user-tie" aria-hidden="true"></i>
+                Consult with an Expert
+            </a>
         </div>
-        <div class="tender-grid">
-            <div class="tender-card"><h3>🏠 <span data-i18n="house_tender">የቤት ጨረታ</span></h3><p data-i18n="desc_house">ቦሌ ለቡ አካባቢ የሚገኝ መኖሪያ ቤት።</p></div>
-            <div class="tender-card"><h3>🚗 <span data-i18n="car_tender">የመኪና ጨረታ</span></h3><p data-i18n="desc_car">Toyota Hilux 2022 ሞዴል፣ በጥሩ ሁኔታ ላይ።</p></div>
-            <div class="tender-card"><h3>📄 <span data-i18n="stationery_tender">የፅህፈት መሳሪያ</span></h3><p data-i18n="desc_stationery">የ2017 በጀት ዓመት የቢሮ አቅርቦቶች።</p></div>
-            <div class="tender-card"><h3>💻 <span data-i18n="elec_tender">የኢሌክትሮኒክ ጨረታ</span></h3><p data-i18n="desc_elec">ላፕቶፕ እና ዴስክቶፕ ኮምፒውተሮች።</p></div>
-            <div class="tender-card"><h3>🗄 <span data-i18n="office_tender">የቢሮ እቃወች</span></h3><p data-i18n="desc_office">የቢሮ ወንበሮች እና ጠረጴዛዎች።</p></div>
+
+        <div class="lg:grid lg:grid-cols-[minmax(0,1fr)_280px] lg:items-start lg:gap-10 xl:grid-cols-[minmax(0,1fr)_300px]">
+            <div class="min-w-0 space-y-12">
+                <div class="flex flex-wrap gap-4">
+                    <div class="min-w-[140px] flex-1 rounded-2xl border border-slate-200 bg-white px-5 py-4 text-center shadow-sm">
+                        <p class="text-xs font-semibold text-slate-500" data-i18n="in_progress">በሂደት ላይ</p>
+                        <p class="mt-1 text-2xl font-bold text-slate-900">124</p>
+                    </div>
+                    <div class="min-w-[140px] flex-1 rounded-2xl border border-slate-200 bg-white px-5 py-4 text-center shadow-sm">
+                        <p class="text-xs font-semibold text-slate-500" data-i18n="completed">የተጠናቀቀ</p>
+                        <p class="mt-1 text-2xl font-bold text-slate-900">58</p>
+                    </div>
+                </div>
+
+                <section id="auctions-section" aria-label="Auction listings">
+                    <h2 class="text-lg font-semibold text-slate-900">Active auction listings</h2>
+                    <p class="mt-1 text-sm text-slate-600">Property collateral auctions — verify details with the listing bank before bidding.</p>
+                    <div class="mt-6 grid gap-6 sm:grid-cols-2">
+                        <!-- Auction cards: illustrative UI only -->
+                        <article class="flex flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:shadow-md">
+                            <div class="flex items-start justify-between gap-3">
+                                <div class="flex min-w-0 items-center gap-3">
+                                    <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-slate-900 text-sm font-bold text-white" aria-hidden="true">CBE</div>
+                                    <div class="min-w-0">
+                                        <p class="truncate font-semibold text-slate-900">Commercial Bank of Ethiopia</p>
+                                        <p class="text-xs text-slate-500">Ref. AUC-2026-0142</p>
+                                    </div>
+                                </div>
+                                <span class="shrink-0 rounded-full bg-amber-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-amber-900 ring-1 ring-amber-200/80">Auction</span>
+                            </div>
+                            <dl class="mt-5 space-y-2 text-sm">
+                                <div class="flex justify-between gap-4 border-t border-slate-100 pt-4">
+                                    <dt class="text-slate-500">Closing</dt>
+                                    <dd class="font-semibold text-slate-900">May 18, 2026</dd>
+                                </div>
+                                <div class="flex justify-between gap-4">
+                                    <dt class="text-slate-500">Minimum bid</dt>
+                                    <dd class="font-semibold text-zillow">4,250,000 ETB</dd>
+                                </div>
+                            </dl>
+                            <p class="mt-4 line-clamp-2 text-sm text-slate-600" data-i18n="desc_house">ቦሌ ለቡ አካባቢ የሚገኝ መኖሪያ ቤት ጨረታ ቁጥር 001።</p>
+                            <button type="button" class="mt-6 w-full rounded-xl border border-slate-200 bg-white py-3 text-sm font-bold text-slate-800 transition hover:border-zillow hover:text-zillow">
+                                Get Auction Documents
+                            </button>
+                        </article>
+                        <article class="flex flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:shadow-md">
+                            <div class="flex items-start justify-between gap-3">
+                                <div class="flex min-w-0 items-center gap-3">
+                                    <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#1e3a5f] text-sm font-bold text-white" aria-hidden="true">AW</div>
+                                    <div class="min-w-0">
+                                        <p class="truncate font-semibold text-slate-900">Awash Bank</p>
+                                        <p class="text-xs text-slate-500">Ref. AUC-2026-0098</p>
+                                    </div>
+                                </div>
+                                <span class="shrink-0 rounded-full bg-[#1e3a5f]/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-[#1e3a5f] ring-1 ring-[#1e3a5f]/20">Auction</span>
+                            </div>
+                            <dl class="mt-5 space-y-2 text-sm">
+                                <div class="flex justify-between gap-4 border-t border-slate-100 pt-4">
+                                    <dt class="text-slate-500">Closing</dt>
+                                    <dd class="font-semibold text-slate-900">June 02, 2026</dd>
+                                </div>
+                                <div class="flex justify-between gap-4">
+                                    <dt class="text-slate-500">Minimum bid</dt>
+                                    <dd class="font-semibold text-zillow">8,900,000 ETB</dd>
+                                </div>
+                            </dl>
+                            <p class="mt-4 line-clamp-2 text-sm text-slate-600" data-i18n="desc_car">Toyota Hilux 2022 ሞዴል፣ በጥሩ ሁኔታ ላይ የሚገኝ።</p>
+                            <button type="button" class="mt-6 w-full rounded-xl border border-slate-200 bg-white py-3 text-sm font-bold text-slate-800 transition hover:border-zillow hover:text-zillow">
+                                Get Auction Documents
+                            </button>
+                        </article>
+                        <article class="flex flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:shadow-md sm:col-span-2 lg:col-span-1">
+                            <div class="flex items-start justify-between gap-3">
+                                <div class="flex min-w-0 items-center gap-3">
+                                    <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-slate-700 to-slate-900 text-xs font-bold text-white" aria-hidden="true">ABY</div>
+                                    <div class="min-w-0">
+                                        <p class="truncate font-semibold text-slate-900">Bank of Abyssinia</p>
+                                        <p class="text-xs text-slate-500">Ref. AUC-2026-0201</p>
+                                    </div>
+                                </div>
+                                <span class="shrink-0 rounded-full bg-amber-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-amber-900 ring-1 ring-amber-200/80">Auction</span>
+                            </div>
+                            <dl class="mt-5 space-y-2 text-sm">
+                                <div class="flex justify-between gap-4 border-t border-slate-100 pt-4">
+                                    <dt class="text-slate-500">Closing</dt>
+                                    <dd class="font-semibold text-slate-900">Apr 30, 2026</dd>
+                                </div>
+                                <div class="flex justify-between gap-4">
+                                    <dt class="text-slate-500">Minimum bid</dt>
+                                    <dd class="font-semibold text-zillow">12,400,000 ETB</dd>
+                                </div>
+                            </dl>
+                            <p class="mt-4 line-clamp-2 text-sm text-slate-600" data-i18n="desc_office">የቢሮ ወንበሮች፣ ጠረጴዛዎች እና ካቢኔቶች።</p>
+                            <button type="button" class="mt-6 w-full rounded-xl border border-slate-200 bg-white py-3 text-sm font-bold text-slate-800 transition hover:border-zillow hover:text-zillow">
+                                Get Auction Documents
+                            </button>
+                        </article>
+                    </div>
+                </section>
+
+                <section aria-label="Mortgage partners">
+                    <h2 class="text-lg font-semibold text-slate-900">Mortgage partners</h2>
+                    <p class="mt-1 text-sm text-slate-600">Preferred lenders for pre-approval and auction financing. Apply directly through your relationship manager or branch.</p>
+                    <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                        <div class="rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-sm">
+                            <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-xl bg-slate-900 text-sm font-bold text-white">CBE</div>
+                            <p class="mt-4 text-sm font-semibold text-slate-900">Commercial Bank of Ethiopia</p>
+                            <button type="button" class="mt-4 w-full rounded-xl bg-zillow py-2.5 text-sm font-bold text-white transition hover:bg-zillow-dark">Apply for Loan</button>
+                        </div>
+                        <div class="rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-sm">
+                            <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-xl bg-[#1e3a5f] text-sm font-bold text-white">ABY</div>
+                            <p class="mt-4 text-sm font-semibold text-slate-900">Bank of Abyssinia</p>
+                            <button type="button" class="mt-4 w-full rounded-xl bg-zillow py-2.5 text-sm font-bold text-white transition hover:bg-zillow-dark">Apply for Loan</button>
+                        </div>
+                        <div class="rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-sm">
+                            <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-xl bg-slate-700 text-sm font-bold text-white">AW</div>
+                            <p class="mt-4 text-sm font-semibold text-slate-900">Awash Bank</p>
+                            <button type="button" class="mt-4 w-full rounded-xl bg-zillow py-2.5 text-sm font-bold text-white transition hover:bg-zillow-dark">Apply for Loan</button>
+                        </div>
+                        <div class="rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-sm">
+                            <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-sm font-bold text-slate-800">DS</div>
+                            <p class="mt-4 text-sm font-semibold text-slate-900">Dashen Bank</p>
+                            <button type="button" class="mt-4 w-full rounded-xl bg-zillow py-2.5 text-sm font-bold text-white transition hover:bg-zillow-dark">Apply for Loan</button>
+                        </div>
+                        <div class="rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-sm sm:col-span-2 lg:col-span-1">
+                            <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-sm font-bold text-slate-800">NIB</div>
+                            <p class="mt-4 text-sm font-semibold text-slate-900">Nib International Bank</p>
+                            <button type="button" class="mt-4 w-full rounded-xl bg-zillow py-2.5 text-sm font-bold text-white transition hover:bg-zillow-dark">Apply for Loan</button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <aside class="mt-10 lg:sticky lg:top-24 lg:mt-0">
+                <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                    <h3 class="text-sm font-bold text-slate-900"><i class="fas fa-calculator mr-2 text-zillow" aria-hidden="true"></i>Mortgage calculator</h3>
+                    <p class="mt-2 text-xs text-slate-500">Estimate a monthly payment (illustrative — confirm with your bank).</p>
+                    <div class="mt-4 space-y-3">
+                        <div>
+                            <label class="mb-1 block text-xs font-semibold text-slate-600" for="mc-price">Loan amount (ETB)</label>
+                            <input type="number" id="mc-price" value="5000000" class="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm outline-none focus:border-zillow focus:ring-2 focus:ring-zillow/20" />
+                        </div>
+                        <div>
+                            <label class="mb-1 block text-xs font-semibold text-slate-600" for="mc-rate">Annual rate (%)</label>
+                            <input type="number" id="mc-rate" value="16.5" step="0.1" class="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm outline-none focus:border-zillow focus:ring-2 focus:ring-zillow/20" />
+                        </div>
+                        <div>
+                            <label class="mb-1 block text-xs font-semibold text-slate-600" for="mc-years">Term (years)</label>
+                            <input type="number" id="mc-years" value="20" class="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm outline-none focus:border-zillow focus:ring-2 focus:ring-zillow/20" />
+                        </div>
+                        <button type="button" onclick="banksCalcMortgage()" class="w-full rounded-xl bg-slate-900 py-2.5 text-sm font-bold text-white transition hover:bg-slate-800">Calculate</button>
+                    </div>
+                    <p class="mt-4 text-center text-xs text-slate-500">Estimated payment</p>
+                    <p id="mc-result" class="text-center text-xl font-bold text-zillow">—</p>
+                </div>
+            </aside>
         </div>
     </div>
 
-    <div id="tenders-list" class="page">
-        <h2 data-i18n="tenders_list">የጨረታዎች ዝርዝር</h2>
-        <p data-i18n="list_desc">ሁሉም በስርዓቱ ውስጥ ያሉ ንቁ ጨረታዎች።</p>
+    <div id="tenders-list" class="banks-page">
+        <div class="mx-auto max-w-3xl rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+            <h2 class="text-xl font-bold text-slate-900" data-i18n="tenders_list">የጨረታዎች ዝርዝር</h2>
+            <p class="mt-3 text-slate-600" data-i18n="list_desc">ሁሉም በስርዓቱ ውስጥ ያሉ ንቁ ጨረታዎች።</p>
+        </div>
     </div>
 
-    <div id="post-tender" class="page">
-        <div class="section">
-            <h2 data-i18n="post_tender">አዲስ ጨረታ መለጠፊያ</h2>
-            <form id="tenderForm">
-                <div class="form-group"><label data-i18n="title">የጨረታ ርዕስ</label><input type="text" required></div>
-                <div class="form-group">
-                    <label data-i18n="bank_name">ባንክ ይምረጡ</label>
-                    <select required>
+    <div id="post-tender" class="banks-page">
+        <div class="mx-auto max-w-2xl rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+            <h2 class="text-xl font-bold text-slate-900" data-i18n="post_tender">አዲስ ጨረታ መለጠፊያ</h2>
+            <form id="tenderForm" class="mt-6 space-y-4">
+                <div>
+                    <label class="mb-1 block text-sm font-semibold text-slate-700" data-i18n="title">የጨረታ ርዕስ</label>
+                    <input type="text" required class="h-11 w-full rounded-lg border border-slate-200 px-3 text-sm outline-none focus:border-zillow focus:ring-2 focus:ring-zillow/20">
+                </div>
+                <div>
+                    <label class="mb-1 block text-sm font-semibold text-slate-700" data-i18n="bank_name">ባንክ ይምረጡ</label>
+                    <select required class="h-11 w-full rounded-lg border border-slate-200 px-3 text-sm outline-none focus:border-zillow focus:ring-2 focus:ring-zillow/20">
                         <option value="cbe">የኢትዮጵያ ንግድ ባንክ</option>
                         <option value="awash">አዋሽ ባንክ</option>
                         <option value="abyssinia">የአቢሲኒያ ባንክ</option>
@@ -130,9 +306,9 @@
                         <option value="nib">ኒብ ኢንተርናሽናል ባንክ</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label data-i18n="category">ምድብ</label>
-                    <select>
+                <div>
+                    <label class="mb-1 block text-sm font-semibold text-slate-700" data-i18n="category">ምድብ</label>
+                    <select class="h-11 w-full rounded-lg border border-slate-200 px-3 text-sm outline-none focus:border-zillow focus:ring-2 focus:ring-zillow/20">
                         <option data-i18n="house_tender">የቤት ጨረታ</option>
                         <option data-i18n="car_tender">የመኪና ጨረታ</option>
                         <option data-i18n="stationery_tender">የፅህፈት መሳሪያ</option>
@@ -140,36 +316,155 @@
                         <option data-i18n="office_tender">የቢሮ እቃወች</option>
                     </select>
                 </div>
-                <div class="form-group"><label data-i18n="starting_price">መነሻ ዋጋ</label><input type="number" required></div>
-                <div class="form-group"><label data-i18n="closing_date">የሚጠናቀቀቅበት ቀን</label><input type="date" required></div>
-                
-                <div class="form-group">
-                    <label data-i18n="tender_images">የጨረታ ምስሎች (JPG, PNG)</label>
-                    <input type="file" id="tenderImages" accept="image/jpeg, image/png" multiple>
-                    <div class="image-preview-container" id="imagePreview"></div>
+                <div>
+                    <label class="mb-1 block text-sm font-semibold text-slate-700" data-i18n="starting_price">መነሻ ዋጋ</label>
+                    <input type="number" required class="h-11 w-full rounded-lg border border-slate-200 px-3 text-sm outline-none focus:border-zillow focus:ring-2 focus:ring-zillow/20">
                 </div>
-
-                <div class="form-group">
-                    <label data-i18n="tender_doc">የጨረታ ሰነድ (PDF, Word)</label>
-                    <input type="file" id="tenderDoc" accept=".pdf,.doc,.docx,.zip">
+                <div>
+                    <label class="mb-1 block text-sm font-semibold text-slate-700" data-i18n="closing_date">የሚጠናቀቀቅበት ቀን</label>
+                    <input type="date" required class="h-11 w-full rounded-lg border border-slate-200 px-3 text-sm outline-none focus:border-zillow focus:ring-2 focus:ring-zillow/20">
                 </div>
-                
-                <button type="submit" class="btn" data-i18n="post">ጨረታውን ይለጥፉ</button>
+                <div>
+                    <label class="mb-1 block text-sm font-semibold text-slate-700" data-i18n="tender_images">የጨረታ ምስሎች (JPG, PNG)</label>
+                    <input type="file" id="tenderImages" accept="image/jpeg, image/png" multiple onchange="previewImages(this)" class="w-full rounded-lg border border-dashed border-slate-300 bg-slate-50 px-3 py-2 text-sm file:mr-2 file:rounded file:border-0 file:bg-zillow file:px-3 file:py-1.5 file:text-xs file:font-bold file:text-white">
+                    <div class="image-preview-container mt-2 flex flex-wrap gap-2" id="imagePreview"></div>
+                </div>
+                <div>
+                    <label class="mb-1 block text-sm font-semibold text-slate-700" data-i18n="tender_doc">የጨረታ ሰነድ (PDF, Word)</label>
+                    <input type="file" id="tenderDoc" accept=".pdf,.doc,.docx,.zip" class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm">
+                </div>
+                <button type="submit" class="w-full rounded-xl bg-zillow py-3 text-sm font-bold text-white transition hover:bg-zillow-dark" data-i18n="post">ጨረታውን ይለጥፉ</button>
             </form>
         </div>
     </div>
 
-    <div id="vendors" class="page">
-        <div class="section">
-            <h2 data-i18n="register_vendor">የአቅራቢዎች ምዝገባ</h2>
-            <form>
-                <div class="form-group"><label data-i18n="company_name">የድርጅት ስም</label><input type="text" required></div>
-                <button type="submit" class="btn" data-i18n="register">ይመዝገቡ</button>
+    <div id="vendors" class="banks-page">
+        <div class="mx-auto max-w-2xl rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+            <h2 class="text-xl font-bold text-slate-900" data-i18n="register_vendor">የአቅራቢዎች ምዝገባ</h2>
+            <form class="mt-6 space-y-4">
+                <div>
+                    <label class="mb-1 block text-sm font-semibold text-slate-700" data-i18n="company_name">የድርጅት ስም</label>
+                    <input type="text" required class="h-11 w-full rounded-lg border border-slate-200 px-3 text-sm outline-none focus:border-zillow focus:ring-2 focus:ring-zillow/20">
+                </div>
+                <button type="submit" class="w-full rounded-xl bg-zillow py-3 text-sm font-bold text-white transition hover:bg-zillow-dark" data-i18n="register">ይመዝገቡ</button>
             </form>
         </div>
     </div>
+</main>
+
+<nav class="tb-mobile-nav md:hidden" aria-label="Primary mobile">
+    <div class="tb-mobile-nav__inner">
+        <a href="index.html/index.html"><i class="fa-solid fa-house font-normal" aria-hidden="true"></i><span>Home</span></a>
+        <a href="buy.html"><i class="fa-solid fa-building font-normal" aria-hidden="true"></i><span>Listings</span></a>
+        <a href="index.html/index.html#developers-section"><i class="fa-solid fa-handshake font-normal" aria-hidden="true"></i><span>Developers</span></a>
+        <a href="dashboard.html"><i class="fa-solid fa-heart font-normal" aria-hidden="true"></i><span>Saved</span></a>
+        <a href="dashboard.html"><i class="fa-solid fa-comments font-normal" aria-hidden="true"></i><span>Chat</span></a>
+        <button type="button" onclick="toggleSidebar()"><i class="fa-solid fa-bars font-normal" aria-hidden="true"></i><span>Menu</span></button>
+    </div>
+</nav>
+
 </div>
 
-<script type="module" src="/js/pages/banks-page.js"></script>
+<script>
+    const translations = {
+        am: {
+            dashboard: "ዳሽቦርድ", tenders_list: "የጨረታዎች ዝርዝር", list_desc: "ሁሉም በስርዓቱ ውስጥ ያሉ ንቁ ጨረታዎች።",
+            post_tender: "ጨረታ ይለጥፉ", register_vendor: "አቅራቢ ይመዝግቡ", logout: "መውጫ",
+            welcome: "ወደ Tamagn Bet በሰላም መጡ!", in_progress: "በሂደት ላይ", completed: "የተጠናቀቀ",
+            house_tender: "የቤት ጨረታ", car_tender: "የመኪና ጨረታ", stationery_tender: "የፅህፈት መሳሪያ",
+            elec_tender: "የኢሌክትሮኒክ ጨረታ", office_tender: "የቢሮ እቃወች", title: "የጨረታ ርዕስ",
+            category: "ምድብ", post: "ጨረታውን ይለጥፉ", company_name: "የድርጅት ስም", register: "ይመዝገቡ",
+            bank_name: "ባንክ ይምረጡ", tender_cats: "የጨረታ ምድቦች", actions: "ተግባራት",
+            starting_price: "መነሻ ዋጋ", closing_date: "የሚጠናቀቀቅበት ቀን",
+            tender_images: "የጨረታ ምስሎች (JPG, PNG)", tender_doc: "የጨረታ ሰነድ (PDF, Word)",
+            desc_house: "ቦሌ ለቡ አካባቢ የሚገኝ መኖሪያ ቤት ጨረታ ቁጥር 001።", desc_car: "Toyota Hilux 2022 ሞዴል፣ በጥሩ ሁኔታ ላይ የሚገኝ።",
+            desc_stationery: "የ2017 በጀት ዓመት የቢሮ ስቴሽነሪ አቅርቦቶች።", desc_elec: "የላፕቶፕ እና የዴስክቶፕ ኮምፒውተሮች ግዢ።",
+            desc_office: "የቢሮ ወንበሮች፣ ጠረጴዛዎች እና ካቢኔቶች።"
+        },
+        en: {
+            dashboard: "Dashboard", tenders_list: "Tenders List", list_desc: "All active tenders in the system.",
+            post_tender: "Post Tender", register_vendor: "Register Vendor", logout: "Logout",
+            welcome: "Welcome to Tamagn Bet!", in_progress: "In Progress", completed: "Completed",
+            house_tender: "House Tender", car_tender: "Car Tender", stationery_tender: "Stationery Tender",
+            elec_tender: "Electronics Tender", office_tender: "Office Supplies", title: "Tender Title",
+            category: "Category", post: "Post Tender", company_name: "Company Name", register: "Register",
+            bank_name: "Select Bank", tender_cats: "Tender Categories", actions: "Actions",
+            starting_price: "Starting Price", closing_date: "Closing Date",
+            tender_images: "Tender Images (JPG, PNG)", tender_doc: "Tender Document (PDF, Word)",
+            desc_house: "Residential house at Bole Lebu, Tender No 001.", desc_car: "Toyota Hilux 2022 model, in good condition.",
+            desc_stationery: "2017 Fiscal year office supplies.", desc_elec: "Procurement of laptops and desktops.",
+            desc_office: "Office chairs, desks and cabinets."
+        }
+    };
+
+    let currentLang = 'am';
+
+    function toggleSidebar() {
+        var sb = document.getElementById('sidebar');
+        var ov = document.getElementById('banks-overlay');
+        if (sb) sb.classList.toggle('active');
+        if (ov) ov.classList.toggle('hidden');
+    }
+
+    function showPage(pageId) {
+        document.querySelectorAll('.banks-page').forEach(function (p) { p.classList.remove('active'); });
+        var el = document.getElementById(pageId);
+        if (el) el.classList.add('active');
+        if (window.innerWidth <= 768) toggleSidebar();
+    }
+
+    function toggleLanguage() {
+        currentLang = (currentLang === 'am') ? 'en' : 'am';
+        var lb = document.getElementById('lang-btn');
+        if (lb) lb.textContent = (currentLang === 'am') ? 'English' : 'አማርኛ';
+        document.querySelectorAll('[data-i18n]').forEach(function (el) {
+            var key = el.getAttribute('data-i18n');
+            if (translations[currentLang][key]) el.textContent = translations[currentLang][key];
+        });
+    }
+
+    function previewImages(input) {
+        var previewContainer = document.getElementById('imagePreview');
+        if (!previewContainer) return;
+        previewContainer.innerHTML = '';
+        if (input.files) {
+            Array.from(input.files).forEach(function (file) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    var previewItem = document.createElement('div');
+                    previewItem.className = 'relative h-20 w-20 overflow-hidden rounded-lg border border-slate-200';
+                    var img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className = 'h-full w-full object-cover';
+                    previewItem.appendChild(img);
+                    previewContainer.appendChild(previewItem);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+    }
+
+    function banksCalcMortgage() {
+        var principal = parseFloat(document.getElementById('mc-price').value) || 0;
+        var annualRate = parseFloat(document.getElementById('mc-rate').value) || 0;
+        var years = parseFloat(document.getElementById('mc-years').value) || 0;
+        var out = document.getElementById('mc-result');
+        if (!out || principal <= 0 || years <= 0) {
+            if (out) out.textContent = '—';
+            return;
+        }
+        var r = annualRate / 100 / 12;
+        var n = years * 12;
+        var payment;
+        if (r === 0) payment = principal / n;
+        else payment = principal * r / (1 - Math.pow(1 + r, -n));
+        out.textContent = payment.toLocaleString(undefined, { maximumFractionDigits: 2 }) + ' ETB/mo';
+    }
+
+    document.getElementById('tenderForm') && document.getElementById('tenderForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+    });
+</script>
+    <script type="module" src="/js/chatbot.js"></script>
 </body>
 </html>

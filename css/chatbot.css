@@ -1,0 +1,149 @@
+/* Tamagn Bet — global floating AI chat (sticky/fixed; clears mobile bottom nav) */
+.chatbot-wrapper {
+    position: fixed;
+    right: 1rem;
+    bottom: calc(4.75rem + 1.25rem + env(safe-area-inset-bottom, 0px));
+    z-index: 9500;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Inter", sans-serif;
+}
+
+@media (min-width: 768px) {
+    .chatbot-wrapper {
+        right: 1.875rem;
+        bottom: 1.875rem;
+    }
+}
+
+.chat-trigger {
+    width: 60px;
+    height: 60px;
+    background-color: #006aff;
+    color: white;
+    border-radius: 50%;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.chat-trigger svg {
+    width: 1.35rem;
+    height: 1.35rem;
+    fill: currentColor;
+}
+
+.chat-box {
+    position: absolute;
+    bottom: 80px;
+    right: 0;
+    width: 300px;
+    height: 400px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid #eaeaea;
+}
+
+.chat-box.active {
+    display: flex;
+}
+
+.chat-header {
+    background: #006aff;
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+}
+
+.chat-header button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0 0 0 8px;
+}
+
+.chat-body {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    background: #f8f9fa;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.bot-msg,
+.user-msg {
+    padding: 10px;
+    border-radius: 8px;
+    max-width: 85%;
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+.bot-msg {
+    background: #e9ecef;
+    align-self: flex-start;
+    color: #333;
+}
+
+.user-msg {
+    background: #006aff;
+    color: white;
+    align-self: flex-end;
+}
+
+.chat-footer {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-top: 1px solid #eee;
+}
+
+.chat-footer input {
+    flex: 1;
+    border: none;
+    padding: 8px;
+    outline: none;
+    min-width: 0;
+}
+
+.chat-footer button.send-btn {
+    background: none;
+    border: none;
+    color: #006aff;
+    cursor: pointer;
+    font-weight: 600;
+    padding: 6px 8px;
+}
+
+.chat-footer .send-icon {
+    background: none;
+    border: none;
+    color: #006aff;
+    cursor: pointer;
+    padding: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chat-footer .send-icon svg {
+    width: 1rem;
+    height: 1rem;
+    fill: currentColor;
+}

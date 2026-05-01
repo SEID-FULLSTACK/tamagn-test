@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tamagn Bet | Agent Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ["Inter", "system-ui", "sans-serif"] }
+                }
+            }
+        };
+    </script>
+    <link rel="stylesheet" href="/css/global-nav.css">
+    <link rel="stylesheet" href="/css/chatbot.css">
+    <style>
+        .agent-sidebar { transition: left 0.3s ease-out; }
+        .agent-sidebar.active { left: 0; }
+        .agent-step { display: none; }
+        .agent-step.active { display: block; }
+    </style>
+</head>
+<body class="tb-mobile-nav-page-pad min-h-screen bg-white font-sans text-slate-800 antialiased md:pb-0">
+
+<!-- Global vertical rail (matches site) -->
+<aside class="fixed left-0 top-0 z-[90] hidden h-screen w-16 flex-col border-r border-gray-200 bg-white md:flex md:w-20" aria-label="Site navigation">
+    <a href="index.html/index.html" class="logo-container logo-container--rail" aria-label="Tamagn Bet Home">
+        <img src="/image/tamagn_logo.PNG" alt="" width="280" height="112" loading="eager" decoding="async" />
+    </a>
+    <nav class="flex flex-col items-stretch px-1.5 pb-4 pt-2" aria-label="Primary">
+        <a href="index.html/index.html" class="group flex flex-col items-center gap-0.5 rounded-lg py-2.5 text-center text-[10px] font-semibold leading-tight text-gray-500 transition hover:text-[#006AFF]">
+            <i class="fas fa-house text-[1.125rem] font-normal leading-none text-gray-400 transition group-hover:text-[#006AFF]" aria-hidden="true"></i>
+            <span class="max-w-[4.25rem] truncate">Home</span>
+        </a>
+        <a href="buy.html" class="group flex flex-col items-center gap-0.5 rounded-lg py-2.5 text-center text-[10px] font-semibold leading-tight text-gray-500 transition hover:text-[#006AFF]">
+            <i class="fas fa-building text-[1.125rem] font-normal leading-none text-gray-400 transition group-hover:text-[#006AFF]" aria-hidden="true"></i>
+            <span class="max-w-[4.25rem] truncate">Listings</span>
+        </a>
+        <a href="dashboard.html" class="group flex flex-col items-center gap-0.5 rounded-lg py-2.5 text-center text-[10px] font-semibold leading-tight text-gray-500 transition hover:text-[#006AFF]">
+            <i class="fas fa-heart text-[1.125rem] font-normal leading-none text-gray-400 transition group-hover:text-[#006AFF]" aria-hidden="true"></i>
+            <span class="max-w-[4.25rem] truncate">Saved</span>
+        </a>
+        <a href="dashboard.html" class="group flex flex-col items-center gap-0.5 rounded-lg py-2.5 text-center text-[10px] font-semibold leading-tight text-gray-500 transition hover:text-[#006AFF]">
+            <i class="fas fa-comments text-[1.125rem] font-normal leading-none text-gray-400 transition group-hover:text-[#006AFF]" aria-hidden="true"></i>
+            <span class="max-w-[4.25rem] truncate">Chat</span>
+        </a>
+        <button type="button" class="group flex w-full flex-col items-center gap-0.5 rounded-lg py-2.5 text-center text-[10px] font-semibold leading-tight text-gray-500 transition hover:text-[#006AFF]" onclick="toggleAgentDrawer()" aria-label="Open menu">
+            <i class="fas fa-bars text-[1.125rem] font-normal leading-none text-gray-400 transition group-hover:text-[#006AFF]" aria-hidden="true"></i>
+            <span class="max-w-[4.25rem] truncate">Menu</span>
+        </button>
+    </nav>
+</aside>
+
+<div class="relative flex min-h-screen min-w-0 flex-1 flex-col md:ml-20">
+
+<header class="sticky top-0 z-[100] border-b border-gray-200 bg-white shadow-sm">
+    <div class="relative mx-auto flex min-h-[6.5rem] max-w-7xl items-center justify-between gap-4 px-4 py-2 sm:min-h-[7.5rem] sm:px-6 lg:px-8">
+        <div class="flex items-center gap-3">
+            <button type="button" class="flex h-10 w-10 items-center justify-center rounded-lg text-slate-700 transition hover:bg-slate-100 md:hidden" onclick="toggleAgentDrawer()" aria-label="Open menu">
+                <i class="fas fa-bars text-lg" aria-hidden="true"></i>
+            </button>
+            <nav class="hidden items-center gap-1 md:flex lg:gap-2" aria-label="Desktop quick links">
+                <a href="index.html/index.html" class="whitespace-nowrap rounded-full px-3 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-[#006AFF]">Home</a>
+                <a href="buy.html" class="whitespace-nowrap rounded-full px-3 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-[#006AFF]">Listings</a>
+                <a href="dashboard.html" class="whitespace-nowrap rounded-full px-3 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-[#006AFF]">Saved</a>
+                <a href="dashboard.html" class="whitespace-nowrap rounded-full px-3 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-[#006AFF]">Chat</a>
+            </nav>
+        </div>
+        <a href="index.html/index.html" class="logo-container absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" aria-label="Tamagn Bet Home">
+            <img src="/image/tamagn_logo.PNG" alt="Tamagn Bet" width="400" height="160" loading="eager" decoding="async" />
+        </a>
+        <div class="flex items-center gap-2 sm:gap-3">
+            <span class="hidden rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-slate-700 sm:inline">Agents</span>
+            <a href="login.html" class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:border-[#006AFF] hover:text-[#006AFF]">Sign in</a>
+        </div>
+    </div>
+</header>
+
+<!-- Slide-over (consistent Menu pattern; no backend) -->
+<div id="agent-drawer" class="agent-sidebar fixed left-[-280px] top-0 z-[110] flex h-full w-[260px] max-w-[85vw] flex-col border-r border-slate-200 bg-white shadow-xl sm:w-[280px]">
+    <div class="flex items-center justify-between border-b border-slate-100 px-4 py-3">
+        <span class="text-xs font-bold uppercase tracking-wide text-slate-500">Menu</span>
+        <button type="button" class="rounded-lg p-2 text-slate-500 hover:bg-slate-100" onclick="toggleAgentDrawer()" aria-label="Close">&larr;</button>
+    </div>
+    <div class="flex-1 overflow-y-auto py-2">
+        <a href="index.html/index.html" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50"><i class="fas fa-house w-5 text-center text-slate-400" aria-hidden="true"></i> Home</a>
+        <a href="about.html" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50"><i class="fas fa-circle-info w-5 text-center text-slate-400" aria-hidden="true"></i> About Tamagn</a>
+        <a href="privacy.html" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50"><i class="fas fa-shield-halved w-5 text-center text-slate-400" aria-hidden="true"></i> Privacy</a>
+        <a href="login.html" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-[#006AFF] hover:bg-slate-50"><i class="fas fa-right-to-bracket w-5 text-center" aria-hidden="true"></i> Sign in</a>
+    </div>
+</div>
+<div id="agent-overlay" class="fixed inset-0 z-[105] hidden bg-slate-900/40 md:hidden" onclick="toggleAgentDrawer()" aria-hidden="true"></div>
+
+<main class="mx-auto w-full max-w-7xl flex-1 px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+        <p class="text-center text-xs font-bold uppercase tracking-[0.12em] text-[#006AFF]">Professional agents</p>
+        <h1 class="mt-3 text-center text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">Agent registration</h1>
+        <p class="mx-auto mt-4 max-w-xl text-center text-sm leading-relaxed text-slate-600">Join the Tamagn network with a verified profile. Your documents are used only for platform trust and compliance.</p>
+
+        <div id="registration-flow">
+        <!-- Progress -->
+        <div class="mt-12 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+            <div class="flex items-center justify-between gap-2 text-xs font-semibold text-slate-500 sm:text-sm">
+                <span id="progress-label">Step <span id="step-num">1</span> of 4</span>
+                <span id="progress-pct" aria-live="polite">25%</span>
+            </div>
+            <div class="mt-3 h-2 overflow-hidden rounded-full bg-slate-100" role="progressbar" aria-valuemin="1" aria-valuemax="4" aria-valuenow="1" id="progress-bar-wrap">
+                <div id="progress-fill" class="h-full rounded-full bg-[#006AFF] transition-[width] duration-300 ease-out" style="width: 25%"></div>
+            </div>
+            <ol class="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+                <li class="step-pill rounded-xl border px-3 py-2 text-center text-[11px] font-semibold sm:text-xs" data-step-indicator="1">1 · Basics</li>
+                <li class="step-pill rounded-xl border px-3 py-2 text-center text-[11px] font-semibold sm:text-xs" data-step-indicator="2">2 · Verify</li>
+                <li class="step-pill rounded-xl border px-3 py-2 text-center text-[11px] font-semibold sm:text-xs" data-step-indicator="3">3 · Expertise</li>
+                <li class="step-pill rounded-xl border px-3 py-2 text-center text-[11px] font-semibold sm:text-xs" data-step-indicator="4">4 · Payout</li>
+            </ol>
+        </div>
+
+        <form id="agent-form" class="mt-8" novalidate>
+            <!-- Step 1 -->
+            <section class="agent-step active rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-10" data-step="1" aria-labelledby="step1-title">
+                <h2 id="step1-title" class="text-lg font-bold text-slate-900 sm:text-xl">Basic information</h2>
+                <p class="mt-2 text-sm text-slate-600">How clients and Tamagn will recognize you on the platform.</p>
+                <div class="mt-10 space-y-8">
+                    <div>
+                        <label for="full-name" class="mb-2 block text-sm font-semibold text-slate-700">Full name</label>
+                        <input type="text" id="full-name" name="fullName" required autocomplete="name" placeholder="As shown on your ID"
+                            class="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm outline-none transition placeholder:text-slate-400 focus:border-[#006AFF] focus:ring-2 focus:ring-[#006AFF]/20" />
+                    </div>
+                    <div>
+                        <label for="phone" class="mb-2 block text-sm font-semibold text-slate-700">Phone</label>
+                        <input type="tel" id="phone" name="phone" required autocomplete="tel" placeholder="+251 9…"
+                            class="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm outline-none transition placeholder:text-slate-400 focus:border-[#006AFF] focus:ring-2 focus:ring-[#006AFF]/20" />
+                    </div>
+                    <div>
+                        <label for="email" class="mb-2 block text-sm font-semibold text-slate-700">Work email</label>
+                        <input type="email" id="email" name="email" required autocomplete="email" placeholder="you@agency.com"
+                            class="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm outline-none transition placeholder:text-slate-400 focus:border-[#006AFF] focus:ring-2 focus:ring-[#006AFF]/20" />
+                    </div>
+                    <div>
+                        <span class="mb-2 block text-sm font-semibold text-slate-700">Profile photo</span>
+                        <div class="flex flex-col items-start gap-6 sm:flex-row sm:items-center">
+                            <div id="photo-preview-wrap" class="flex h-28 w-28 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-dashed border-slate-300 bg-slate-50 shadow-sm">
+                                <img id="photo-preview" src="" alt="" class="hidden h-full w-full object-cover" />
+                                <i id="photo-placeholder" class="fas fa-user text-3xl text-slate-300" aria-hidden="true"></i>
+                            </div>
+                            <div class="min-w-0 flex-1">
+                                <label for="profile-photo" class="inline-flex cursor-pointer items-center justify-center rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50">Choose image</label>
+                                <input type="file" id="profile-photo" name="profilePhoto" accept="image/jpeg,image/png,image/webp" class="sr-only" />
+                                <p class="mt-3 text-xs text-slate-500">JPG or PNG, max 5 MB recommended. This appears on your public profile.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 2 -->
+            <section class="agent-step rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-10" data-step="2" aria-labelledby="step2-title">
+                <h2 id="step2-title" class="text-lg font-bold text-slate-900 sm:text-xl">Verification for Tamagn</h2>
+                <p class="mt-2 text-sm text-slate-600">We require a valid <strong class="font-semibold text-slate-800">business license</strong> or <strong class="font-semibold text-slate-800">professional ID</strong> so buyers can trust who represents them.</p>
+                <div class="mt-8 rounded-xl border border-[#006AFF]/20 bg-[#006AFF]/[0.06] p-4 text-sm text-slate-700 shadow-sm">
+                    <p class="flex gap-2"><i class="fas fa-lock mt-0.5 text-[#006AFF]" aria-hidden="true"></i><span>Uploads are encrypted in transit. Review timelines are communicated after submission—no automated decision is shown on this demo.</span></p>
+                </div>
+                <fieldset class="mt-10 space-y-4">
+                    <legend class="mb-2 text-sm font-semibold text-slate-700">Document type</legend>
+                    <label class="flex cursor-pointer items-start gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition has-[:checked]:border-[#006AFF] has-[:checked]:ring-1 has-[:checked]:ring-[#006AFF]">
+                        <input type="radio" name="verifyType" value="license" class="mt-1 text-[#006AFF]" checked />
+                        <span><span class="font-semibold text-slate-900">Business license</span><span class="mt-1 block text-xs text-slate-600">Trade or brokerage registration document (PDF or clear photo).</span></span>
+                    </label>
+                    <label class="flex cursor-pointer items-start gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition has-[:checked]:border-[#006AFF] has-[:checked]:ring-1 has-[:checked]:ring-[#006AFF]">
+                        <input type="radio" name="verifyType" value="professional" class="mt-1 text-[#006AFF]" />
+                        <span><span class="font-semibold text-slate-900">Professional ID</span><span class="mt-1 block text-xs text-slate-600">Association card, government-issued practitioner ID, or equivalent.</span></span>
+                    </label>
+                </fieldset>
+                <div class="mt-8">
+                    <label for="verify-file" class="mb-2 block text-sm font-semibold text-slate-700">Upload document</label>
+                    <input type="file" id="verify-file" name="verifyFile" accept=".pdf,image/jpeg,image/png,image/webp" required
+                        class="w-full rounded-xl border border-dashed border-slate-300 bg-slate-50/80 px-4 py-4 text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-[#006AFF] file:px-4 file:py-2 file:text-xs file:font-bold file:text-white" />
+                    <p class="mt-2 text-xs text-slate-500">PDF, JPG, or PNG. Ensure text is legible.</p>
+                </div>
+            </section>
+
+            <!-- Step 3 -->
+            <section class="agent-step rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-10" data-step="3" aria-labelledby="step3-title">
+                <h2 id="step3-title" class="text-lg font-bold text-slate-900 sm:text-xl">Expertise &amp; coverage</h2>
+                <p class="mt-2 text-sm text-slate-600">Select the areas and property types where you primarily work. You can refine these later with your success manager.</p>
+                <fieldset class="mt-10">
+                    <legend class="mb-4 text-sm font-semibold text-slate-700">Primary neighborhoods / areas</legend>
+                    <div class="grid gap-3 sm:grid-cols-2">
+                        <label class="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm shadow-sm transition hover:border-slate-300 has-[:checked]:border-[#006AFF] has-[:checked]:bg-[#006AFF]/5">
+                            <input type="checkbox" name="areas" value="bole" class="rounded text-[#006AFF]" />
+                            <span>Bole</span>
+                        </label>
+                        <label class="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm shadow-sm transition hover:border-slate-300 has-[:checked]:border-[#006AFF] has-[:checked]:bg-[#006AFF]/5">
+                            <input type="checkbox" name="areas" value="kazanchis" class="rounded text-[#006AFF]" />
+                            <span>Kazanchis</span>
+                        </label>
+                        <label class="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm shadow-sm transition hover:border-slate-300 has-[:checked]:border-[#006AFF] has-[:checked]:bg-[#006AFF]/5">
+                            <input type="checkbox" name="areas" value="sar-bet" class="rounded text-[#006AFF]" />
+                            <span>Sarbet / 22</span>
+                        </label>
+                        <label class="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm shadow-sm transition hover:border-slate-300 has-[:checked]:border-[#006AFF] has-[:checked]:bg-[#006AFF]/5">
+                            <input type="checkbox" name="areas" value="lebu" class="rounded text-[#006AFF]" />
+                            <span>Bole Lemi / Lebu</span>
+                        </label>
+                        <label class="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm shadow-sm transition hover:border-slate-300 has-[:checked]:border-[#006AFF] has-[:checked]:bg-[#006AFF]/5">
+                            <input type="checkbox" name="areas" value="cmc" class="rounded text-[#006AFF]" />
+                            <span>CMC / Megenagna</span>
+                        </label>
+                        <label class="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm shadow-sm transition hover:border-slate-300 has-[:checked]:border-[#006AFF] has-[:checked]:bg-[#006AFF]/5">
+                            <input type="checkbox" name="areas" value="lideta" class="rounded text-[#006AFF]" />
+                            <span>Lideta / Merkato</span>
+                        </label>
+                        <label class="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm shadow-sm transition hover:border-slate-300 has-[:checked]:border-[#006AFF] has-[:checked]:bg-[#006AFF]/5 sm:col-span-2">
+                            <input type="checkbox" name="areas" value="piassa" class="rounded text-[#006AFF]" />
+                            <span>Piassa / Arada</span>
+                        </label>
+                    </div>
+                </fieldset>
+                <fieldset class="mt-10">
+                    <legend class="mb-4 text-sm font-semibold text-slate-700">Property types</legend>
+                    <div class="grid gap-3 sm:grid-cols-2">
+                        <label class="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm shadow-sm transition hover:border-slate-300 has-[:checked]:border-[#006AFF] has-[:checked]:bg-[#006AFF]/5">
+                            <input type="checkbox" name="propTypes" value="house-villa" class="rounded text-[#006AFF]" />
+                            <span>House / Villa</span>
+                        </label>
+                        <label class="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm shadow-sm transition hover:border-slate-300 has-[:checked]:border-[#006AFF] has-[:checked]:bg-[#006AFF]/5">
+                            <input type="checkbox" name="propTypes" value="apartment" class="rounded text-[#006AFF]" />
+                            <span>Apartment / Condo</span>
+                        </label>
+                        <label class="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm shadow-sm transition hover:border-slate-300 has-[:checked]:border-[#006AFF] has-[:checked]:bg-[#006AFF]/5">
+                            <input type="checkbox" name="propTypes" value="land" class="rounded text-[#006AFF]" />
+                            <span>Land / G+ plots</span>
+                        </label>
+                        <label class="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm shadow-sm transition hover:border-slate-300 has-[:checked]:border-[#006AFF] has-[:checked]:bg-[#006AFF]/5">
+                            <input type="checkbox" name="propTypes" value="commercial" class="rounded text-[#006AFF]" />
+                            <span>Commercial</span>
+                        </label>
+                        <label class="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm shadow-sm transition hover:border-slate-300 has-[:checked]:border-[#006AFF] has-[:checked]:bg-[#006AFF]/5 sm:col-span-2">
+                            <input type="checkbox" name="propTypes" value="luxury" class="rounded text-[#006AFF]" />
+                            <span>Luxury / high-end</span>
+                        </label>
+                    </div>
+                </fieldset>
+            </section>
+
+            <!-- Step 4 -->
+            <section class="agent-step rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-10" data-step="4" aria-labelledby="step4-title">
+                <h2 id="step4-title" class="text-lg font-bold text-slate-900 sm:text-xl">Bank details <span class="text-sm font-normal text-slate-500">(optional)</span></h2>
+                <p class="mt-2 text-sm text-slate-600">For future commission payouts you may add payout instructions now or complete them after approval.</p>
+                <div class="mt-10 space-y-8">
+                    <div>
+                        <label for="bank-name" class="mb-2 block text-sm font-semibold text-slate-700">Bank name</label>
+                        <select id="bank-name" name="bankName" class="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm outline-none focus:border-[#006AFF] focus:ring-2 focus:ring-[#006AFF]/20">
+                            <option value="">Skip for now</option>
+                            <option value="cbe">Commercial Bank of Ethiopia (CBE)</option>
+                            <option value="abyssinia">Bank of Abyssinia</option>
+                            <option value="awash">Awash Bank</option>
+                            <option value="dashen">Dashen Bank</option>
+                            <option value="nib">Nib International Bank</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="account-holder" class="mb-2 block text-sm font-semibold text-slate-700">Account holder name</label>
+                        <input type="text" id="account-holder" name="accountHolder" autocomplete="name" placeholder="Match bank records"
+                            class="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm outline-none transition placeholder:text-slate-400 focus:border-[#006AFF] focus:ring-2 focus:ring-[#006AFF]/20" />
+                    </div>
+                    <div>
+                        <label for="account-number" class="mb-2 block text-sm font-semibold text-slate-700">Account number</label>
+                        <input type="text" id="account-number" name="accountNumber" inputmode="numeric" autocomplete="off" placeholder="Optional"
+                            class="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm outline-none transition placeholder:text-slate-400 focus:border-[#006AFF] focus:ring-2 focus:ring-[#006AFF]/20" />
+                    </div>
+                    <div>
+                        <label for="branch" class="mb-2 block text-sm font-semibold text-slate-700">Branch / reference</label>
+                        <input type="text" id="branch" name="branch" placeholder="Optional"
+                            class="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm outline-none transition placeholder:text-slate-400 focus:border-[#006AFF] focus:ring-2 focus:ring-[#006AFF]/20" />
+                    </div>
+                </div>
+            </section>
+
+            <div id="form-actions" class="mt-10 flex flex-col-reverse gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <button type="button" id="btn-back" class="hidden w-full rounded-xl border border-slate-200 bg-white px-6 py-3.5 text-base font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 sm:w-auto">Back</button>
+                <div class="flex w-full flex-col gap-3 sm:ml-auto sm:w-auto sm:flex-row">
+                    <button type="button" id="btn-next" class="w-full rounded-xl bg-[#006AFF] px-8 py-3.5 text-base font-bold text-white shadow-sm transition hover:bg-[#0053B3] sm:min-w-[200px]">Continue</button>
+                    <button type="submit" id="btn-submit" class="hidden w-full rounded-xl bg-[#006AFF] px-8 py-3.5 text-base font-bold text-white shadow-sm transition hover:bg-[#0053B3] sm:min-w-[200px]">Submit application</button>
+                </div>
+            </div>
+        </form>
+        </div>
+
+        <div id="success-panel" class="mt-10 hidden rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-sm sm:p-12" role="status">
+            <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-[#006AFF]/10 text-2xl text-[#006AFF]">
+                <i class="fas fa-check" aria-hidden="true"></i>
+            </div>
+            <h2 class="mt-6 text-xl font-bold text-slate-900">Application ready to send</h2>
+            <p class="mt-3 text-sm text-slate-600">Backend integration is not wired on this page—your details stay in the browser only. Connect your API here when ready.</p>
+            <a href="index.html/index.html" class="mt-8 inline-flex rounded-xl bg-[#006AFF] px-8 py-3.5 text-base font-bold text-white shadow-sm transition hover:bg-[#0053B3]">Back to home</a>
+        </div>
+    </div>
+</main>
+
+<nav class="tb-mobile-nav md:hidden" aria-label="Primary mobile">
+    <div class="tb-mobile-nav__inner">
+        <a href="index.html/index.html"><i class="fa-solid fa-house font-normal" aria-hidden="true"></i><span>Home</span></a>
+        <a href="buy.html"><i class="fa-solid fa-building font-normal" aria-hidden="true"></i><span>Listings</span></a>
+        <a href="index.html/index.html#developers-section"><i class="fa-solid fa-handshake font-normal" aria-hidden="true"></i><span>Developers</span></a>
+        <a href="dashboard.html"><i class="fa-solid fa-heart font-normal" aria-hidden="true"></i><span>Saved</span></a>
+        <a href="dashboard.html"><i class="fa-solid fa-comments font-normal" aria-hidden="true"></i><span>Chat</span></a>
+        <button type="button" onclick="toggleAgentDrawer()"><i class="fa-solid fa-bars font-normal" aria-hidden="true"></i><span>Menu</span></button>
+    </div>
+</nav>
+
+</div>
+
+<script>
+(function () {
+    var currentStep = 1;
+    var totalSteps = 4;
+
+    function toggleAgentDrawer() {
+        var d = document.getElementById("agent-drawer");
+        var o = document.getElementById("agent-overlay");
+        if (d) d.classList.toggle("active");
+        if (o) o.classList.toggle("hidden");
+    }
+    window.toggleAgentDrawer = toggleAgentDrawer;
+
+    function updateUI() {
+        var pct = Math.round((currentStep / totalSteps) * 100);
+        document.getElementById("step-num").textContent = String(currentStep);
+        document.getElementById("progress-pct").textContent = pct + "%";
+        var fill = document.getElementById("progress-fill");
+        if (fill) fill.style.width = pct + "%";
+        var bar = document.getElementById("progress-bar-wrap");
+        if (bar) bar.setAttribute("aria-valuenow", String(currentStep));
+
+        document.querySelectorAll(".agent-step").forEach(function (el) {
+            var s = parseInt(el.getAttribute("data-step"), 10);
+            el.classList.toggle("active", s === currentStep);
+        });
+
+        document.querySelectorAll("[data-step-indicator]").forEach(function (el) {
+            var s = parseInt(el.getAttribute("data-step-indicator"), 10);
+            el.classList.remove("border-slate-200", "border-[#006AFF]", "bg-white", "bg-slate-50/80", "bg-[#006AFF]/5", "text-slate-500", "text-slate-700", "text-slate-900", "ring-1", "ring-[#006AFF]/30");
+            if (s < currentStep) {
+                el.classList.add("border-slate-200", "bg-slate-50/80", "text-slate-700");
+            } else if (s === currentStep) {
+                el.classList.add("border-[#006AFF]", "bg-[#006AFF]/5", "text-slate-900", "ring-1", "ring-[#006AFF]/30");
+            } else {
+                el.classList.add("border-slate-200", "bg-white", "text-slate-500");
+            }
+        });
+
+        var back = document.getElementById("btn-back");
+        var next = document.getElementById("btn-next");
+        var submit = document.getElementById("btn-submit");
+        if (back) back.classList.toggle("hidden", currentStep === 1);
+        if (next) next.classList.toggle("hidden", currentStep === totalSteps);
+        if (submit) submit.classList.toggle("hidden", currentStep !== totalSteps);
+    }
+
+    function validateStep(step) {
+        if (step === 1) {
+            var name = document.getElementById("full-name");
+            var phone = document.getElementById("phone");
+            var email = document.getElementById("email");
+            var photo = document.getElementById("profile-photo");
+            if (!name || !name.value.trim()) { name && name.focus(); return false; }
+            if (!phone || !phone.value.trim()) { phone && phone.focus(); return false; }
+            if (!email || !email.value.trim()) { email && email.focus(); return false; }
+            if (!photo || !photo.files || !photo.files.length) { photo && photo.focus(); return false; }
+        }
+        if (step === 2) {
+            var f = document.getElementById("verify-file");
+            if (!f || !f.files || !f.files.length) {
+                f && f.focus();
+                return false;
+            }
+        }
+        if (step === 3) {
+            var areas = document.querySelectorAll('input[name="areas"]:checked');
+            var types = document.querySelectorAll('input[name="propTypes"]:checked');
+            if (!areas.length || !types.length) return false;
+        }
+        return true;
+    }
+
+    document.getElementById("btn-next").addEventListener("click", function () {
+        if (!validateStep(currentStep)) return;
+        if (currentStep < totalSteps) {
+            currentStep++;
+            updateUI();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+    });
+
+    document.getElementById("btn-back").addEventListener("click", function () {
+        if (currentStep > 1) {
+            currentStep--;
+            updateUI();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+    });
+
+    function validateStepsThrough(stepMax) {
+        for (var i = 1; i <= stepMax; i++) {
+            if (!validateStep(i)) return i;
+        }
+        return 0;
+    }
+
+    document.getElementById("agent-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        var failed = validateStepsThrough(3);
+        if (failed) {
+            currentStep = failed;
+            updateUI();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+            return;
+        }
+        var flow = document.getElementById("registration-flow");
+        if (flow) flow.classList.add("hidden");
+        document.getElementById("success-panel").classList.remove("hidden");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    document.getElementById("profile-photo").addEventListener("change", function () {
+        var input = this;
+        var img = document.getElementById("photo-preview");
+        var ph = document.getElementById("photo-placeholder");
+        if (!input.files || !input.files[0]) return;
+        var reader = new FileReader();
+        reader.onload = function (ev) {
+            img.src = ev.target.result;
+            img.classList.remove("hidden");
+            if (ph) ph.classList.add("hidden");
+        };
+        reader.readAsDataURL(input.files[0]);
+    });
+
+    updateUI();
+})();
+</script>
+    <script type="module" src="/js/chatbot.js"></script>
+</body>
+</html>

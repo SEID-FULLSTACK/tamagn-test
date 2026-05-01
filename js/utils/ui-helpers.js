@@ -1,98 +1,41 @@
-const PROPERTY_STATUS_STYLE_ID = "property-status-badge-styles";
-
-const STATUS_CLASS_MAP = {
-    selling: "status-selling",
-    renting: "status-renting",
-    sold: "status-sold"
-};
-
-const DEFAULT_STATUS_LABELS = {
-    selling: "Selling",
-    renting: "Renting",
-    sold: "Sold"
-};
-
 function escapeHtml(value) {
     return String(value ?? "")
         .replaceAll("&", "&amp;")
         .replaceAll("<", "&lt;")
         .replaceAll(">", "&gt;")
-        .replaceAll("\"", "&quot;")
-        .replaceAll("'", "&#39;");
-}
-
-function normalizePropertyStatus(statusValue) {
-    const normalized = String(statusValue || "selling").toLowerCase();
-    return Object.prototype.hasOwnProperty.call(STATUS_CLASS_MAP, normalized) ? normalized : "selling";
+        .replaceAll('"', "&quot;");
 }
 
 export function ensurePropertyStatusBadgeStyles() {
-    if (typeof document === "undefined") {
+    if (document.getElementById("property-status-badge-styles")) {
         return;
     }
-
-    if (document.getElementById(PROPERTY_STATUS_STYLE_ID)) {
-        return;
+    const style = document.createElement("style");
+    style.id = "property-status-badge-styles";
+    style.textContent = `
+    .property-status-badge {
+      position: absolute;
+      top: 0.75rem;
+      left: 0.75rem;
+      z-index: 2;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      padding: 0.3rem 0.65rem;
+      border-radius: 9999px;
+      background: rgba(255,255,255,0.95);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
     }
-
-    const styleElement = document.createElement("style");
-    styleElement.id = PROPERTY_STATUS_STYLE_ID;
-    styleElement.textContent = `
-.tamagn-card,
-.listing-card {
-    position: relative;
+    .property-status-badge--selling { color: #006AFF; }
+    .property-status-badge--renting { color: #059669; }
+    .property-status-badge--sold { color: #6B7280; }
+  `;
+    document.head.appendChild(style);
 }
 
-.property-status-badge {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    z-index: 2;
-    padding: 6px 11px;
-    border-radius: 999px;
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.4px;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.15);
-}
-
-.status-selling {
-    color: #ecfff5;
-    background: linear-gradient(135deg, rgba(16, 185, 129, 0.6), rgba(5, 150, 105, 0.5));
-}
-
-.status-renting {
-    color: #eff7ff;
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.58), rgba(37, 99, 235, 0.48));
-}
-
-.status-sold {
-    color: #fff1f2;
-    background: linear-gradient(135deg, rgba(127, 29, 29, 0.56), rgba(75, 85, 99, 0.56));
-}
-`;
-
-    document.head.appendChild(styleElement);
-}
-
-export function getPropertyStatusBadgeMeta(statusValue, options = {}) {
-    const normalizedStatus = normalizePropertyStatus(statusValue);
-    const labels = options.labels || DEFAULT_STATUS_LABELS;
-    const label = labels[normalizedStatus] || DEFAULT_STATUS_LABELS[normalizedStatus];
-
-    return {
-        status: normalizedStatus,
-        className: STATUS_CLASS_MAP[normalizedStatus],
-        label
-    };
-}
-
-export function renderPropertyStatusBadge(statusValue, options = {}) {
-    const badgeMeta = getPropertyStatusBadgeMeta(statusValue, options);
-
-    return `<span class="property-status-badge ${badgeMeta.className}" data-property-status="${badgeMeta.status}">${escapeHtml(badgeMeta.label)}</span>`;
+export function renderPropertyStatusBadge(status, { labels }) {
+    const normalized = String(status || "selling").toLowerCase();
+    const key = ["selling", "renting", "sold"].includes(normalized) ? normalized : "selling";
+    const label = labels?.[key] ?? labels?.selling ?? key;
+    return `<span class="property-status-badge property-status-badge--${key}">${escapeHtml(label)}</span>`;
 }

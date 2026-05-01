@@ -1,9 +1,11 @@
 import { collection, deleteDoc, doc, getDoc, getDocs, orderBy, or, query, serverTimestamp, updateDoc, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import { auth, db } from "/js/core/firebase.js";
-import { byId, onClickActions, setDisplay, toggleClass } from "./page-utils.js";
+import { auth, db } from "../core/firebase.js";
+import { byId, onClickActions, setDisplay } from "./page-utils.js";
 import { createLanguageToggle } from "./i18n-utils.js";
-import { ensurePropertyStatusBadgeStyles, renderPropertyStatusBadge } from "/js/utils/ui-helpers.js";
+import { mountHybridMortgageCalculator } from "../hybrid-mortgage-calculator.js";
+import { ensurePropertyStatusBadgeStyles, renderPropertyStatusBadge } from "../utils/ui-helpers.js";
+import { resolveListingImageUrl, escapeAttrUrl, listingImageOnerrorAttr } from "../listing-image-utils.js";
 
 let currentUser = auth.currentUser;
 let currentListings = [];
@@ -24,17 +26,72 @@ const activeAssetsCount = byId("active-assets-count");
 const profilePhoto = document.querySelector(".profile-photo");
 let listingsSuccessTimer = null;
 
-function toggleSidebar() {
-    toggleClass(sidebar, "active");
+/** Must match buy.html heart favorites key */
+const FAVORITES_LOCAL_STORAGE_KEY = "tamagn_favorite_listing_ids";
+
+function readFavoriteIdsFromLocalStorage() {
+    try {
+        const raw = localStorage.getItem(FAVORITES_LOCAL_STORAGE_KEY);
+        const arr = raw ? JSON.parse(raw) : [];
+        return new Set(Array.isArray(arr) ? arr : []);
+    } catch {
+        return new Set();
+    }
 }
 
-function showSection(id) {
+function toggleSidebar() {
+    if (!sidebar) {
+        return;
+    }
+    if (window.matchMedia("(min-width: 768px)").matches) {
+        sidebar.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
+        return;
+    }
+    sidebar.classList.toggle("is-open");
+    const open = sidebar.classList.contains("is-open");
+    const backdrop = byId("sidebar-backdrop");
+    if (backdrop) {
+        backdrop.classList.toggle("opacity-0", !open);
+        backdrop.classList.toggle("pointer-events-none", !open);
+    }
+}
+
+function showCalculatorOnOverview() {
+    showSection("overview", { skipMobileSync: true });
+    const anchor = byId("dashboard-hybrid-calculator-anchor");
+    if (anchor) {
+        window.requestAnimationFrame(() => {
+            anchor.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+    }
+    syncDashboardMobileNav("calculator");
+}
+
+function syncDashboardMobileNav(kind, sectionId) {
+    const inner = document.querySelector(".tb-mobile-nav__inner");
+    if (!inner) {
+        return;
+    }
+    inner.querySelectorAll(".tb-mobile-nav__active").forEach((el) => el.classList.remove("tb-mobile-nav__active"));
+    if (kind === "calculator") {
+        inner.querySelector("[data-nav-active=\"calculator\"]")?.classList.add("tb-mobile-nav__active");
+        return;
+    }
+    if (sectionId) {
+        inner.querySelector(`[data-section-id="${sectionId}"]`)?.classList.add("tb-mobile-nav__active");
+    }
+}
+
+function showSection(id, options = {}) {
     document.querySelectorAll(".section").forEach((sec) => sec.classList.remove("active"));
     const section = byId(id);
     if (section) {
         section.classList.add("active");
     }
-    if (window.innerWidth < 768 && sidebar?.classList.contains("active")) {
+    if (!options.skipMobileSync) {
+        syncDashboardMobileNav("section", id);
+    }
+    if (window.innerWidth < 768 && sidebar?.classList.contains("is-open")) {
         toggleSidebar();
     }
 }
@@ -48,7 +105,8 @@ function sendMessage() {
 
     if (input.value.trim() !== "") {
         const msg = document.createElement("div");
-        msg.className = "message-bubble my-message";
+        msg.className =
+            "message-bubble my-message w-fit max-w-[85%] self-end rounded-2xl rounded-br-md bg-zillow px-4 py-2 text-sm font-medium text-white shadow-sm";
         msg.innerText = input.value.trim();
         history.appendChild(msg);
         input.value = "";
@@ -108,6 +166,16 @@ function isSavedByCurrentUser(listing, user = currentUser) {
     return false;
 }
 
+function isListingInUserFavorites(listing, user = currentUser) {
+    if (!listing?.id) {
+        return false;
+    }
+    if (isSavedByCurrentUser(listing, user)) {
+        return true;
+    }
+    return readFavoriteIdsFromLocalStorage().has(listing.id);
+}
+
 function formatPrice(price) {
     const parsed = Number(price);
     if (Number.isNaN(parsed)) {
@@ -121,11 +189,14 @@ const translations = {
     am: {
         post_property: "+ ንብረት ይለጥፉ",
         dashboard: "ዳሽቦርድ",
-        listings: "ንቁ ማስታወቂያዎች",
+        listings: "የእኔ ማስታወቂያዎች",
         saved: "የተቀመጡ ቤቶች",
         messages: "መልእክቶች",
         appointments: "የቀጠሮ ማሳወቂያ",
         loan: "ብድር ማስያ",
+        budget_calculator: "የበጀት ካልኩሌተር",
+        budget_calculator_heading: "የበጀት እና የብድር ካልኩሌተር",
+        budget_calculator_sub: "መደበኛ እና ከወለድ ነፃ (ሙራባሐ) ግምቶች።",
         auctions: "የባንክ ጨረታዎች",
         payments: "የክፍያ ታሪክ",
         logout: "Logout",
@@ -175,16 +246,49 @@ const translations = {
         delete_failed: "ንብረቱን መሰረዝ አልተቻለም።",
         not_allowed: "የራስዎን ንብረት ብቻ ማስተካከል/መሰረዝ ይችላሉ።",
         no_notifications: "ምንም አዲስ ማሳወቂያ የለም",
-        logged_out: "ተሳክቷል ወጥተዋል።"
+        logged_out: "ተሳክቷል ወጥተዋል።",
+        close_menu: "ዝጋ",
+        overview_sub: "የእርስዎ የግል የሪል እስቴት ዳሽቦርድ።",
+        card_saved_searches_title: "የተቀመጡ ፍለጋዎች",
+        card_saved_searches_desc: "የቅርብ ጊዜ ማጣሪያዎን እንደገና ይቀጥሉ።",
+        card_cta: "ክፈት",
+        card_favorites_title: "የምትወዷቸው",
+        card_favorites_desc: "የመረጧቸው ቤቶች በአንድ ቦታ።",
+        card_cta_fav: "የተወደዱን ይመልከቱ",
+        card_account_title: "የመለያ ቅንብሮች",
+        card_account_desc: "መገለጫ፣ ደህንነት እና ማሳወቂያዎች።",
+        card_cta_acct: "መለያ ያቀናብሩ",
+        saved_searches_nav: "የተቀመጡ ፍለጋዎች",
+        account_nav: "መለያ",
+        saved_searches_heading: "የተቀመጡ ፍለጋዎች",
+        saved_searches_placeholder: "ገና የተቀመጠ ፍለጋ የለም። ንብረት በ«ግዛ» ገጽ ይፈልጉ (በቅርቡ እዚህ ይቀመጣል)።",
+        browse_buy: "ንብረቶች ያስሱ",
+        account_heading: "የመለያ ቅንብሮች",
+        account_profile: "መገለጫ",
+        account_profile_desc: "የመግቢያ ኢሜይል",
+        account_security: "ደህንነት",
+        account_security_desc: "የይለፍ ቃል ለመቀየር ወደ መግቢያ ይሂዱ።",
+        nav_home: "መነሻ",
+        nav_listings: "ማስታወቂያ",
+        nav_saved: "የተቀመጡ",
+        nav_messages: "ጽሁፍ",
+        nav_menu: "ማውጫ",
+        nav_budget: "በጀት",
+        appointments_placeholder: "የቀጠሮ የለም።",
+        auctions_placeholder: "የባንክ ጨረታ ግብዣዎች ይመልከቱ።",
+        payments_placeholder: "ምንም ክፍያ አልተመዘገበም።"
     },
     en: {
         post_property: "+ Post Property",
         dashboard: "Dashboard",
-        listings: "Active Listings",
+        listings: "My Listings",
         saved: "Saved Properties",
         messages: "Messages",
         appointments: "Appointments",
         loan: "Loan Calculator",
+        budget_calculator: "Budget Calculator",
+        budget_calculator_heading: "Budget & loan calculator",
+        budget_calculator_sub: "Conventional and interest-free (Murabaha-style) estimates.",
         auctions: "Bank Auctions",
         payments: "Payment History",
         logout: "Logout",
@@ -234,7 +338,37 @@ const translations = {
         delete_failed: "Failed to delete listing.",
         not_allowed: "You can only manage your own listings.",
         no_notifications: "No new notifications",
-        logged_out: "You have been logged out."
+        logged_out: "You have been logged out.",
+        close_menu: "Close",
+        overview_sub: "Your personalized real estate command center.",
+        card_saved_searches_title: "Saved searches",
+        card_saved_searches_desc: "Resume your latest filters and alerts.",
+        card_cta: "Open",
+        card_favorites_title: "Favorites",
+        card_favorites_desc: "Homes you love, synced and ready to compare.",
+        card_cta_fav: "View favorites",
+        card_account_title: "Account settings",
+        card_account_desc: "Profile, security, and notification preferences.",
+        card_cta_acct: "Manage account",
+        saved_searches_nav: "Saved searches",
+        account_nav: "Account",
+        saved_searches_heading: "Saved searches",
+        saved_searches_placeholder: "No saved searches yet. Run a search on the Buy page, then save it here (coming soon).",
+        browse_buy: "Browse properties",
+        account_heading: "Account settings",
+        account_profile: "Profile",
+        account_profile_desc: "Signed-in email",
+        account_security: "Security",
+        account_security_desc: "Use login to change password or connect Google.",
+        nav_home: "Home",
+        nav_listings: "Listings",
+        nav_saved: "Saved",
+        nav_messages: "Chat",
+        nav_menu: "Menu",
+        nav_budget: "Budget",
+        appointments_placeholder: "No upcoming appointments.",
+        auctions_placeholder: "Connect to bank auction feeds from your region.",
+        payments_placeholder: "No payments recorded."
     }
 };
 
@@ -245,6 +379,8 @@ const { toggleLanguage, refreshUI, getCurrentLanguage } = createLanguageToggle({
     keyAttribute: "data-key",
     getToggleButtonText: (language, dictionary) => dictionary[language].lang
 });
+
+let hybridMortgageCalc = null;
 
 function t(key) {
     const language = getCurrentLanguage();
@@ -297,8 +433,8 @@ function showListingsError(message) {
     }
 
     listingsError.innerHTML = `
-        <div>${escapeHtml(message)}</div>
-        <button type="button" class="retry-load-btn" data-action="dashboard-retry-listings">${escapeHtml(t("retry"))}</button>
+        <div class="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-800">${escapeHtml(message)}</div>
+        <button type="button" class="mt-3 rounded-full bg-white px-4 py-2 text-sm font-bold text-zillow ring-2 ring-zillow transition hover:bg-zillow-light" data-action="dashboard-retry-listings">${escapeHtml(t("retry"))}</button>
     `;
     setDisplay(listingsError, "block");
 }
@@ -323,8 +459,8 @@ function showSavedError(message) {
     }
 
     savedError.innerHTML = `
-        <div>${escapeHtml(message)}</div>
-        <button type="button" class="retry-load-btn" data-action="dashboard-retry-saved">${escapeHtml(t("retry"))}</button>
+        <div class="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-800">${escapeHtml(message)}</div>
+        <button type="button" class="mt-3 rounded-full bg-white px-4 py-2 text-sm font-bold text-zillow ring-2 ring-zillow transition hover:bg-zillow-light" data-action="dashboard-retry-saved">${escapeHtml(t("retry"))}</button>
     `;
     setDisplay(savedError, "block");
 }
@@ -353,10 +489,12 @@ function renderAuthRequiredState() {
     hideListingsSuccess();
     listingsList.innerHTML = "";
     listingsEmpty.innerHTML = `
-        <h3>${escapeHtml(t("auth_required_title"))}</h3>
-        <p>${escapeHtml(t("auth_required_message"))}</p>
-        <a href="login.html">${escapeHtml(t("go_login"))}</a>
-    `;
+        <div class="text-center">
+            <i class="fa-solid fa-user-lock text-3xl text-slate-300" aria-hidden="true"></i>
+            <h3 class="mt-4 text-lg font-bold text-slate-900">${escapeHtml(t("auth_required_title"))}</h3>
+            <p class="mt-2 text-sm text-slate-600">${escapeHtml(t("auth_required_message"))}</p>
+            <a href="login.html" class="mt-6 inline-flex rounded-full bg-zillow px-6 py-3 text-sm font-bold text-white shadow hover:bg-zillow-dark">${escapeHtml(t("go_login"))}</a>
+        </div>`;
     setDisplay(listingsEmpty, "block");
     updateActiveAssetsCount();
 }
@@ -369,10 +507,12 @@ function renderEmptyListingsState() {
     hideListingsSuccess();
     listingsList.innerHTML = "";
     listingsEmpty.innerHTML = `
-        <h3>${escapeHtml(t("no_listings_title"))}</h3>
-        <p>${escapeHtml(t("no_listings_message"))}</p>
-        <a href="sell.html">${escapeHtml(t("create_listing_cta"))}</a>
-    `;
+        <div class="text-center">
+            <i class="fa-solid fa-building-circle-xmark text-3xl text-slate-300" aria-hidden="true"></i>
+            <h3 class="mt-4 text-lg font-bold text-slate-900">${escapeHtml(t("no_listings_title"))}</h3>
+            <p class="mt-2 text-sm text-slate-600">${escapeHtml(t("no_listings_message"))}</p>
+            <a href="sell.html" class="mt-6 inline-flex rounded-full bg-zillow px-6 py-3 text-sm font-bold text-white shadow hover:bg-zillow-dark">${escapeHtml(t("create_listing_cta"))}</a>
+        </div>`;
     setDisplay(listingsEmpty, "block");
     updateActiveAssetsCount();
 }
@@ -388,10 +528,12 @@ function renderSavedEmptyState() {
     }
 
     savedEmpty.innerHTML = `
-        <h3>${escapeHtml(t("no_saved_title"))}</h3>
-        <p>${escapeHtml(t("no_saved_message"))}</p>
-        <a href="buy.html">${escapeHtml(t("browse_properties_cta"))}</a>
-    `;
+        <div class="text-center">
+            <i class="fa-regular fa-heart text-3xl text-slate-300" aria-hidden="true"></i>
+            <h3 class="mt-4 text-lg font-bold text-slate-900">${escapeHtml(t("no_saved_title"))}</h3>
+            <p class="mt-2 text-sm text-slate-600">${escapeHtml(t("no_saved_message"))}</p>
+            <a href="buy.html" class="mt-6 inline-flex rounded-full bg-zillow px-6 py-3 text-sm font-bold text-white shadow hover:bg-zillow-dark">${escapeHtml(t("browse_properties_cta"))}</a>
+        </div>`;
     setDisplay(savedEmpty, "block");
 }
 
@@ -416,7 +558,7 @@ function renderListingsCards() {
         .map((listing) => {
             const title = escapeHtml(listing.title || t("title_unknown"));
             const location = escapeHtml(listing.location || t("location_unknown"));
-            const imageUrl = escapeHtml(listing.imageUrl || "https://placehold.co/640x400/png?text=Property");
+            const imageUrl = escapeAttrUrl(resolveListingImageUrl(listing));
             const price = escapeHtml(formatPrice(listing.price));
             const listedOn = escapeHtml(formatListingDate(listing.createdAt));
             const isSold = String(listing.status || "").toLowerCase() === "sold";
@@ -429,22 +571,24 @@ function renderListingsCards() {
             });
 
             return `
-                <article class="listing-card">
+                <article class="group relative flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
                     ${statusBadge}
-                    <img src="${imageUrl}" alt="${title}">
-                    <div class="listing-card-content">
-                        <h3>${title}</h3>
-                        <p class="listing-meta">${location}</p>
-                        <p class="listing-price">${price}</p>
-                        <p class="listing-date">${escapeHtml(t("listed_on"))}: ${listedOn}</p>
-                        <div class="listing-actions">
-                            <button type="button" class="sold-btn" data-action="dashboard-mark-sold" data-listing-id="${listing.id}" ${isSold ? "disabled aria-disabled='true'" : ""}>
+                    <div class="relative aspect-[16/10] overflow-hidden bg-slate-100">
+                        <img src="${imageUrl}" alt="${title}" ${listingImageOnerrorAttr()} class="relative z-0 block h-full w-full object-cover opacity-100 transition duration-500 group-hover:scale-105" loading="lazy" decoding="async" />
+                    </div>
+                    <div class="flex flex-1 flex-col p-4 sm:p-5">
+                        <p class="text-xl font-extrabold text-slate-900 sm:text-2xl">${price}</p>
+                        <h3 class="mt-2 line-clamp-2 text-base font-bold text-slate-900">${title}</h3>
+                        <p class="mt-1 line-clamp-2 text-sm font-semibold text-slate-600">${location}</p>
+                        <p class="mt-2 text-xs font-medium text-slate-500">${escapeHtml(t("listed_on"))}: ${listedOn}</p>
+                        <div class="mt-4 flex flex-wrap gap-2 border-t border-slate-100 pt-4">
+                            <button type="button" class="rounded-lg bg-emerald-600 px-3 py-2 text-xs font-bold text-white shadow-sm transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50" data-action="dashboard-mark-sold" data-listing-id="${listing.id}" ${isSold ? "disabled aria-disabled='true'" : ""}>
                                 ${escapeHtml(isSold ? t("already_sold") : t("mark_as_sold"))}
                             </button>
-                            <button type="button" class="edit-btn" data-action="dashboard-edit-listing" data-listing-id="${listing.id}">
+                            <button type="button" class="rounded-lg border-2 border-zillow bg-zillow-light px-3 py-2 text-xs font-bold text-zillow transition hover:bg-zillow hover:text-white" data-action="dashboard-edit-listing" data-listing-id="${listing.id}">
                                 ${escapeHtml(t("edit"))}
                             </button>
-                            <button type="button" class="delete-btn" data-action="dashboard-delete-listing" data-listing-id="${listing.id}">
+                            <button type="button" class="rounded-lg bg-rose-600 px-3 py-2 text-xs font-bold text-white shadow-sm transition hover:bg-rose-700" data-action="dashboard-delete-listing" data-listing-id="${listing.id}">
                                 ${escapeHtml(t("delete"))}
                             </button>
                         </div>
@@ -462,7 +606,7 @@ function renderSavedCards() {
         return;
     }
 
-    if (!currentUser || currentSavedListings.length === 0) {
+    if (currentSavedListings.length === 0) {
         renderSavedEmptyState();
         return;
     }
@@ -472,7 +616,7 @@ function renderSavedCards() {
         .map((listing) => {
             const title = escapeHtml(listing.title || t("title_unknown"));
             const location = escapeHtml(listing.location || t("location_unknown"));
-            const imageUrl = escapeHtml(listing.imageUrl || "https://placehold.co/640x400/png?text=Property");
+            const imageUrl = escapeAttrUrl(resolveListingImageUrl(listing));
             const price = escapeHtml(formatPrice(listing.price));
             const listedOn = escapeHtml(formatListingDate(listing.createdAt));
             const statusBadge = renderPropertyStatusBadge(listing.status, {
@@ -484,14 +628,16 @@ function renderSavedCards() {
             });
 
             return `
-                <article class="listing-card">
+                <article class="group relative flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
                     ${statusBadge}
-                    <img src="${imageUrl}" alt="${title}">
-                    <div class="listing-card-content">
-                        <h3>${title}</h3>
-                        <p class="listing-meta">${location}</p>
-                        <p class="listing-price">${price}</p>
-                        <p class="listing-date">${escapeHtml(t("listed_on"))}: ${listedOn}</p>
+                    <div class="relative aspect-[16/10] overflow-hidden bg-slate-100">
+                        <img src="${imageUrl}" alt="${title}" ${listingImageOnerrorAttr()} class="relative z-0 block h-full w-full object-cover opacity-100 transition duration-500 group-hover:scale-105" loading="lazy" decoding="async" />
+                    </div>
+                    <div class="flex flex-1 flex-col p-4 sm:p-5">
+                        <p class="text-xl font-extrabold text-slate-900 sm:text-2xl">${price}</p>
+                        <h3 class="mt-2 line-clamp-2 text-base font-bold text-slate-900">${title}</h3>
+                        <p class="mt-1 line-clamp-2 text-sm font-semibold text-slate-600">${location}</p>
+                        <p class="mt-2 text-xs font-medium text-slate-500">${escapeHtml(t("listed_on"))}: ${listedOn}</p>
                     </div>
                 </article>
             `;
@@ -598,25 +744,20 @@ async function loadSavedListings() {
         return;
     }
 
-    if (!currentUser) {
-        currentSavedListings = [];
-        renderSavedEmptyState();
-        return;
-    }
-
     showSavedLoading(true);
     hideSavedFeedback();
 
     try {
-        console.log("[Dashboard] Querying Firestore using migrated buy-page logic for Saved tab.");
+        console.log("[Dashboard] Querying Firestore for Saved / localStorage favorites.");
         const fetchedListings = await fetchListingsFromBuyPageLogic();
         currentSavedListings = fetchedListings
-            .filter((listing) => isSavedByCurrentUser(listing))
+            .filter((listing) => isListingInUserFavorites(listing))
             .sort((a, b) => toMillis(b.createdAt) - toMillis(a.createdAt));
 
         console.log("[Dashboard] Saved listings fetched and filtered", {
             totalSaved: currentSavedListings.length,
-            savedListingIds: currentSavedListings.map((listing) => listing.id)
+            savedListingIds: currentSavedListings.map((listing) => listing.id),
+            localFavoriteCount: readFavoriteIdsFromLocalStorage().size
         });
 
         renderSavedCards();
@@ -740,18 +881,20 @@ async function handleLogout() {
 }
 
 function syncProfileIdentity(user) {
-    if (!profilePhoto) {
-        return;
+    if (profilePhoto) {
+        if (!user) {
+            profilePhoto.innerText = "U";
+        } else {
+            const fallbackName = user.email || "User";
+            const displayName = user.displayName || fallbackName;
+            profilePhoto.innerText = displayName.charAt(0).toUpperCase();
+        }
     }
 
-    if (!user) {
-        profilePhoto.innerText = "U";
-        return;
+    const emailEl = byId("dashboard-user-email");
+    if (emailEl) {
+        emailEl.textContent = user?.email || "—";
     }
-
-    const fallbackName = user.email || "User";
-    const displayName = user.displayName || fallbackName;
-    profilePhoto.innerText = displayName.charAt(0).toUpperCase();
 }
 
 onAuthStateChanged(auth, async (user) => {
@@ -774,6 +917,9 @@ onClickActions({
     "dashboard-toggle-sidebar": () => {
         toggleSidebar();
     },
+    "dashboard-show-calculator": () => {
+        showCalculatorOnOverview();
+    },
     "dashboard-notification-alert": () => {
         alert(t("no_notifications"));
     },
@@ -793,15 +939,18 @@ onClickActions({
         if (savedError?.style.display !== "none") {
             showSavedError(t("loading_saved_failed"));
         }
+        hybridMortgageCalc?.refreshLanguage();
     },
     "dashboard-navigate": ({ actionEl }) => {
-        const href = actionEl.dataset.href;
+        const href = actionEl.getAttribute("data-href") || actionEl.dataset.href;
         if (href) {
             window.location.href = href;
         }
     },
     "dashboard-show-section": ({ actionEl }) => {
-        const sectionId = actionEl.dataset.sectionId;
+        const sectionId =
+            actionEl.getAttribute("data-section-id") ||
+            (actionEl.dataset.sectionId != null ? String(actionEl.dataset.sectionId) : "");
         if (sectionId) {
             showSection(sectionId);
         }
@@ -834,3 +983,22 @@ onClickActions({
         loadSavedListings();
     }
 });
+
+byId("sidebar-backdrop")?.addEventListener("click", () => {
+    if (sidebar?.classList.contains("is-open")) {
+        toggleSidebar();
+    }
+});
+
+try {
+    const hybridRoot = byId("hybrid-calculator-container");
+    if (hybridRoot) {
+        hybridMortgageCalc = mountHybridMortgageCalculator(hybridRoot, {
+            showLangToggle: true,
+            getLanguage: getCurrentLanguage
+        });
+        console.log("Calculator Loaded");
+    }
+} catch (err) {
+    console.error("[Dashboard] Calculator mount failed:", err);
+}

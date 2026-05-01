@@ -6,6 +6,8 @@
     <title>Pricing Plans - የዋጋ አማራጮች</title>
     <!-- Font Awesome ለሊስቱ ምልክቶች (Icons) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/global-nav.css">
+    <link rel="stylesheet" href="/css/chatbot.css">
 
     <style>
         /* መነሻ ቅንብሮች */
@@ -185,7 +187,22 @@
         }
     </style>
 </head>
-<body>
+<body class="tb-mobile-nav-page-pad">
+
+    <header style="background: #fff; border-bottom: 1px solid #e5e7eb;">
+        <div class="container" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding-top: 1rem; padding-bottom: 1rem;">
+            <a href="index.html/index.html" class="logo-container px-1 py-2 shrink-0" aria-label="Tamagn-Bet Home">
+                <img src="/image/tamagn_logo.PNG" alt="Tamagn Bet" width="400" height="160" loading="eager" decoding="async" />
+            </a>
+            <nav class="tb-desktop-nav" aria-label="Primary desktop">
+                <a href="index.html/index.html">Home</a>
+                <a href="buy.html">Listings</a>
+                <a href="dashboard.html">Saved</a>
+                <a href="dashboard.html">Chat</a>
+                <a href="dashboard.html" class="tb-desktop-nav__active">Menu</a>
+            </nav>
+        </div>
+    </header>
 
     <div class="container">
         <header class="pricing-header">
@@ -243,5 +260,16 @@
         </div>
     </div>
 
+    <nav class="tb-mobile-nav" aria-label="Primary mobile">
+        <div class="tb-mobile-nav__inner">
+            <a href="index.html/index.html"><i class="fa-solid fa-house font-normal" aria-hidden="true"></i><span>Home</span></a>
+            <a href="buy.html"><i class="fa-solid fa-building font-normal" aria-hidden="true"></i><span>Listings</span></a>
+            <a href="dashboard.html"><i class="fa-solid fa-heart font-normal" aria-hidden="true"></i><span>Saved</span></a>
+            <a href="dashboard.html"><i class="fa-solid fa-comments font-normal" aria-hidden="true"></i><span>Chat</span></a>
+            <a href="dashboard.html" class="tb-mobile-nav__active"><i class="fa-solid fa-bars font-normal" aria-hidden="true"></i><span>Menu</span></a>
+        </div>
+    </nav>
+
+    <script type="module" src="/js/chatbot.js"></script>
 </body>
 </html>

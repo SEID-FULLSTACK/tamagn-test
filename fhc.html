@@ -1,84 +1,495 @@
 <!DOCTYPE html>
-<html lang="am" dir="ltr">
+<html lang="am" dir="ltr" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tamagn Bet Dashboard</title>
+    <title>Tamagn Bet | Federal Housing Corporation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        zillow: { DEFAULT: "#006AFF", dark: "#0053B3", light: "#E8F2FF", subtle: "#F5F9FF" }
+                    },
+                    fontFamily: { sans: ["Inter", "system-ui", "sans-serif"] }
+                }
+            }
+        };
+    </script>
+    <link rel="stylesheet" href="/css/global-nav.css">
+    <link rel="stylesheet" href="/css/chatbot.css">
     <style>
-        body { margin: 0; font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #eef2f5; display: flex; height: 100vh; }
-
-        /* Top Header */
-        .top-header { position: fixed; top: 0; width: 100%; height: 50px; background-color: white; color: black; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; box-sizing: border-box; z-index: 1000; }
-        .logo { font-size: 1.2rem; font-weight: bold; cursor: pointer;position: absolute;left: 50%;}
-        
-        /* Menu Toggle Buttons */
-        .open-btn { background: #d35400; color: white; border: none; padding: 8px 15px; cursor: pointer; border-radius: 4px; display: none; }
-        .back-btn { background: none; border: none; color: #d35400; font-size: 20px; cursor: pointer; display: none; margin-bottom: 20px; }
-
-        .user-nav { display: flex; gap: 10px; align-items: center;position: absolute; right: 20px; }
-        .lang-btn { background: #444; border: 1px solid #d35400; color: white; padding: 5px 12px; cursor: pointer; border-radius: 4px;display: flex;}
-        .lang-btn:hover { background: #d35400; }
-
-        /* Sidebar */
-        .sidebar { width: 260px; background-color: #f4f4f4; border-right: 1px solid #ddd; height: 100vh; padding-top: 60px; flex-shrink: 0; transition: 0.3s; z-index: 999; }
-        .menu-header { background-color: #d35400; color: white; padding: 12px 20px; font-weight: bold; margin-bottom: 5px; }
-        .menu-header.project { background-color: #e0e0e0; color: #333; margin-top: 20px; }
-        .menu-item { padding: 12px 20px; cursor: pointer; color: #333; text-decoration: none; display: block; border-bottom: 1px solid #eee; transition: 0.3s; }
-        .menu-item:hover { background-color: #e8e8e8; }
-        
-        /* Main Content - Space Adjusted */
-        .main-content { margin-top: 60px; padding: 40px; padding-top: 80px; flex-grow: 1; transition: 0.3s; }
-        .stats-container { display: flex; gap: 20px; flex-wrap: wrap; }
-        .stat-card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); flex: 1; min-width: 200px; text-align: center; }
-
-        /* Media Query */
-        @media (max-width: 768px) {
-            .sidebar { position: fixed; left: -260px; padding-top: 60px; }
-            .sidebar.active { left: 0; }
-            .open-btn { display: block; }
-            .back-btn { display: block; }
-        }
+        .fhc-drawer { transition: left 0.3s ease-out; }
+        .fhc-drawer.active { left: 0; }
+        [data-fhc-card].fhc-card--hidden { display: none !important; }
     </style>
 </head>
-<body>
+<body class="tb-mobile-nav-page-pad min-h-screen bg-white font-sans text-slate-800 antialiased md:pb-0">
 
-    <header class="top-header">
-        <button class="open-btn" type="button" data-action="fhc-toggle-sidebar">☰ </button>
-         <div class="logo">
-    <span style="color: #007bff; font-weight: bold;">Tamagn</span><span style="color: #28a745; font-weight: bold;">-Bet</span>
-</div>
-        <div class="user-nav">
-            <button id="lang-toggle-btn" class="lang-btn" type="button" data-action="fhc-toggle-language">English</button>
-            <div style="width: 30px; height: 30px; background: #d35400; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white;">D</div>
-        </div>
-    </header>
-
-    <nav class="sidebar" id="sidebar">
-        <button class="back-btn" type="button" data-action="fhc-toggle-sidebar">←</button>
-        <div class="menu-header" data-i18n="services">አገልግሎቶች</div>
-        <a href="#" class="menu-item" data-i18n="tender">ጨረታ መከታተያ</a>
-        <a href="#" class="menu-item" data-i18n="docs">ሰነዶች</a>
-        <a href="#" class="menu-item" data-i18n="guidelines">መመሪያወች</a>
-        <a href="#" class="menu-item" data-i18n="apply_housing">ለመኖሪያ ቤት ያመልክቱ</a>
-        <a href="#" class="menu-item" data-i18n="rent_pay">የኪራይ ክፍያ</a>
-        <a href="#" class="menu-item" data-i18n="repair">ጥገና</a>
-        <a href="#" class="menu-item" data-i18n="house_rent">የቤት ኪራይ</a>
-
-        <div class="menu-header project" data-i18n="projects">ፕሮጀክቶች</div>
-        <a href="#" class="menu-item" data-i18n="planned">የታቀዱ ፕሮጀክቶች</a>
-        <a href="#" class="menu-item" data-i18n="completed_proj">የተጠናቀቁ ፕሮጀክቶች</a>
-        <a href="#" class="menu-item" style="color: #d35400; font-weight: bold;" data-i18n="logout">Logout</a>
+<!-- Vertical rail (aligned with index / banks) -->
+<aside class="fixed left-0 top-0 z-[90] hidden h-screen w-16 flex-col border-r border-gray-200 bg-white md:flex md:w-20" aria-label="Site navigation">
+    <a href="index.html/index.html" class="logo-container logo-container--rail" aria-label="Tamagn Bet Home">
+        <img src="/image/tamagn_logo.PNG" alt="" width="280" height="112" loading="eager" decoding="async" />
+    </a>
+    <nav class="flex flex-col items-stretch px-1.5 pb-4 pt-2" aria-label="Primary">
+        <a href="index.html/index.html" class="group flex flex-col items-center gap-0.5 rounded-lg py-2.5 text-center text-[10px] font-semibold leading-tight text-gray-500 transition hover:text-zillow">
+            <i class="fas fa-house text-[1.125rem] font-normal leading-none text-gray-400 transition group-hover:text-zillow" aria-hidden="true"></i>
+            <span class="max-w-[4.25rem] truncate">Home</span>
+        </a>
+        <a href="buy.html" class="group flex flex-col items-center gap-0.5 rounded-lg py-2.5 text-center text-[10px] font-semibold leading-tight text-gray-500 transition hover:text-zillow">
+            <i class="fas fa-building text-[1.125rem] font-normal leading-none text-gray-400 transition group-hover:text-zillow" aria-hidden="true"></i>
+            <span class="max-w-[4.25rem] truncate">Listings</span>
+        </a>
+        <a href="dashboard.html" class="group flex flex-col items-center gap-0.5 rounded-lg py-2.5 text-center text-[10px] font-semibold leading-tight text-gray-500 transition hover:text-zillow">
+            <i class="fas fa-heart text-[1.125rem] font-normal leading-none text-gray-400 transition group-hover:text-zillow" aria-hidden="true"></i>
+            <span class="max-w-[4.25rem] truncate">Saved</span>
+        </a>
+        <a href="dashboard.html" class="group flex flex-col items-center gap-0.5 rounded-lg py-2.5 text-center text-[10px] font-semibold leading-tight text-gray-500 transition hover:text-zillow">
+            <i class="fas fa-comments text-[1.125rem] font-normal leading-none text-gray-400 transition group-hover:text-zillow" aria-hidden="true"></i>
+            <span class="max-w-[4.25rem] truncate">Chat</span>
+        </a>
+        <button type="button" class="group flex w-full flex-col items-center gap-0.5 rounded-lg py-2.5 text-center text-[10px] font-semibold leading-tight text-zillow" onclick="toggleFhcDrawer()" aria-label="Open FHC menu">
+            <i class="fas fa-bars text-[1.125rem] font-normal leading-none text-zillow" aria-hidden="true"></i>
+            <span class="max-w-[4.25rem] truncate">Menu</span>
+        </button>
     </nav>
+</aside>
 
-    <main class="main-content">
-        <h1 data-i18n="welcome">እንኳን ደህና መጡ!</h1>
-        <div class="stats-container">
-            <div class="stat-card"><h3 data-i18n="in_progress">በሂደት ላይ</h3><p>124</p></div>
-            <div class="stat-card"><h3 data-i18n="completed">የተጠናቀቀ</h3><p>5</p></div>
-            <div class="stat-card"><h3 data-i18n="tasks">ተሰኪዎች</h3><p>3</p></div>
+<div class="relative flex min-h-screen min-w-0 flex-1 flex-col md:ml-20">
+
+<header class="sticky top-0 z-[100] border-b border-gray-200 bg-white shadow-sm">
+    <div class="relative mx-auto flex min-h-[6.5rem] max-w-7xl items-center justify-between gap-3 px-4 py-2 sm:min-h-[7.5rem] sm:px-6 lg:px-8">
+        <div class="flex min-w-0 flex-1 items-center gap-3">
+            <button type="button" class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-slate-700 transition hover:bg-slate-100 md:hidden" onclick="toggleFhcDrawer()" aria-label="Open menu">
+                <i class="fas fa-bars text-lg" aria-hidden="true"></i>
+            </button>
+            <nav class="hidden items-center gap-1 md:flex lg:gap-2" aria-label="Desktop quick links">
+                <a href="index.html/index.html" class="whitespace-nowrap rounded-full px-3 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-zillow">Home</a>
+                <a href="buy.html" class="whitespace-nowrap rounded-full px-3 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-zillow">Listings</a>
+                <a href="dashboard.html" class="whitespace-nowrap rounded-full px-3 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-zillow">Saved</a>
+                <a href="dashboard.html" class="whitespace-nowrap rounded-full px-3 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-zillow">Chat</a>
+            </nav>
         </div>
-    </main>
+        <a href="index.html/index.html" class="logo-container absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2" aria-label="Tamagn Bet Home">
+            <img src="/image/tamagn_logo.PNG" alt="Tamagn Bet" width="400" height="160" loading="eager" decoding="async" />
+        </a>
+        <div class="flex min-w-0 flex-1 items-center justify-end gap-2 sm:gap-3">
+            <span class="inline-flex items-center gap-1.5 rounded-full border border-emerald-200/80 bg-emerald-50/90 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-emerald-900 sm:px-3" title="">
+                <i class="fas fa-certificate text-emerald-600" aria-hidden="true"></i>
+                <span data-i18n="official_badge">Official Source</span>
+            </span>
+            <button id="lang-toggle-btn" type="button" class="shrink-0 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:border-zillow hover:text-zillow" onclick="toggleLanguage()">English</button>
+        </div>
+    </div>
+</header>
 
-<script type="module" src="/js/pages/fhc-page.js"></script>
+<!-- FHC contextual slide-over (replaces legacy sidebar links) -->
+<div id="fhc-drawer" class="fhc-drawer fixed left-[-280px] top-0 z-[110] flex h-full w-[260px] max-w-[85vw] flex-col border-r border-slate-200 bg-white shadow-xl sm:w-[280px]">
+    <div class="flex items-center justify-between border-b border-slate-100 px-4 py-3">
+        <span class="text-xs font-bold uppercase tracking-wide text-slate-500" data-i18n="fhc_menu">FHC portal</span>
+        <button type="button" class="rounded-lg p-2 text-slate-500 hover:bg-slate-100" onclick="toggleFhcDrawer()" aria-label="Close">&larr;</button>
+    </div>
+    <div class="flex-1 overflow-y-auto py-2">
+        <div class="px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-slate-400" data-i18n="services">አገልግሎቶች</div>
+        <a href="#fhc-tenders" onclick="closeFhcDrawerIfMobile()" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50"><i class="fas fa-file-contract w-5 text-center text-slate-400" aria-hidden="true"></i> <span data-i18n="tender">ጨረታ መከታተያ</span></a>
+        <a href="#fhc-documents" onclick="closeFhcDrawerIfMobile()" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50"><i class="fas fa-file-pdf w-5 text-center text-slate-400" aria-hidden="true"></i> <span data-i18n="docs">ሰነዶች</span></a>
+        <a href="#fhc-guide" onclick="closeFhcDrawerIfMobile()" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50"><i class="fas fa-list-ol w-5 text-center text-slate-400" aria-hidden="true"></i> <span data-i18n="guidelines">መመሪያወች</span></a>
+        <a href="#fhc-guide" onclick="closeFhcDrawerIfMobile()" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50"><i class="fas fa-house-chimney w-5 text-center text-slate-400" aria-hidden="true"></i> <span data-i18n="apply_housing">ለመኖሪያ ቤት ያመልክቱ</span></a>
+        <a href="#fhc-tenders" onclick="closeFhcDrawerIfMobile()" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50"><i class="fas fa-coins w-5 text-center text-slate-400" aria-hidden="true"></i> <span data-i18n="rent_pay">የኪራይ ክፍያ</span></a>
+        <a href="#fhc-tenders" onclick="closeFhcDrawerIfMobile()" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50"><i class="fas fa-screwdriver-wrench w-5 text-center text-slate-400" aria-hidden="true"></i> <span data-i18n="repair">ጥገና</span></a>
+        <a href="#fhc-tenders" onclick="closeFhcDrawerIfMobile()" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50"><i class="fas fa-key w-5 text-center text-slate-400" aria-hidden="true"></i> <span data-i18n="house_rent">የቤት ኪራይ</span></a>
+        <div class="mt-2 border-t border-slate-100 px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-slate-400" data-i18n="projects">ፕሮጀክቶች</div>
+        <a href="#fhc-tenders" onclick="closeFhcDrawerIfMobile()" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50"><i class="fas fa-diagram-project w-5 text-center text-slate-400" aria-hidden="true"></i> <span data-i18n="planned">የታቀዱ ፕሮጀክቶች</span></a>
+        <a href="#fhc-tenders" onclick="closeFhcDrawerIfMobile()" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50"><i class="fas fa-check-double w-5 text-center text-slate-400" aria-hidden="true"></i> <span data-i18n="completed_proj">የተጠናቀቁ ፕሮጀክቶች</span></a>
+    </div>
+</div>
+<div id="fhc-overlay" class="fixed inset-0 z-[105] hidden bg-slate-900/40 md:hidden" onclick="toggleFhcDrawer()" aria-hidden="true"></div>
+
+<main class="mx-auto w-full max-w-7xl flex-1 px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
+    <div class="mb-12 max-w-3xl">
+        <p class="text-xs font-bold uppercase tracking-wider text-zillow">Government partnership</p>
+        <h1 class="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl" data-i18n="welcome">እንኳን ደህና መጡ!</h1>
+        <p class="mt-4 text-sm leading-relaxed text-slate-600" data-i18n="fhc_intro">የፌደራል መኖሪያ ቤቶች ኮርፖሬሽን (FHC) ከ Tamagn Bet ጋር በሚታወቁ የጨረታ እና የኪራይ ማስታወቂያዎች ይዟል። ከዚህ ገጽ የሚቀርበው ለአጠቃበም ብያን ማስታወቂያ ብቻ ነው።</p>
+    </div>
+
+    <!-- Filters -->
+    <section class="mb-12 rounded-2xl border border-slate-100 bg-slate-50/60 p-6 shadow-sm sm:p-8" aria-label="Filter listings">
+        <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+            <div>
+                <h2 class="text-sm font-bold text-slate-900" data-i18n="filter_title">Find a listing</h2>
+                <p class="mt-1 text-xs text-slate-500" data-i18n="filter_hint">Narrow open tenders by type, area, and price band.</p>
+            </div>
+            <div class="grid w-full gap-3 sm:grid-cols-3 lg:max-w-3xl lg:flex-1">
+                <div>
+                    <label class="mb-1.5 block text-xs font-semibold text-slate-600" for="fhc-filter-type" data-i18n="filter_type">Property type</label>
+                    <select id="fhc-filter-type" class="h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm outline-none ring-zillow focus:ring-2">
+                        <option value="" data-i18n="all_types">All types</option>
+                        <option value="residential" data-i18n="cat_res">Residential</option>
+                        <option value="commercial" data-i18n="cat_com">Commercial</option>
+                        <option value="land" data-i18n="cat_land">Land</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="mb-1.5 block text-xs font-semibold text-slate-600" for="fhc-filter-loc" data-i18n="filter_loc">Location</label>
+                    <select id="fhc-filter-loc" class="h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm outline-none ring-zillow focus:ring-2">
+                        <option value="" data-i18n="all_areas">All areas</option>
+                        <option value="bole">Bole</option>
+                        <option value="kazanchis">Kazanchis</option>
+                        <option value="lebu">Bole Lemi / Lebu</option>
+                        <option value="lideta">Lideta</option>
+                        <option value="cmc">CMC</option>
+                        <option value="ayat">Ayat</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="mb-1.5 block text-xs font-semibold text-slate-600" for="fhc-filter-price" data-i18n="filter_price">Price range</label>
+                    <select id="fhc-filter-price" class="h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm outline-none ring-zillow focus:ring-2">
+                        <option value="" data-i18n="all_prices">Any range</option>
+                        <option value="low" data-i18n="price_low">Under 2M ETB</option>
+                        <option value="mid" data-i18n="price_mid">2M – 8M ETB</option>
+                        <option value="high" data-i18n="price_high">8M+ ETB</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <p id="fhc-filter-count" class="mt-4 text-xs text-slate-500" aria-live="polite"></p>
+    </section>
+
+    <!-- Section 1: Tenders -->
+    <section id="fhc-tenders" class="scroll-mt-24 pb-16 sm:pb-20">
+        <div class="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+                <p class="text-xs font-bold uppercase tracking-wider text-zillow">Open tenders</p>
+                <h2 class="mt-2 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl" data-i18n="sec_tenders">የጨረታ ማስታወቂያዎች</h2>
+                <p class="mt-2 max-w-2xl text-sm text-slate-600" data-i18n="sec_tenders_desc">Active auctions and rental tenders compiled for transparency. Closing dates are indicative—confirm on the official FHC channels.</p>
+            </div>
+        </div>
+        <div id="fhc-tender-grid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <!-- Cards: data attributes drive filters (UI only) -->
+            <article data-fhc-card class="group flex flex-col rounded-2xl border border-slate-100 bg-white p-6 shadow-sm transition hover:border-slate-200 hover:shadow-md" data-type="residential" data-location="bole" data-price="high">
+                <div class="flex items-start justify-between gap-3">
+                    <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-sky-50 text-sky-600"><i class="fas fa-house text-lg" aria-hidden="true"></i></span>
+                    <span class="rounded-full bg-slate-100 px-2.5 py-0.5 text-[11px] font-semibold text-slate-600" data-i18n="lbl_res">Residential</span>
+                </div>
+                <p class="mt-4 text-xs font-semibold uppercase tracking-wide text-slate-400">Property ID</p>
+                <p class="text-lg font-bold text-slate-900">FHC-2026-R-0142</p>
+                <p class="mt-3 text-sm text-slate-600"><i class="fas fa-location-dot mr-1.5 text-slate-400" aria-hidden="true"></i>Bole Atlas, Addis Ababa</p>
+                <p class="mt-4 text-xs font-semibold text-slate-500" data-i18n="lbl_closing">Closing date</p>
+                <p class="text-sm font-semibold text-slate-900">2026-05-18</p>
+            </article>
+            <article data-fhc-card class="group flex flex-col rounded-2xl border border-slate-100 bg-white p-6 shadow-sm transition hover:border-slate-200 hover:shadow-md" data-type="commercial" data-location="kazanchis" data-price="mid">
+                <div class="flex items-start justify-between gap-3">
+                    <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-violet-50 text-violet-600"><i class="fas fa-building text-lg" aria-hidden="true"></i></span>
+                    <span class="rounded-full bg-slate-100 px-2.5 py-0.5 text-[11px] font-semibold text-slate-600" data-i18n="lbl_com">Commercial</span>
+                </div>
+                <p class="mt-4 text-xs font-semibold uppercase tracking-wide text-slate-400">Property ID</p>
+                <p class="text-lg font-bold text-slate-900">FHC-2026-C-0088</p>
+                <p class="mt-3 text-sm text-slate-600"><i class="fas fa-location-dot mr-1.5 text-slate-400" aria-hidden="true"></i>Kazanchis office block</p>
+                <p class="mt-4 text-xs font-semibold text-slate-500" data-i18n="lbl_closing">Closing date</p>
+                <p class="text-sm font-semibold text-slate-900">2026-04-30</p>
+            </article>
+            <article data-fhc-card class="group flex flex-col rounded-2xl border border-slate-100 bg-white p-6 shadow-sm transition hover:border-slate-200 hover:shadow-md" data-type="land" data-location="lebu" data-price="high">
+                <div class="flex items-start justify-between gap-3">
+                    <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-700"><i class="fas fa-map-location-dot text-lg" aria-hidden="true"></i></span>
+                    <span class="rounded-full bg-slate-100 px-2.5 py-0.5 text-[11px] font-semibold text-slate-600" data-i18n="lbl_land">Land</span>
+                </div>
+                <p class="mt-4 text-xs font-semibold uppercase tracking-wide text-slate-400">Property ID</p>
+                <p class="text-lg font-bold text-slate-900">FHC-2026-L-0031</p>
+                <p class="mt-3 text-sm text-slate-600"><i class="fas fa-location-dot mr-1.5 text-slate-400" aria-hidden="true"></i>Bole Lemi parcel — G+</p>
+                <p class="mt-4 text-xs font-semibold text-slate-500" data-i18n="lbl_closing">Closing date</p>
+                <p class="text-sm font-semibold text-slate-900">2026-06-02</p>
+            </article>
+            <article data-fhc-card class="group flex flex-col rounded-2xl border border-slate-100 bg-white p-6 shadow-sm transition hover:border-slate-200 hover:shadow-md" data-type="residential" data-location="lideta" data-price="low">
+                <div class="flex items-start justify-between gap-3">
+                    <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-sky-50 text-sky-600"><i class="fas fa-house text-lg" aria-hidden="true"></i></span>
+                    <span class="rounded-full bg-slate-100 px-2.5 py-0.5 text-[11px] font-semibold text-slate-600" data-i18n="lbl_res">Residential</span>
+                </div>
+                <p class="mt-4 text-xs font-semibold uppercase tracking-wide text-slate-400">Property ID</p>
+                <p class="text-lg font-bold text-slate-900">FHC-2026-R-0199</p>
+                <p class="mt-3 text-sm text-slate-600"><i class="fas fa-location-dot mr-1.5 text-slate-400" aria-hidden="true"></i>Lideta condominiums — rental tender</p>
+                <p class="mt-4 text-xs font-semibold text-slate-500" data-i18n="lbl_closing">Closing date</p>
+                <p class="text-sm font-semibold text-slate-900">2026-05-05</p>
+            </article>
+            <article data-fhc-card class="group flex flex-col rounded-2xl border border-slate-100 bg-white p-6 shadow-sm transition hover:border-slate-200 hover:shadow-md" data-type="commercial" data-location="cmc" data-price="mid">
+                <div class="flex items-start justify-between gap-3">
+                    <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-violet-50 text-violet-600"><i class="fas fa-building text-lg" aria-hidden="true"></i></span>
+                    <span class="rounded-full bg-slate-100 px-2.5 py-0.5 text-[11px] font-semibold text-slate-600" data-i18n="lbl_com">Commercial</span>
+                </div>
+                <p class="mt-4 text-xs font-semibold uppercase tracking-wide text-slate-400">Property ID</p>
+                <p class="text-lg font-bold text-slate-900">FHC-2026-C-0110</p>
+                <p class="mt-3 text-sm text-slate-600"><i class="fas fa-location-dot mr-1.5 text-slate-400" aria-hidden="true"></i>CMC retail units</p>
+                <p class="mt-4 text-xs font-semibold text-slate-500" data-i18n="lbl_closing">Closing date</p>
+                <p class="text-sm font-semibold text-slate-900">2026-05-22</p>
+            </article>
+            <article data-fhc-card class="group flex flex-col rounded-2xl border border-slate-100 bg-white p-6 shadow-sm transition hover:border-slate-200 hover:shadow-md" data-type="residential" data-location="ayat" data-price="mid">
+                <div class="flex items-start justify-between gap-3">
+                    <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-sky-50 text-sky-600"><i class="fas fa-house text-lg" aria-hidden="true"></i></span>
+                    <span class="rounded-full bg-slate-100 px-2.5 py-0.5 text-[11px] font-semibold text-slate-600" data-i18n="lbl_res">Residential</span>
+                </div>
+                <p class="mt-4 text-xs font-semibold uppercase tracking-wide text-slate-400">Property ID</p>
+                <p class="text-lg font-bold text-slate-900">FHC-2026-R-0204</p>
+                <p class="mt-3 text-sm text-slate-600"><i class="fas fa-location-dot mr-1.5 text-slate-400" aria-hidden="true"></i>Ayat villa programme — phase draw</p>
+                <p class="mt-4 text-xs font-semibold text-slate-500" data-i18n="lbl_closing">Closing date</p>
+                <p class="text-sm font-semibold text-slate-900">2026-06-15</p>
+            </article>
+        </div>
+    </section>
+
+    <!-- Section 2: Application guide -->
+    <section id="fhc-guide" class="scroll-mt-24 border-t border-slate-100 py-16 sm:py-20">
+        <div class="mb-10">
+            <p class="text-xs font-bold uppercase tracking-wider text-zillow">How it works</p>
+            <h2 class="mt-2 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl" data-i18n="sec_guide">የመመሪያ ክፍል</h2>
+            <p class="mt-2 max-w-2xl text-sm text-slate-600" data-i18n="sec_guide_desc">Three clear steps before you apply for FHC housing or rental programmes.</p>
+        </div>
+        <ol class="grid gap-8 md:grid-cols-3">
+            <li class="relative rounded-2xl border border-slate-100 bg-white p-8 shadow-sm">
+                <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-zillow-light text-lg font-bold text-zillow">1</div>
+                <h3 class="mt-6 text-lg font-bold text-slate-900" data-i18n="guide_s1_title">Review eligibility</h3>
+                <p class="mt-2 text-sm leading-relaxed text-slate-600" data-i18n="guide_s1_body">Confirm income bands, household size, and programme rules in the official FHC circular for the tender you target.</p>
+            </li>
+            <li class="relative rounded-2xl border border-slate-100 bg-white p-8 shadow-sm">
+                <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-zillow-light text-lg font-bold text-zillow">2</div>
+                <h3 class="mt-6 text-lg font-bold text-slate-900" data-i18n="guide_s2_title">Prepare documents</h3>
+                <p class="mt-2 text-sm leading-relaxed text-slate-600" data-i18n="guide_s2_body">Gather ID, tax ID, proof of income, and completed application forms from the downloads below.</p>
+            </li>
+            <li class="relative rounded-2xl border border-slate-100 bg-white p-8 shadow-sm">
+                <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-zillow-light text-lg font-bold text-zillow">3</div>
+                <h3 class="mt-6 text-lg font-bold text-slate-900" data-i18n="guide_s3_title">Submit through official channels</h3>
+                <p class="mt-2 text-sm leading-relaxed text-slate-600" data-i18n="guide_s3_body">File online or at designated FHC offices before the published closing date. Keep your receipt or reference number.</p>
+            </li>
+        </ol>
+    </section>
+
+    <!-- Section 3: Documents -->
+    <section id="fhc-documents" class="scroll-mt-24 border-t border-slate-100 py-16 sm:pb-24">
+        <div class="mb-10">
+            <p class="text-xs font-bold uppercase tracking-wider text-zillow">Resources</p>
+            <h2 class="mt-2 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl" data-i18n="sec_docs">Important documents</h2>
+            <p class="mt-2 max-w-2xl text-sm text-slate-600" data-i18n="sec_docs_desc">Application templates and reference circulars (link your production PDFs when available).</p>
+        </div>
+        <ul class="divide-y divide-slate-100 rounded-2xl border border-slate-100 bg-white shadow-sm">
+            <li>
+                <a href="#" class="flex items-center gap-4 px-5 py-4 transition hover:bg-slate-50 sm:px-6 sm:py-5">
+                    <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-red-50 text-red-600"><i class="fas fa-file-pdf text-lg" aria-hidden="true"></i></span>
+                    <div class="min-w-0 flex-1">
+                        <p class="font-semibold text-slate-900" data-i18n="doc_app">Unified housing application form</p>
+                        <p class="text-xs text-slate-500">PDF · <span data-i18n="doc_replace">Replace with hosted file URL</span></p>
+                    </div>
+                    <i class="fas fa-download text-slate-400" aria-hidden="true"></i>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="flex items-center gap-4 px-5 py-4 transition hover:bg-slate-50 sm:px-6 sm:py-5">
+                    <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-red-50 text-red-600"><i class="fas fa-file-pdf text-lg" aria-hidden="true"></i></span>
+                    <div class="min-w-0 flex-1">
+                        <p class="font-semibold text-slate-900" data-i18n="doc_rent">Rental programme annex</p>
+                        <p class="text-xs text-slate-500">PDF · <span data-i18n="doc_replace">Replace with hosted file URL</span></p>
+                    </div>
+                    <i class="fas fa-download text-slate-400" aria-hidden="true"></i>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="flex items-center gap-4 px-5 py-4 transition hover:bg-slate-50 sm:px-6 sm:py-5">
+                    <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-red-50 text-red-600"><i class="fas fa-file-pdf text-lg" aria-hidden="true"></i></span>
+                    <div class="min-w-0 flex-1">
+                        <p class="font-semibold text-slate-900" data-i18n="doc_legal">Legal notice &amp; applicant obligations</p>
+                        <p class="text-xs text-slate-500">PDF · <span data-i18n="doc_replace">Replace with hosted file URL</span></p>
+                    </div>
+                    <i class="fas fa-download text-slate-400" aria-hidden="true"></i>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="flex items-center gap-4 px-5 py-4 transition hover:bg-slate-50 sm:px-6 sm:py-5">
+                    <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-red-50 text-red-600"><i class="fas fa-file-pdf text-lg" aria-hidden="true"></i></span>
+                    <div class="min-w-0 flex-1">
+                        <p class="font-semibold text-slate-900" data-i18n="doc_checklist">Document checklist for auditors</p>
+                        <p class="text-xs text-slate-500">PDF · <span data-i18n="doc_replace">Replace with hosted file URL</span></p>
+                    </div>
+                    <i class="fas fa-download text-slate-400" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </section>
+</main>
+
+<nav class="tb-mobile-nav md:hidden" aria-label="Primary mobile">
+    <div class="tb-mobile-nav__inner">
+        <a href="index.html/index.html"><i class="fa-solid fa-house font-normal" aria-hidden="true"></i><span>Home</span></a>
+        <a href="buy.html"><i class="fa-solid fa-building font-normal" aria-hidden="true"></i><span>Listings</span></a>
+        <a href="index.html/index.html#developers-section"><i class="fa-solid fa-handshake font-normal" aria-hidden="true"></i><span>Developers</span></a>
+        <a href="dashboard.html"><i class="fa-solid fa-heart font-normal" aria-hidden="true"></i><span>Saved</span></a>
+        <a href="dashboard.html"><i class="fa-solid fa-comments font-normal" aria-hidden="true"></i><span>Chat</span></a>
+        <button type="button" onclick="toggleFhcDrawer()"><i class="fa-solid fa-bars font-normal" aria-hidden="true"></i><span>Menu</span></button>
+    </div>
+</nav>
+
+</div>
+
+<script>
+    let currentLang = 'am';
+
+    function toggleFhcDrawer() {
+        var d = document.getElementById('fhc-drawer');
+        var o = document.getElementById('fhc-overlay');
+        if (d) d.classList.toggle('active');
+        if (o) o.classList.toggle('hidden');
+    }
+
+    function closeFhcDrawerIfMobile() {
+        if (window.innerWidth < 768) toggleFhcDrawer();
+    }
+
+    const translations = {
+        am: {
+            official_badge: "ኦፊሴላዊ ምንጭ",
+            fhc_menu: "FHC ፖርታል",
+            services: "አገልግሎቶች", tender: "ጨረታ መከታተያ", docs: "ሰነዶች", guidelines: "መመሪያወች",
+            apply_housing: "ለመኖሪያ ቤት ያመልክቱ", rent_pay: "የኪራይ ክፍያ", repair: "ጥገና", house_rent: "የቤት ኪራይ",
+            projects: "ፕሮጀክቶች", planned: "የታቀዱ ፕሮጀክቶች", completed_proj: "የተጠናቀቁ ፕሮጀክቶች",
+            welcome: "እንኳን ደህና መጡ!",
+            fhc_intro: "የፌደራል መኖሪያ ቤቶች ኮርፖሬሽን (FHC) ከ Tamagn Bet ጋር በሚታወቁ የጨረታ እና የኪራይ ማስታወቂያዎች ይዟል። ከዚህ ገጽ የሚቀርበው ለአጠቃቀም ማስታወቂያ ብቻ ነው።",
+            filter_title: "ማስታወቂያ ይፈልጉ",
+            filter_hint: "በአይነት፣ ቦታ እና የዋጋ ክልል ያጣሩ።",
+            filter_type: "የንብረት አይነት",
+            filter_loc: "ቦታ",
+            filter_price: "የዋጋ ክልል",
+            all_types: "ሁሉም አይነቶች",
+            all_areas: "ሁሉም አካባቢዎች",
+            all_prices: "ማንኛውም ክልል",
+            cat_res: "መኖሪያ",
+            cat_com: "ንግድ",
+            cat_land: "መሬት",
+            lbl_res: "መኖሪያ",
+            lbl_com: "ንግድ",
+            lbl_land: "መሬት",
+            lbl_closing: "የማብቂያ ቀን",
+            price_low: "እስከ 2M ብር",
+            price_mid: "2M – 8M ብር",
+            price_high: "8M+ ብር",
+            sec_tenders: "የጨረታ ማስታወቂያዎች",
+            sec_tenders_desc: "ንቁ የጨረታ እና የኪራይ ማስታወቂያዎች። ቀኖች አርማዊ ሊሆኑ ይችላሉ — በኦፊሴላዊ FHC ቻናሎች ያረጋግጡ።",
+            sec_guide: "የመመሪያ ክፍል",
+            sec_guide_desc: "ለ FHC መኖሪያ ወይም ኪራይ ምዝገብ ከመጀመርዎ በፊት ሦስት ደረጃዎች።",
+            guide_s1_title: "ብቁነት ይገምግሙ",
+            guide_s1_body: "ለመረጡት ጨረታ የገቢ ክልል፣ የቤተሰብ መጠን እና የፕሮግራም ደንቦች በኦፊሴላዊ ዙርያ ውስጥ ያረጋግጡ።",
+            guide_s2_title: "ሰነዶች ያዘጋጁ",
+            guide_s2_body: "መታወቂያ፣ ታክስ፣ የገቢ ማስረጃ እና ከታች ካሉ ማውረጃዎች የተሞሉ ቅጾች።",
+            guide_s3_title: "በኦፊሴላዊ እርምጃ ያስገቡ",
+            guide_s3_body: "ከሚዘጋው ቀን በፊት በመስመር ላይ ወይም በ FHC ቢሮ ያስገቡ። የመቀበያ ቁጥር ያስቀምጡ።",
+            sec_docs: "አስፈላጊ ሰነዶች",
+            sec_docs_desc: "የማመልከቻ አብነቶች እና የህግ ማሳወቂያዎች (PDF URLs በምርት ያገናኙ)።",
+            doc_app: "የማመልከቻ ቅጽ (አንድ ድምር)",
+            doc_rent: "የኪራይ ፕሮግራም ተጨማሪ",
+            doc_legal: "የህግ ማስታወቂያ እና የአመልካች ግዴታዎች",
+            doc_checklist: "ለኦዲት የሰነድ ዝርዝር",
+            doc_replace: "የአስተዳደር PDF አድራሻ ያክሉ",
+            filter_showing: "ማሳያ፦"
+        },
+        en: {
+            official_badge: "Official Source",
+            fhc_menu: "FHC portal",
+            services: "Services", tender: "Tender tracking", docs: "Documents", guidelines: "Guidelines",
+            apply_housing: "Apply for housing", rent_pay: "Rent payment", repair: "Maintenance", house_rent: "House rent",
+            projects: "Projects", planned: "Planned projects", completed_proj: "Completed projects",
+            welcome: "Welcome",
+            fhc_intro: "The Federal Housing Corporation (FHC) partners with Tamagn Bet to surface property auctions and rental tenders. Information here is for convenience only—always verify with official FHC channels.",
+            filter_title: "Find a listing",
+            filter_hint: "Filter open tenders by type, area, and price band.",
+            filter_type: "Property type",
+            filter_loc: "Location",
+            filter_price: "Price range",
+            all_types: "All types",
+            all_areas: "All areas",
+            all_prices: "Any range",
+            cat_res: "Residential",
+            cat_com: "Commercial",
+            cat_land: "Land",
+            lbl_res: "Residential",
+            lbl_com: "Commercial",
+            lbl_land: "Land",
+            lbl_closing: "Closing date",
+            price_low: "Under 2M ETB",
+            price_mid: "2M – 8M ETB",
+            price_high: "8M+ ETB",
+            sec_tenders: "Tender notices",
+            sec_tenders_desc: "Active auctions and rental tenders for transparency. Dates are indicative—confirm on official FHC channels.",
+            sec_guide: "Application guide",
+            sec_guide_desc: "Three steps before you apply for FHC housing or rental programmes.",
+            guide_s1_title: "Review eligibility",
+            guide_s1_body: "Confirm income bands, household size, and programme rules in the official circular for your tender.",
+            guide_s2_title: "Prepare documents",
+            guide_s2_body: "Gather ID, tax ID, proof of income, and completed forms from the downloads below.",
+            guide_s3_title: "Submit through official channels",
+            guide_s3_body: "Apply online or at designated FHC offices before the closing date. Keep your receipt or reference number.",
+            sec_docs: "Important documents",
+            sec_docs_desc: "Application templates and legal notices (link production PDFs when ready).",
+            doc_app: "Unified housing application form",
+            doc_rent: "Rental programme annex",
+            doc_legal: "Legal notice & applicant obligations",
+            doc_checklist: "Document checklist for compliance",
+            doc_replace: "Replace with hosted file URL",
+            filter_showing: "Showing"
+        }
+    };
+
+    function applyPageLang() {
+        document.querySelectorAll('[data-i18n]').forEach(function (element) {
+            var key = element.getAttribute('data-i18n');
+            if (translations[currentLang][key]) {
+                element.textContent = translations[currentLang][key];
+            }
+        });
+        document.querySelectorAll('#fhc-filter-type option[data-i18n], #fhc-filter-loc option[data-i18n], #fhc-filter-price option[data-i18n]').forEach(function (opt) {
+            var key = opt.getAttribute('data-i18n');
+            if (key && translations[currentLang][key]) {
+                opt.textContent = translations[currentLang][key];
+            }
+        });
+        applyFhcFilters();
+    }
+
+    function toggleLanguage() {
+        currentLang = (currentLang === 'am') ? 'en' : 'am';
+        var btn = document.getElementById('lang-toggle-btn');
+        if (btn) btn.textContent = (currentLang === 'am') ? 'English' : 'አማርኛ';
+        applyPageLang();
+    }
+
+    function applyFhcFilters() {
+        var t = document.getElementById('fhc-filter-type');
+        var l = document.getElementById('fhc-filter-loc');
+        var p = document.getElementById('fhc-filter-price');
+        var vt = t ? t.value : '';
+        var vl = l ? l.value : '';
+        var vp = p ? p.value : '';
+        var cards = document.querySelectorAll('[data-fhc-card]');
+        var n = 0;
+        cards.forEach(function (card) {
+            var ok = true;
+            if (vt && card.getAttribute('data-type') !== vt) ok = false;
+            if (vl && card.getAttribute('data-location') !== vl) ok = false;
+            if (vp && card.getAttribute('data-price') !== vp) ok = false;
+            card.classList.toggle('fhc-card--hidden', !ok);
+            if (ok) n++;
+        });
+        var countEl = document.getElementById('fhc-filter-count');
+        if (countEl) {
+            var msg = translations[currentLang].filter_showing || 'Showing';
+            countEl.textContent = msg + ' ' + n + ' / ' + cards.length;
+        }
+    }
+
+    document.getElementById('fhc-filter-type').addEventListener('change', applyFhcFilters);
+    document.getElementById('fhc-filter-loc').addEventListener('change', applyFhcFilters);
+    document.getElementById('fhc-filter-price').addEventListener('change', applyFhcFilters);
+    applyPageLang();
+</script>
+    <script type="module" src="/js/chatbot.js"></script>
 </body>
 </html>

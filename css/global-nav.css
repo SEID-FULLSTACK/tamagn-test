@@ -1,0 +1,192 @@
+/* Zillow-style mobile bottom navigation (shared) */
+
+/* Tamagn Bet logo — PNG source only; scale with fixed-height container (no distortion) */
+.logo-container {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    height: 90px;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+}
+.logo-container img {
+    display: block;
+    height: 100%;
+    width: auto;
+    max-width: none;
+    object-fit: contain;
+    object-position: center;
+}
+@media (min-width: 768px) {
+    .logo-container {
+        height: 104px;
+        padding: 0.6rem 1.25rem;
+    }
+}
+.logo-container--footer {
+    height: 76px;
+    padding: 0.45rem 0;
+    justify-content: flex-start;
+}
+@media (min-width: 768px) {
+    .logo-container--footer {
+        height: 88px;
+    }
+}
+.logo-container--rail {
+    height: 52px;
+    width: 100%;
+    max-width: 4.75rem;
+    padding: 0.35rem 0.15rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+@media (min-width: 768px) {
+    .logo-container--rail {
+        height: 58px;
+        max-width: 5rem;
+    }
+}
+.logo-container--rail img {
+    max-width: 100%;
+    height: 100%;
+    width: auto;
+}
+/* Space for fixed bar on pages without Tailwind pb-20 */
+@media (max-width: 767.98px) {
+    body.tb-mobile-nav-page-pad {
+        padding-bottom: calc(4.75rem + env(safe-area-inset-bottom, 0px));
+    }
+}
+
+@media (min-width: 768px) {
+    .tb-mobile-nav {
+        display: none !important;
+    }
+}
+
+.tb-mobile-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 90;
+    background: rgba(255, 255, 255, 0.98);
+    border-top: 1px solid #f3f4f6;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+}
+
+.tb-mobile-nav__inner {
+    display: flex;
+    justify-content: space-around;
+    align-items: stretch;
+    max-width: 36rem;
+    margin: 0 auto;
+    padding: 0.125rem 0.125rem 0;
+    padding-bottom: calc(0.45rem + env(safe-area-inset-bottom, 0px));
+}
+
+.tb-mobile-nav a,
+.tb-mobile-nav button {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.125rem;
+    min-width: 0;
+    padding: 0.4rem 0.1rem;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: 0.01em;
+    color: #64748b;
+    text-decoration: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    transition: color 0.15s ease;
+}
+
+.tb-mobile-nav a:hover,
+.tb-mobile-nav button:hover {
+    color: #006aff;
+}
+
+.tb-mobile-nav__active {
+    color: #006aff !important;
+}
+
+.tb-mobile-nav__active i {
+    color: #006aff !important;
+}
+
+.tb-mobile-nav i {
+    font-size: 1.125rem;
+    font-weight: 400;
+    line-height: 1;
+    opacity: 0.92;
+}
+
+/* Desktop top link row (optional helper) */
+.tb-desktop-nav {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .tb-desktop-nav {
+        display: flex;
+        align-items: center;
+        gap: 0.125rem;
+    }
+}
+
+.tb-desktop-nav a {
+    white-space: nowrap;
+    border-radius: 9999px;
+    padding: 0.45rem 0.65rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #64748b;
+    text-decoration: none;
+    transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.tb-desktop-nav a:hover {
+    background-color: #f8fafc;
+    color: #006aff;
+}
+
+.tb-desktop-nav a.tb-desktop-nav__active {
+    color: #006aff;
+}
+
+.tb-desktop-nav--center {
+    flex: 1;
+    justify-content: center;
+}
+
+/* Legacy full-width nav rows (e.g. reserve) — hide on small screens when bottom nav is present */
+@media (max-width: 767.98px) {
+    .tb-legacy-top-nav-hide-mobile {
+        display: none !important;
+    }
+}
+
+/* Property listing cards — ensure hero images paint visibly (no inline-gap / opacity issues) */
+#houseGrid img,
+#tamagn-display-grid img,
+#listings-list article img,
+#saved-list article img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    opacity: 1;
+    object-fit: cover;
+}

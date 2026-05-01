@@ -1,0 +1,4 @@
+- When refactoring, only modify the specific component requested.
+- Do not touch existing business logic or API calls unless explicitly asked.
+- Preserve the existing formatting in files that are not part of the current task.
+- Always double-check if your changes affect external dependencies.

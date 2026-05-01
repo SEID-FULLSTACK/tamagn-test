@@ -1,40 +1,334 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tamagn-Bet | ታማኝ-ቤት</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        zillow: { DEFAULT: "#006AFF", dark: "#0053B3", light: "#E8F2FF", subtle: "#F5F9FF" }
+                    },
+                    fontFamily: { sans: ["Inter", "Roboto", "system-ui", "sans-serif"] }
+                }
+            }
+        };
+    </script>
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/global-nav.css">
+    <link rel="stylesheet" href="/css/chatbot.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+    <style>
+        .filter-btn { border: 1px solid #e2e8f0; background: #fff; color: #334155; transition: background 0.2s, color 0.2s, border-color 0.2s; }
+        .filter-btn:hover { border-color: #006AFF; color: #006AFF; }
+        .filter-btn.active { background: #006AFF; color: #fff; border-color: #006AFF; }
+        #mortgage-calculator { scroll-margin-top: 6rem; }
+        .tb-hybrid-calculator-stack { position: relative; z-index: 10; }
+        .tb-hybrid-calculator-host { position: relative; z-index: 10; display: block !important; visibility: visible !important; }
+        #developers-section { scroll-margin-top: 6rem; }
+        /* Developer partnership showcase — uniform white cards, original logo colors */
+        #reGrid {
+            gap: 2rem;
+        }
+        @media (min-width: 1024px) {
+            #reGrid {
+                gap: 2.5rem;
+            }
+        }
+        #reGrid article {
+            display: flex !important;
+            flex-direction: column !important;
+            border: 1px solid #f0f0f0 !important;
+            border-radius: 1.25rem !important;
+            background: #fff !important;
+            padding: 2rem 1.75rem !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+            transition: box-shadow 0.25s ease, border-color 0.25s ease !important;
+            --tw-ring-offset-shadow: 0 0 #0000;
+            --tw-ring-shadow: 0 0 #0000;
+        }
+        #reGrid article:hover {
+            transform: none !important;
+            border-color: #e5e7eb !important;
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.07), 0 4px 10px rgba(0, 0, 0, 0.04) !important;
+        }
+        #reGrid article > div:first-of-type {
+            aspect-ratio: auto !important;
+            min-height: 8.75rem !important;
+            height: auto !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: 1.75rem 1.5rem !important;
+            border: none !important;
+            border-radius: 0.875rem !important;
+            background: #fff !important;
+            overflow: hidden !important;
+        }
+        /* Developer Info modal — scoped to partner section UX only */
+        #developerInfoModal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 10050;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            background: rgba(15, 23, 42, 0.45);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+        }
+        #developerInfoModal.is-open { display: flex; }
+        #developerInfoModal .developer-info-card {
+            position: relative;
+            max-width: 32rem;
+            width: 100%;
+            max-height: min(90vh, 40rem);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border-radius: 1.25rem;
+            border: 1px solid rgba(255, 255, 255, 0.55);
+            background: rgba(255, 255, 255, 0.82);
+            box-shadow: 0 25px 50px -12px rgba(0, 106, 255, 0.18), 0 0 0 1px rgba(255, 255, 255, 0.4) inset;
+            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(16px);
+        }
+        #developerInfoModal .developer-info-card__header {
+            flex-shrink: 0;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 1.25rem 1.25rem 0.75rem;
+            border-bottom: 1px solid rgba(0, 106, 255, 0.12);
+        }
+        #developerInfoModal .developer-info-card__title {
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 700;
+            line-height: 1.3;
+            color: #0f172a;
+        }
+        #developerInfoModal .developer-info-card__close-x {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.25rem;
+            height: 2.25rem;
+            border: none;
+            border-radius: 9999px;
+            background: rgba(0, 106, 255, 0.1);
+            color: #006AFF;
+            font-size: 1.35rem;
+            line-height: 1;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+        }
+        #developerInfoModal .developer-info-card__close-x:hover {
+            background: rgba(0, 106, 255, 0.2);
+            color: #0053b3;
+        }
+        #developerInfoModal .developer-info-card__body {
+            flex: 1 1 auto;
+            overflow-y: auto;
+            padding: 1rem 1.25rem 1.25rem;
+            text-align: left;
+        }
+        #developerInfoModal .developer-info-card__body h3 {
+            margin: 1rem 0 0.35rem;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #006AFF;
+        }
+        #developerInfoModal .developer-info-card__body h3:first-child { margin-top: 0; }
+        #developerInfoModal .developer-info-card__body p {
+            margin: 0;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #334155;
+        }
+        #developerInfoModal .developer-info-card__footer {
+            flex-shrink: 0;
+            padding: 0.75rem 1.25rem 1.15rem;
+            border-top: 1px solid rgba(0, 106, 255, 0.1);
+            background: rgba(248, 250, 252, 0.75);
+        }
+        #developerInfoModal .developer-info-card__close-btn {
+            width: 100%;
+            padding: 0.65rem 1rem;
+            border: 1px solid rgba(0, 106, 255, 0.35);
+            border-radius: 0.75rem;
+            background: #006AFF;
+            color: #fff;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+        }
+        #developerInfoModal .developer-info-card__close-btn:hover {
+            background: #0053b3;
+            border-color: #0053b3;
+        }
+        #reGrid article .re-dev-logo,
+        #reGrid article img {
+            display: block !important;
+            margin: 0 auto;
+            max-width: 100% !important;
+            max-height: 100% !important;
+            width: auto !important;
+            height: auto !important;
+            object-fit: contain !important;
+            object-position: center !important;
+            transform: none !important;
+            -webkit-transform: none !important;
+            filter: none !important;
+            -webkit-filter: none !important;
+            /* Ignore EXIF Orientation: show raw pixel layout (fixes sideways logos) */
+            image-orientation: none !important;
+        }
+        /* Full-width home: mortgage block uses .mortgage-calculator-wrap (not .loan-calculator-section) to avoid legacy style.css padding/max-width */
+        .mortgage-calculator-wrap .loan-widget-results,
+        .mortgage-calculator-wrap .calc-results-container {
+            background: linear-gradient(180deg, #f8fafc 0%, #eef6ff 100%) !important;
+            border: 1px solid rgba(0, 106, 255, 0.15) !important;
+            border-radius: 1rem !important;
+            padding: 1.5rem !important;
+            margin-top: 0 !important;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+            text-align: center !important;
+        }
+        .mortgage-calculator-wrap .loan-widget-results p,
+        .mortgage-calculator-wrap .calc-results-container p {
+            margin: 0 0 0.25rem 0 !important;
+            font-size: 0.875rem !important;
+            font-weight: 500 !important;
+            letter-spacing: 0 !important;
+            text-transform: none !important;
+            color: #374151 !important;
+            opacity: 1 !important;
+        }
+        .mortgage-calculator-wrap .loan-widget-results h3,
+        .mortgage-calculator-wrap .calc-results-container h3 {
+            margin: 0 !important;
+            color: #006aff !important;
+            text-shadow: none !important;
+            font-weight: 800 !important;
+        }
+        .mortgage-calculator-wrap .loan-widget-details p,
+        .mortgage-calculator-wrap .calc-details-grid p {
+            margin: 0 !important;
+            text-transform: none !important;
+            color: inherit !important;
+            opacity: 1 !important;
+        }
+        .mortgage-calculator-wrap .loan-widget-details p:last-child,
+        .mortgage-calculator-wrap .calc-details-grid p:last-child {
+            font-weight: 700 !important;
+            color: #0f172a !important;
+        }
+        /* Footer: override legacy style.css dark footer + social-links for Zillow-style white bar */
+        .tb-home-main > footer {
+            background: #ffffff !important;
+            color: #111827 !important;
+            text-align: left !important;
+            padding: 0 !important;
+            margin-top: auto !important;
+        }
+        .tb-home-main footer .social-links {
+            margin: 0 !important;
+            justify-content: flex-start !important;
+            font-size: inherit !important;
+            gap: 0.75rem !important;
+        }
+        .tb-home-main footer .social-links a {
+            text-decoration: none !important;
+        }
+    </style>
 </head>
-<body>
-<header class="header">
-    <div style="display: flex; align-items: center; gap: 15px;">
-        <button class="menu-trigger" type="button" data-action="toggle-menu"><i class="fas fa-bars"></i></button>
-        <a href="#" class="logo">
-            <span id="l1">Tamagn</span><span id="l2">-Bet</span>
-        </a>
-    </div>
-<div class="nav-right">
- <button class="toggle-bttn" type="button" data-action="navigate" data-href="../login.html">sign in</button>
+<body class="flex min-h-screen flex-col bg-gray-50 pb-20 font-sans text-slate-800 antialiased md:pb-0">
 
-  <button id="langBtn">አማርኛ</button>
-    
-    </div>    
-  
+<aside class="fixed left-0 top-0 z-[90] hidden h-screen w-16 flex-col border-r border-gray-200 bg-white md:flex md:w-20" aria-label="Section navigation">
+    <a href="index.html" class="logo-container logo-container--rail" aria-label="Tamagn Bet Home">
+        <img src="/image/tamagn_logo.PNG" alt="" width="280" height="112" loading="eager" decoding="async" />
+    </a>
+    <nav class="flex flex-col items-stretch px-1.5 pb-4 pt-2" aria-label="Primary vertical">
+        <a href="index.html" class="flex flex-col items-center gap-0.5 rounded-lg py-2.5 text-center text-[10px] font-semibold leading-tight text-[#006AFF] transition hover:opacity-90">
+            <i class="fas fa-house text-[1.125rem] font-normal leading-none text-[#006AFF]" aria-hidden="true"></i>
+            <span class="max-w-[4.25rem] truncate">Home</span>
+        </a>
+        <a href="../buy.html" class="group flex flex-col items-center gap-0.5 rounded-lg py-2.5 text-center text-[10px] font-semibold leading-tight text-gray-500 transition hover:text-[#006AFF]">
+            <i class="fas fa-building text-[1.125rem] font-normal leading-none text-gray-400 transition group-hover:text-[#006AFF]" aria-hidden="true"></i>
+            <span class="max-w-[4.25rem] truncate">Listings</span>
+        </a>
+        <a href="#developers-section" class="group flex flex-col items-center gap-0.5 rounded-lg py-2.5 text-center text-[10px] font-semibold leading-tight text-gray-500 transition hover:text-[#006AFF]">
+            <i class="fas fa-handshake text-[1.125rem] font-normal leading-none text-gray-400 transition group-hover:text-[#006AFF]" aria-hidden="true"></i>
+            <span class="max-w-[4.25rem] truncate">Developers</span>
+        </a>
+        <a href="../dashboard.html" class="group flex flex-col items-center gap-0.5 rounded-lg py-2.5 text-center text-[10px] font-semibold leading-tight text-gray-500 transition hover:text-[#006AFF]">
+            <i class="fas fa-heart text-[1.125rem] font-normal leading-none text-gray-400 transition group-hover:text-[#006AFF]" aria-hidden="true"></i>
+            <span class="max-w-[4.25rem] truncate">Saved</span>
+        </a>
+        <a href="../dashboard.html" class="group flex flex-col items-center gap-0.5 rounded-lg py-2.5 text-center text-[10px] font-semibold leading-tight text-gray-500 transition hover:text-[#006AFF]">
+            <i class="fas fa-comments text-[1.125rem] font-normal leading-none text-gray-400 transition group-hover:text-[#006AFF]" aria-hidden="true"></i>
+            <span class="max-w-[4.25rem] truncate">Chat</span>
+        </a>
+        <a href="#mortgage-calculator" class="group flex flex-col items-center gap-0.5 rounded-lg py-2.5 text-center text-[10px] font-semibold leading-tight text-gray-500 transition hover:text-[#006AFF]">
+            <i class="fas fa-calculator text-[1.125rem] font-normal leading-none text-gray-400 transition group-hover:text-[#006AFF]" aria-hidden="true"></i>
+            <span class="max-w-[4.25rem] truncate">Budget</span>
+        </a>
+        <button type="button" class="group flex w-full flex-col items-center gap-0.5 rounded-lg py-2.5 text-center text-[10px] font-semibold leading-tight text-gray-500 transition hover:text-[#006AFF]" onclick="toggleMenu()">
+            <i class="fas fa-bars text-[1.125rem] font-normal leading-none text-gray-400 transition group-hover:text-[#006AFF]" aria-hidden="true"></i>
+            <span class="max-w-[4.25rem] truncate">Menu</span>
+        </button>
+    </nav>
+</aside>
+
+<div class="tb-home-main relative flex min-h-screen min-w-0 flex-1 flex-col md:ml-20">
+
+<header class="sticky top-0 z-[1000] w-full border-b-[0.5px] border-gray-200 bg-white">
+    <div class="relative mx-auto flex min-h-[7.5rem] max-w-[1280px] items-center justify-between px-6 py-2 lg:px-10">
+        <div class="relative z-10 flex min-w-0 flex-1 items-center justify-start gap-4 lg:gap-8">
+            <button type="button" id="menuBtn" class="menu-trigger -ml-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-md text-slate-700 transition hover:bg-slate-100 md:hidden" onclick="toggleMenu()" aria-label="Open menu"><i class="fas fa-bars text-base" aria-hidden="true"></i></button>
+            <nav class="hidden min-w-0 items-center gap-6 lg:gap-10 md:flex" aria-label="Primary desktop">
+                <a href="../buy.html" class="whitespace-nowrap text-sm font-medium text-gray-800 transition hover:text-[#006AFF]">Buy</a>
+                <a href="../buy.html" class="whitespace-nowrap text-sm font-medium text-gray-800 transition hover:text-[#006AFF]">Rent</a>
+                <a href="../sell.html" class="whitespace-nowrap text-sm font-medium text-gray-800 transition hover:text-[#006AFF]">Sell</a>
+                <a href="#developers-section" class="whitespace-nowrap text-sm font-medium text-gray-800 transition hover:text-[#006AFF]">Developers</a>
+                <a href="#mortgage-calculator" class="whitespace-nowrap text-sm font-medium text-gray-800 transition hover:text-[#006AFF]">Budget Calculator</a>
+                <a href="../dashboard.html" class="whitespace-nowrap text-sm font-medium text-gray-800 transition hover:text-[#006AFF]">Saved</a>
+            </nav>
+        </div>
+        <a href="index.html" class="logo-container absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2" aria-label="Tamagn-Bet Home">
+            <img src="/image/tamagn_logo.PNG" alt="Tamagn Bet" width="400" height="160" loading="eager" decoding="async" />
+        </a>
+        <div class="relative z-10 flex min-w-0 flex-1 items-center justify-end gap-2 sm:gap-3">
+            <button type="button" id="langBtn" class="rounded-md border border-gray-200 bg-white px-2.5 py-1.5 text-xs font-medium text-gray-800 transition hover:border-gray-300 sm:text-sm">አማርኛ</button>
+            <button type="button" class="inline-flex items-center justify-center rounded-md border border-[#005ecd] bg-[#006AFF] px-4 py-1.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#0053d6]" onclick="window.location.href='../login.html'">Sign in</button>
+        </div>
+    </div>
 </header>
 
-      
-<div class="overlay" id="overlay" data-action="toggle-menu"></div>
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
-<nav class="side-drawer" id="sideDrawer">
-    </nav>
+<nav class="side-drawer zillow-drawer-panel" id="sideDrawer" aria-label="Mobile navigation"></nav>
 
       <!-- Post Property Modal -->
 <div id="postPropModal" class="modal">
     <div class="modal-content">
-        <span class="close" data-action="toggle-modal" data-modal-id="postPropModal">&times;</span>
+        <span class="close" onclick="toggleModal('postPropModal')">&times;</span>
         <h2 id="postTitleText">Post New Property</h2>
         
         <div class="pricing-banner" style="background: #fdf7e2; padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px dashed #f39c12; text-align: center;">
@@ -53,7 +347,7 @@
         <form id="propertyForm">
             <div class="form-group">
                 <label for="pDeveloper">Select Real Estate Developer or Category:</label>
-                <select id="pDeveloper" name="developer_id" required>
+                <select id="pDeveloper" name="developer_id" onchange="handleCategoryChange()" required>
                     <option value="" disabled selected>-- Choose --</option>
                     <optgroup label="ሪል እስቴት አልሚዎች (Developers)">
                         <option value="1">Noah Real Estate</option>
@@ -134,15 +428,6 @@
             </div>
 
             <div class="form-group">
-                <label for="pStatus">Property Status</label>
-                <select id="pStatus" required>
-                    <option value="selling" selected>Selling</option>
-                    <option value="renting">Renting</option>
-                    <option value="sold">Sold</option>
-                </select>
-            </div>
-
-            <div class="form-group">
                 <label id="lblLocation">Location</label>
                 <input type="text" id="pLocation" placeholder="e.g. Bole, Addis Ababa" required>
             </div>
@@ -163,7 +448,7 @@
 </div>
             <div class="form-group">
                 <label>ምስል የመጫኛ መንገድ ይምረጡ</label>
-                <select id="imageOption">
+                <select id="imageOption" onchange="toggleImageInput()">
                     <option value="link">በሊንክ (Image URL)</option>
                     <option value="upload">ከኮምፒውተር ይጫኑ (Upload File)</option>
                 </select>
@@ -201,193 +486,194 @@
         <button class="pay-btn" style="background: #0066ff; color: white; width: 100%; padding: 12px; border: none; border-radius: 5px; margin-bottom: 10px;">ቴሌብርር</button>
         <button class="pay-btn" style="background: #27ae60; color: white; width: 100%; padding: 12px; border: none; border-radius: 5px;">ቻፓ (Chapa)</button>
         
-        <button type="button" data-action="close-post-payment" style="margin-top: 15px; background: none; border: none; color: #999; cursor: pointer;">ለጊዜው ይቆይ</button>
+        <button onclick="document.getElementById('postPaymentModal').style.display='none'" style="margin-top: 15px; background: none; border: none; color: #999; cursor: pointer;">ለጊዜው ይቆይ</button>
     </div>
 </div>
-<div id="agentRegModal" class="modal">
-    <div class="modal-content profile-card">
-        <span class="close" data-action="toggle-modal" data-modal-id="agentRegModal">&times;</span>
-        
-        <div class="modal-header">
-            <i class="fas fa-user-plus"></i>
-            <h2>Agent Registration</h2>
-            <p>Create an account to start listing properties</p>
+    <div id="aboutModal" class="modal"><div class="modal-content"><span class="close-btn" onclick="toggleModal('aboutModal')">&times;</span><h2 id="abH">About Us</h2><p id="abP"></p><strong>Developed by Horizon Web Tech</strong></div></div>
+    <div id="visModal" class="modal"><div class="modal-content"><span class="close-btn" onclick="toggleModal('visModal')">&times;</span><h2 id="vH">Vision</h2><p id="vP"></p></div></div>
+    <div id="missModal" class="modal"><div class="modal-content"><span class="close-btn" onclick="toggleModal('missModal')">&times;</span><h2 id="mH">Mission</h2><p id="mP"></p></div></div>
+    <div id="valModal" class="modal"><div class="modal-content"><span class="close-btn" onclick="toggleModal('valModal')">&times;</span><h2 id="valH">Values</h2><p id="valP"></p></div></div>
+
+    <main class="min-w-0 flex-1 w-full">
+        <section class="relative min-h-[480px] border-b border-slate-200 bg-slate-900 bg-cover bg-center bg-no-repeat py-14 sm:min-h-[520px] sm:py-20 lg:py-24" style="background-image: linear-gradient(rgba(15, 23, 42, 0.68), rgba(15, 23, 42, 0.5)), url('https://images.unsplash.com/photo-1582407947304-fd86f028f716?auto=format&amp;fit=crop&amp;w=1920');">
+            <div class="relative z-10 mx-auto w-full max-w-[1280px] px-6 text-left lg:px-10">
+                <h1 id="heroH" class="text-pretty text-4xl font-bold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-6xl" style="text-shadow: 0 2px 24px rgba(0,0,0,0.35);">Ethiopia's Trusted Property Hub</h1>
+                <p id="heroP" class="mt-4 max-w-2xl text-base font-medium leading-relaxed text-white/90 sm:text-lg">Rent, Buy, Sell and Invest in Real Estate.</p>
+
+                <div class="mt-10 w-full max-w-3xl">
+                    <div class="relative rounded-full bg-white shadow-2xl shadow-black/15 ring-1 ring-black/[0.04]">
+                        <label for="searchInput" class="sr-only">Search</label>
+                        <input type="text" id="searchInput" onkeyup="filterContent()" placeholder="Enter address, city, sub-city, woreda" data-key="searchPlaceholder"
+                            class="h-14 w-full rounded-full border-0 bg-transparent py-3 pl-6 pr-14 text-base font-medium text-slate-900 outline-none placeholder:text-slate-400 focus:ring-0 focus:ring-offset-0" />
+                        <button type="button" onclick="filterContent()" class="absolute right-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full text-slate-500 transition hover:bg-slate-100 hover:text-[#006AFF]" aria-label="Search">
+                            <i class="fa-solid fa-magnifying-glass text-lg" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="w-full py-8">
+            <div class="mx-auto w-full max-w-[1280px] px-6 lg:px-10">
+            <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+                <button type="button" class="filter-btn active rounded-full px-4 py-2 text-sm font-semibold" onclick="setCategory('All', this)" id="fAll">All</button>
+                <button type="button" class="filter-btn rounded-full px-4 py-2 text-sm font-semibold" onclick="setCategory('Villa', this)" id="fVilla">Villa</button>
+                <button type="button" class="filter-btn rounded-full px-4 py-2 text-sm font-semibold" onclick="setCategory('Apartment', this)" id="fApart">Apartment</button>
+                <button type="button" class="filter-btn rounded-full px-4 py-2 text-sm font-semibold" onclick="setCategory('condominium', this)" id="fcond">Condominium</button>
+                <button type="button" class="filter-btn rounded-full px-4 py-2 text-sm font-semibold" onclick="setCategory('rent', this)" id="frent">Rent</button>
+                <button type="button" class="filter-btn rounded-full px-4 py-2 text-sm font-semibold" onclick="setCategory('sale', this)" id="fSale">Sale</button>
+            </div>
+            </div>
+        </section>
+
+        <section class="w-full pb-12 sm:pb-16">
+            <div class="mx-auto w-full max-w-[1280px] px-6 lg:px-10">
+            <div class="mb-10 text-center sm:text-left">
+                <p class="text-xs font-bold uppercase tracking-wider text-zillow">Browse</p>
+                <h2 id="hTitle" class="mt-1 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">Available Properties</h2>
+            </div>
+            <div id="houseGrid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
+            </div>
+        </section>
+
+        <section class="w-full border-t border-slate-200 bg-white py-12 sm:py-16">
+            <div class="mx-auto w-full max-w-[1280px] px-6 lg:px-10">
+                <div class="mb-10 text-center sm:text-left">
+                    <p class="text-xs font-bold uppercase tracking-wider text-zillow">Live inventory</p>
+                    <h2 class="mt-1 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">Featured listings</h2>
+                </div>
+                <div id="tamagn-display-grid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
+            </div>
+        </section>
+
+        <section class="w-full py-12 sm:py-16">
+            <div class="mx-auto w-full max-w-[1280px] px-6 lg:px-10">
+            <div class="mb-10 text-center sm:text-left">
+                <p class="text-xs font-bold uppercase tracking-wider text-zillow">Explore</p>
+                <h2 class="mt-1 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">Agent showcase</h2>
+            </div>
+            <div id="house-listings-grid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
+            </div>
+        </section>
+
+        <section class="w-full bg-slate-50 py-12 sm:py-16">
+            <div class="mx-auto w-full max-w-[1280px] px-6 lg:px-10">
+                <h2 class="mb-8 text-center text-2xl font-bold text-slate-900 sm:text-3xl">የሚሸጡ ቤቶች</h2>
+                <div id="property-container" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
+            </div>
+        </section>
+
+        <section id="developers-section" class="w-full border-y border-slate-200 bg-slate-50 py-14 sm:py-20">
+            <div class="mx-auto w-full max-w-[1280px] px-6 lg:px-10">
+                <div class="mb-12 text-center sm:mx-auto sm:max-w-3xl sm:text-left">
+                    <p id="rePartnersEyebrow" class="text-xs font-bold uppercase tracking-[0.2em] text-zillow">Partners</p>
+                    <h2 class="section-title mt-3 text-2xl font-semibold leading-snug tracking-tight text-slate-900 sm:text-3xl" id="reTitle">Trusted by Ethiopia's Leading Developers ።</h2>
+                    <p id="rePartnersSub" class="mt-4 max-w-2xl text-sm leading-relaxed text-slate-600">Developers featured here collaborate with Tamagn Bet to list quality projects and reach serious buyers.</p>
+                </div>
+                <div id="reGrid" class="grid sm:grid-cols-2 lg:grid-cols-3"></div>
+            </div>
+        </section>
+
+        <section id="mortgage-calculator" class="mortgage-calculator-wrap tb-hybrid-calculator-stack w-full border-t border-slate-200 bg-slate-100 py-10 sm:py-14">
+            <div class="mx-auto flex w-full max-w-[1280px] justify-center px-6 lg:px-10">
+                <div class="w-full max-w-lg sm:max-w-xl">
+                    <div id="hybrid-calculator-container" class="tb-hybrid-calculator-host"></div>
+                </div>
+            </div>
+        </section>
+
+        <div id="developerInfoModal" role="dialog" aria-modal="true" aria-labelledby="developerInfoModalTitle" aria-hidden="true">
+            <div class="developer-info-card" role="document">
+                <div class="developer-info-card__header">
+                    <h2 id="developerInfoModalTitle" class="developer-info-card__title"></h2>
+                    <button type="button" id="developerInfoModalCloseX" class="developer-info-card__close-x" aria-label="Close">&times;</button>
+                </div>
+                <div class="developer-info-card__body">
+                    <p id="developerInfoAboutEn"></p>
+                </div>
+                <div class="developer-info-card__footer">
+                    <button type="button" id="developerInfoModalCloseBtn" class="developer-info-card__close-btn">Close</button>
+                </div>
+            </div>
         </div>
 
-        <form id="agentRegForm" class="auth-form">
-            <div class="form-row">
-                <div class="input-group">
-                    <label><i class="fas fa-user"></i> Full Name</label>
-                    <input type="text" id="regFullName" placeholder="Enter your full name" required>
-                </div>
-                <div class="input-group">
-                    <label><i class="fas fa-building"></i> Company Name</label>
-                    <input type="text" id="regBusName" placeholder="e.g. Tamagn Real Estate">
-                </div>
-            </div>
+    </main>
 
-            <div class="input-group">
-                <label><i class="fas fa-envelope"></i> Email Address</label>
-                <input type="email" id="regEmail" placeholder="name@example.com" required>
-            </div>
-
-            <div class="input-group">
-                <label><i class="fas fa-phone"></i> Phone Number</label>
-                <input type="tel" id="regPhone" placeholder="+251 9..." required>
-            </div>
-
-            <div class="input-group">
-                <label><i class="fas fa-lock"></i> Password</label>
-                <input type="password" id="regPass" placeholder="Min. 6 characters" minlength="6" required>
-            </div>
-
-            <div class="input-group">
-                <label><i class="fas fa-image"></i> Business Logo / Profile Photo</label>
-                <input type="file" id="regLogo" accept="image/*">
-            </div>
-
-            <button type="submit" class="btn-main">Create Agent Account</button>
-        </form>
-    </div>
-</div>
-    <div id="aboutModal" class="modal"><div class="modal-content"><span class="close-btn" data-action="toggle-modal" data-modal-id="aboutModal">&times;</span><h2 id="abH">About Us</h2><p id="abP"></p><strong>Developed by Horizon Web Tech</strong></div></div>
-    <div id="visModal" class="modal"><div class="modal-content"><span class="close-btn" data-action="toggle-modal" data-modal-id="visModal">&times;</span><h2 id="vH">Vision</h2><p id="vP"></p></div></div>
-    <div id="missModal" class="modal"><div class="modal-content"><span class="close-btn" data-action="toggle-modal" data-modal-id="missModal">&times;</span><h2 id="mH">Mission</h2><p id="mP"></p></div></div>
-    <div id="valModal" class="modal"><div class="modal-content"><span class="close-btn" data-action="toggle-modal" data-modal-id="valModal">&times;</span><h2 id="valH">Values</h2><p id="valP"></p></div></div>
-    <section class="hero">
-        <h1 id="heroH">Ethiopia's Trusted Property Hub</h1>
-        <p id="heroP">Rent, Buy, and Explore Real Estate.</p>
-    </section>
-<div class="search-wrapper">
-        <input type="text" id="searchInput" placeholder="Search..." class="search-input">
-    </div>
-
-    <div class="filter-bar">
-        <button class="filter-btn active" type="button" data-action="set-category" data-category="All" id="fAll">All</button>
-        <button class="filter-btn" type="button" data-action="set-category" data-category="Villa" id="fVilla">Villa</button>
-        <button class="filter-btn" type="button" data-action="set-category" data-category="Apartment" id="fApart">Apartment</button>
-        <button class="filter-btn" type="button" data-action="set-category" data-category="condominium" id="fcond">Condominium</button>
-        <button class="filter-btn" type="button" data-action="set-category" data-category="rent" id="frent">Rent</button>
-        <button class="filter-btn" type="button" data-action="set-category" data-category="sale" id="fSale">Sale</button>
-    </div>
-
-<div id="house-listings-grid">
-    </div>
-<section class="properties-section">
-    <h2 style="text-align: center;">የሚሸጡ ቤቶች</h2>
-    <div id="property-container" class="property-grid"></div>
-</section>
-<div id="tamagn-display-grid" class="property-grid">
-    </div>
-<div class="section-container" style="background: #ececec; border-radius: 30px; padding: 40px 5%;">
-        <h2 class="section-title" id="reTitle">Real Estate Developers</h2>
-        <div class="grid" id="reGrid"></div>
-    </div>
-<section class="loan-calculator-section">
-    <h2><i class="fas fa-calculator"></i> የቤት ብድር ካልኩሌተር</h2>
-
-    <div class="calc-type-selector" style="display: flex; gap: 20px; justify-content: center; margin-bottom: 25px;">
-        <label style="cursor:pointer; font-weight:bold;">
-            <input type="radio" name="loanType" value="conventional" checked> መደበኛ (Conventional)
-        </label>
-        <label style="cursor:pointer; font-weight:bold;">
-            <input type="radio" name="loanType" value="sharia"> ከወለድ ነፃ (Interest-Free)
-        </label>
-    </div>
-
-    <div class="input-group">
-        <label>የቤቱ ዋጋ (ETB)</label>
-        <input type="number" id="housePrice" placeholder="ለምሳሌ: 5,000,000">
-    </div>
-
-    <div class="input-group">
-        <label>የቅድመ ክፍያ (%)</label>
-        <input type="number" id="downPaymentPercent" value="20">
-    </div>
-
-    <div class="input-group">
-        <label id="rateLabel">የባንክ ወለድ በዓመት (%)</label>
-        <input type="number" id="interestRate" value="16.5">
-    </div>
-
-    <div class="input-group">
-        <label>የብድር ጊዜ (በዓመት)</label>
-        <input type="number" id="loanTerm" value="20">
-    </div>
-
-    <div class="calc-results-container">
-        <p>ወርሃዊ ክፍያ</p>
-        <h3 id="monthlyPayment">0.00 ETB</h3>
-        
-        <div class="calc-details-grid">
-            <div>
-                <p>የቤቱ ዋጋ</p>
-                <p id="resHousePrice">0 ETB</p>
-            </div>
-            <div>
-                <p>ቅድመ ክፍያ</p>
-                <p id="resDownPayment">0 ETB</p>
-            </div>
-            <div>
-                <p>የባንክ ብድር</p>
-                <p id="resLoanAmount">0 ETB</p>
-            </div>
-            <div>
-                <p id="resInterestLabel">ጠቅላላ ወለድ</p>
-                <p id="resTotalInterest">0 ETB</p>
-            </div>
-        </div>
-    </div>
-</section>
 <div id="detailsModal" class="modal" style="display:none; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.7);">
     <div class="modal-content" style="background:#fff; margin:5% auto; padding:20px; width:90%; max-width:600px; border-radius:12px; position:relative;">
-        <span data-action="close-details-modal" style="position:absolute; right:20px; top:10px; font-size:28px; cursor:pointer;">&times;</span>
+        <span onclick="closeModal()" style="position:absolute; right:20px; top:10px; font-size:28px; cursor:pointer;">&times;</span>
         
         <h2 id="modalTitle">የቤት ዝርዝር</h2>
         <div id="modalInfo"></div>
 
         <h3 style="margin-top:20px;">መገኛ (Location on Map)</h3>
         <div id="map-container" style="width: 100%; height: 300px; border-radius: 8px; overflow: hidden; border: 1px solid #ddd;">
-            <iframe id="google-map" width="100%" height="100%" frameborder="0" style="border:0" allowfullscreen></iframe>
+            <div id="google-map" style="width:100%;height:100%;min-height:300px;border:0"></div>
         </div>
     </div>
 </div>
-    <footer>
-        <div class="footer-content">
-            <h3 id="footerLogo">Tamagn-Bet</h3>
-            <p id="footerDesc">Ethiopia's Digital Real Estate Marketplace</p>
-            <div class="social-links">
-                <i class="fab fa-facebook"></i>
-                <i class="fab fa-telegram"></i>
-                <i class="fab fa-linkedin"></i>
-                <i class="fab fa-instagram"></i>
+    <nav class="tb-mobile-nav md:hidden" aria-label="Primary mobile">
+        <div class="tb-mobile-nav__inner">
+            <a href="index.html" class="tb-mobile-nav__active"><i class="fas fa-house font-normal" aria-hidden="true"></i><span>Home</span></a>
+            <a href="../buy.html"><i class="fas fa-building font-normal" aria-hidden="true"></i><span>Listings</span></a>
+            <a href="#developers-section"><i class="fas fa-handshake font-normal" aria-hidden="true"></i><span>Developers</span></a>
+            <a href="../dashboard.html"><i class="fas fa-heart font-normal" aria-hidden="true"></i><span>Saved</span></a>
+            <a href="../dashboard.html"><i class="fas fa-comments font-normal" aria-hidden="true"></i><span>Chat</span></a>
+            <a href="#mortgage-calculator"><i class="fas fa-calculator font-normal" aria-hidden="true"></i><span>Budget</span></a>
+            <button type="button" onclick="toggleMenu()"><i class="fas fa-bars font-normal" aria-hidden="true"></i><span>Menu</span></button>
+        </div>
+    </nav>
+    <footer class="mt-auto border-t border-gray-200 bg-white text-gray-900">
+        <div class="footer-content mx-auto max-w-[1280px] px-6 py-12 lg:px-10">
+            <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-12 lg:gap-12">
+                <div class="sm:col-span-2 lg:col-span-4 lg:max-w-sm">
+                    <a href="index.html" id="footerLogo" class="logo-container logo-container--footer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#006AFF]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white" aria-label="Tamagn-Bet Home">
+                        <img src="/image/tamagn_logo.PNG" alt="Tamagn Bet" width="400" height="160" loading="lazy" decoding="async" />
+                    </a>
+                    <p id="footerDesc" class="mt-5 text-sm font-normal leading-relaxed text-gray-600">Ethiopia's Digital Real Estate Marketplace</p>
+                </div>
+                <div class="lg:col-span-2">
+                    <h3 class="text-sm font-semibold tracking-wide text-gray-900">Company</h3>
+                    <ul class="mt-5 space-y-3 text-sm">
+                        <li>
+                            <a href="../about.html" class="text-gray-600 transition hover:text-[#006AFF]">About</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="lg:col-span-2">
+                    <h3 class="text-sm font-semibold tracking-wide text-gray-900">Legal</h3>
+                    <ul class="mt-5 space-y-3 text-sm">
+                        <li>
+                            <a href="../terms.html" class="text-gray-600 transition hover:text-[#006AFF]">Terms</a>
+                        </li>
+                        <li>
+                            <a href="../privacy.html" class="text-gray-600 transition hover:text-[#006AFF]">Privacy</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="sm:col-span-2 lg:col-span-4">
+                    <h3 class="text-sm font-semibold tracking-wide text-gray-900">Social</h3>
+                    <div class="social-links mt-5 flex flex-wrap items-center gap-3">
+                        <a href="#" class="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 text-gray-500 transition hover:border-[#006AFF]/30 hover:text-[#006AFF]" aria-label="Facebook">
+                            <i class="fab fa-facebook-f text-base" aria-hidden="true"></i>
+                        </a>
+                        <a href="#" class="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 text-gray-500 transition hover:border-[#006AFF]/30 hover:text-[#006AFF]" aria-label="Telegram">
+                            <i class="fab fa-telegram-plane text-base" aria-hidden="true"></i>
+                        </a>
+                        <a href="#" class="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 text-gray-500 transition hover:border-[#006AFF]/30 hover:text-[#006AFF]" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin-in text-base" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
             </div>
-            <hr style="opacity: 0.1; margin: 20px 0;">
-            <p id="footerCopy">&copy; 2026 Tamagn-Bet | Developed by Horizon Web Tech</p>
+            <div class="mt-12 border-t border-gray-200 pt-8">
+                <p id="footerCopy" class="text-xs leading-relaxed text-gray-600">&copy; 2026 Tamagn-Bet | Developed by Horizon Web Tech</p>
+            </div>
         </div>
     </footer>
-<div class="chatbot-wrapper">
-    <div class="chat-box" id="chatBox">
-        <div class="chat-header">
-            <span>Tamagn-Bet AI</span>
-            <button type="button" data-action="toggle-chat">&times;</button>
-        </div>
-        <div class="chat-body" id="chatBody">
-            <div class="bot-msg">Welcome! How can we help you today?</div>
-        </div>
-        <div class="chat-footer">
-            <input type="text" id="chatInput" placeholder="Ask a question...">
-            <button type="button" data-action="send-chat-message">ላክ</button> 
-<i class="fas fa-paper-plane" data-action="send-chat-message"></i>
-        </div>
-    </div>
-    <button class="chat-trigger" type="button" data-action="toggle-chat">
-        <i class="fas fa-comments"></i>
-    </button>
-</div>
 <div id="listModal" class="modal">
     <div class="modal-content">
-        <span class="close" data-action="toggle-modal" data-modal-id="listModal">&times;</span>
+        <span class="close" onclick="toggleModal('listModal')">&times;</span>
         <h2><i class="fas fa-th-list"></i> Property Listings</h2>
         <p>Manage and view all current property listings here.</p>
         <div id="listContent"></div>
@@ -396,7 +682,7 @@
 
 <div id="repoModal" class="modal">
     <div class="modal-content">
-        <span class="close" data-action="toggle-modal" data-modal-id="repoModal">&times;</span>
+        <span class="close" onclick="toggleModal('repoModal')">&times;</span>
         <h2><i class="fas fa-chart-line"></i> Market Reports</h2>
         <p>View analytics and price trends for Addis Ababa real estate.</p>
     </div>
@@ -404,7 +690,7 @@
 
 <div id="authModal" class="modal">
     <div class="modal-content">
-        <span class="close" data-action="close-auth-modal">&times;</span>
+        <span class="close" onclick="closeAuthModal()">&times;</span>
         
         <div id="loginFormSection">
             <h3>እንኳን ደህና መጡ!</h3>
@@ -413,7 +699,7 @@
                 <input type="password" placeholder="የይለፍ ቃል" required>
                 <button type="submit" class="btn-action">ይግቡ</button>
             </form>
-            <p>አካውንት የለዎትም? <span class="link" data-action="show-form" data-form="signup">ተመዝገቡ</span></p>
+            <p>አካውንት የለዎትም? <span class="link" onclick="showForm('signup')">ተመዝገቡ</span></p>
         </div>
 
         <div id="signupFormSection" style="display: none;">
@@ -428,10 +714,60 @@
                 </select>
                 <button type="submit" class="btn-action">አሁን ተመዝገቡ</button>
             </form>
-            <p>አካውንት አለዎት? <span class="link" data-action="show-form" data-form="login">ይግቡ</span></p>
+            <p>አካውንት አለዎት? <span class="link" onclick="showForm('login')">ይግቡ</span></p>
         </div>
     </div>
 </div>
+<script>
+    
+
+ 
+
+
+    // 2. Auth Modal መክፈቻ
+    window.openAuthModal = function(type) {
+        console.log("Sign in clicked: " + type);
+        const modal = document.getElementById('authModal');
+        if (modal) {
+            modal.style.display = 'flex';
+            window.showForm(type); // showForm-ን እንጠራለን
+        }
+    };
+
+    // 3. ፎርም መቀያየሪያ (አሁን Global ሆኗል)
+    window.showForm = function(formType) {
+        console.log("showForm called with: " + formType);
+        const loginSection = document.getElementById('loginFormSection');
+        const signupSection = document.getElementById('signupFormSection');
+        
+        if (loginSection && signupSection) {
+            if (formType === 'login') {
+                loginSection.style.display = 'block';
+                signupSection.style.display = 'none';
+            } else {
+                loginSection.style.display = 'none';
+                signupSection.style.display = 'block';
+            }
+        }
+    };
+
+    // 4. Modal መዝጊያ (አሁን Global ሆኗል)
+    window.closeAuthModal = function() {
+        console.log("Closing modal");
+        document.getElementById('authModal').style.display = 'none';
+    };
+
+    // Modal ውጪ ሲጫን እንዲዘጋ
+    window.onclick = function(event) {
+        const modal = document.getElementById('authModal');
+        if (event.target == modal) {
+            window.closeAuthModal();
+        }
+    };
+</script>
 <script type="module" src="/js/main.js"></script>
+<script type="module" src="/js/calculator.js"></script>
+<script type="module" src="/js/chatbot.js"></script>
+</div>
 </body>
 </html>

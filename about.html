@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | Tamagn Bet</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { zillow: { DEFAULT: "#006AFF", dark: "#0053B3" } },
+                    fontFamily: { sans: ["Inter", "system-ui", "sans-serif"] }
+                }
+            }
+        };
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/global-nav.css">
+    <link rel="stylesheet" href="/css/chatbot.css">
+</head>
+<body class="flex min-h-screen flex-col bg-white pb-20 font-sans text-slate-900 antialiased md:pb-0">
+    <header class="border-b border-gray-200 bg-white">
+        <div class="mx-auto flex min-h-[6.5rem] max-w-4xl items-center justify-between px-6 py-2 lg:min-h-[7.5rem] lg:px-8">
+            <a href="index.html/index.html" class="logo-container" aria-label="Tamagn Bet Home">
+                <img src="/image/tamagn_logo.PNG" alt="Tamagn Bet" width="400" height="160" loading="eager" decoding="async" />
+            </a>
+            <nav class="flex items-center gap-6 text-sm font-medium text-gray-600">
+                <a href="index.html/index.html" class="transition hover:text-zillow">Home</a>
+                <a href="terms.html" class="transition hover:text-zillow">Terms</a>
+                <a href="privacy.html" class="transition hover:text-zillow">Privacy</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="mx-auto w-full max-w-3xl flex-1 px-6 py-14 lg:px-8 lg:py-20">
+        <h1 class="text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl">About Tamagn Bet</h1>
+        <div class="mt-10 space-y-6 text-base leading-relaxed text-gray-600">
+            <p>
+                Tamagn Bet is a premier digital real estate platform dedicated to bringing transparency, trust, and modernization to the Ethiopian property market. Our name, &ldquo;Tamagn&rdquo; (Trusted), reflects our core mission: to build a reliable bridge between home seekers and developers through integrity and innovation.
+            </p>
+            <p>
+                Leveraging advanced technology, our platform enables users to discover their dream homes, utilize comprehensive financial tools like loan calculators, and connect directly with verified developers. We don&rsquo;t just list properties; we facilitate a secure and transparent journey to homeownership.
+            </p>
+        </div>
+    </main>
+
+    <footer class="mt-auto border-t border-gray-200 bg-white py-10">
+        <div class="mx-auto flex max-w-4xl flex-col items-center justify-between gap-4 px-6 sm:flex-row lg:px-8">
+            <p class="text-xs text-gray-500">&copy; 2026 Tamagn Bet. All rights reserved.</p>
+            <div class="flex flex-wrap justify-center gap-6 text-xs font-medium text-gray-600">
+                <a href="about.html" class="hover:text-zillow">About</a>
+                <a href="terms.html" class="hover:text-zillow">Terms of Service</a>
+                <a href="privacy.html" class="hover:text-zillow">Privacy Policy</a>
+            </div>
+        </div>
+    </footer>
+
+    <nav class="tb-mobile-nav md:hidden" aria-label="Primary mobile">
+        <div class="tb-mobile-nav__inner">
+            <a href="index.html/index.html"><i class="fas fa-house font-normal" aria-hidden="true"></i><span>Home</span></a>
+            <a href="buy.html"><i class="fas fa-building font-normal" aria-hidden="true"></i><span>Listings</span></a>
+            <a href="dashboard.html"><i class="fas fa-heart font-normal" aria-hidden="true"></i><span>Saved</span></a>
+            <a href="dashboard.html"><i class="fas fa-comments font-normal" aria-hidden="true"></i><span>Chat</span></a>
+            <a href="index.html/index.html"><i class="fas fa-bars font-normal" aria-hidden="true"></i><span>Menu</span></a>
+        </div>
+    </nav>
+    <script type="module" src="/js/chatbot.js"></script>
+</body>
+</html>

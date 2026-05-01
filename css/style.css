@@ -332,100 +332,6 @@ font-size: 18px;
 .tag-rent { background: var(--secondary); }
 
 .btn-call { display: block; background: var(--secondary); color: white; text-align: center; padding: 10px; border-radius: 5px; text-decoration: none; font-weight: bold; margin-top: 15px; }
-/* Floating Chatbot */
-.chatbot-wrapper {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    z-index: 9999;
-}
-
-.chat-trigger {
-    width: 60px;
-    height: 60px;
-    background-color: #006aff;
-    color: white;
-    border-radius: 50%;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-}
-
-.chat-box {
-    position: absolute;
-    bottom: 80px;
-    right: 0;
-    width: 300px;
-    height: 400px;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-    display: none; /* መጀመሪያ ተደብቆ እንዲቆይ */
-    flex-direction: column;
-    overflow: hidden;
-    border: 1px solid #eaeaea;
-}
-
-.chat-header {
-    background: #006aff;
-    color: white;
-    padding: 15px;
-    display: flex;
-    justify-content: space-between;
-    font-weight: 600;
-
-}
-
-.chat-header button {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 20px;
-    cursor: pointer;
-}
-
-.chat-body {
-    flex: 1;
-    padding: 15px;
-    overflow-y: auto;
-    background: #f8f9fa;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-/* የመልእክት ሳጥኖች ስታይል */
-.bot-msg, .user-msg {
-    padding: 10px;
-    border-radius: 8px;
-    max-width: 85%;
-    font-size: 0.85rem;
-    line-height: 1.4;
-}
-
-.bot-msg { background: #e9ecef; align-self: flex-start; color: #333; }
-.user-msg { background: #006aff; color: white; align-self: flex-end; }
-
-.chat-footer {
-    padding: 10px;
-    display: flex;
-    border-top: 1px solid #eee;
-}
-
-.chat-footer input {
-    flex: 1;
-    border: none;
-    padding: 8px;
-    outline: none;
-}
-
-.chat-footer button {
-    background: none;
-    border: none;
-    color: #006aff;
-    cursor: pointer;
-}
 /* Developer Card Styles */
 .dev-logo-container {
     height: 80px;
@@ -462,13 +368,6 @@ font-size: 18px;
     width: 100%;
     font-weight: bold;
     transition: 0.3s;
-}
-.chat-box {
-    display: none; /* መጀመሪያ ላይ ዝግ እንዲሆን */
-}
-
-.chat-box.active {
-    display: flex; /* ሲከፈት */
 }
 .btn-info:hover {
     background: #0056d2;
@@ -1142,7 +1041,7 @@ footer { background: var(--dark); color: white; padding: 50px 5% 20px; margin-to
 }
 
 @media (max-width: 480px) {
-    .premium-ad-card {
+    .premium-ad-card:not(.premium-ad-sponsor) {
         padding: 24px;
         margin: 15px;
     }
@@ -1153,6 +1052,231 @@ footer { background: var(--dark); color: white; padding: 50px 5% 20px; margin-to
 
     .ad-subtitle {
         font-size: 0.95rem;
+    }
+}
+
+/* —— Abyssinia Furniture sponsored strip (inject ከ main.js property grid) —— */
+.premium-ad-card.premium-ad-sponsor {
+    grid-column: 1 / -1;
+    width: 100%;
+    margin: 30px 0;
+    padding: 0;
+    border-radius: 24px;
+    background: linear-gradient(135deg, #0f0f0f 0%, #2c2c2c 100%);
+    color: #fff;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    display: block;
+}
+
+.premium-ad-card.premium-ad-sponsor::before {
+    display: none;
+}
+
+.premium-ad-sponsor .ad-sponsor-layout {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    padding: 40px;
+    position: relative;
+    z-index: 2;
+    box-sizing: border-box;
+}
+
+.premium-ad-sponsor .ad-sponsor-text {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+.premium-ad-sponsor .ad-sponsor-pill {
+    background: #d4af37;
+    color: #000;
+    padding: 5px 15px;
+    border-radius: 50px;
+    font-size: 11px;
+    font-weight: bold;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.premium-ad-sponsor .ad-sponsor-title {
+    font-size: 2rem;
+    margin: 0 0 15px 0;
+    line-height: 1.2;
+    color: #fff;
+}
+
+.premium-ad-sponsor .ad-sponsor-desc {
+    font-size: 16px;
+    color: #bbb;
+    margin: 0 0 25px 0;
+    line-height: 1.6;
+}
+
+.premium-ad-sponsor .ad-sponsor-cta {
+    background: #d4af37;
+    color: #000;
+    border: none;
+    padding: 15px 35px;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: filter 0.2s ease, transform 0.2s ease;
+}
+
+.premium-ad-sponsor .ad-sponsor-cta:hover {
+    filter: brightness(1.06);
+    transform: translateY(-1px);
+}
+
+.premium-ad-sponsor .ad-sponsor-cta-icon {
+    margin-left: 10px;
+}
+
+.premium-ad-sponsor .ad-sponsor-image-wrap {
+    flex: 0 1 300px;
+    position: relative;
+    width: 300px;
+    max-width: 100%;
+    align-self: center;
+}
+
+.premium-ad-sponsor .ad-sponsor-img {
+    width: 100%;
+    height: 300px;
+    border-radius: 20px;
+    object-fit: cover;
+    display: block;
+}
+
+.premium-ad-sponsor .ad-discount-badge {
+    position: absolute;
+    top: -12px;
+    right: -12px;
+    background: #e74c3c;
+    color: #fff;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    transform: rotate(15deg);
+    box-sizing: border-box;
+    pointer-events: none;
+    z-index: 3;
+}
+
+.premium-ad-sponsor .ad-discount-badge span:first-child {
+    font-size: 20px;
+    line-height: 1;
+}
+
+.premium-ad-sponsor .ad-discount-badge span:last-child {
+    font-size: 10px;
+    line-height: 1;
+    margin-top: 2px;
+}
+
+@media (max-width: 768px) {
+    .premium-ad-sponsor .ad-sponsor-layout {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 20px 16px 24px;
+        gap: 20px;
+    }
+
+    .premium-ad-sponsor .ad-sponsor-text {
+        order: 1;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .premium-ad-sponsor .ad-sponsor-pill {
+        margin-bottom: 12px;
+        max-width: 100%;
+    }
+
+    .premium-ad-sponsor .ad-sponsor-title {
+        font-size: 1.35rem;
+        margin-bottom: 10px;
+    }
+
+    .premium-ad-sponsor .ad-sponsor-desc {
+        font-size: 14px;
+        margin-bottom: 16px;
+        max-width: 100%;
+    }
+
+    .premium-ad-sponsor .ad-sponsor-cta {
+        padding: 12px 24px;
+        font-size: 14px;
+    }
+
+    .premium-ad-sponsor .ad-sponsor-image-wrap {
+        order: 2;
+        width: 100%;
+        flex: none;
+    }
+
+    .premium-ad-sponsor .ad-sponsor-img {
+        width: 100%;
+        height: auto;
+        max-height: none;
+    }
+
+    .premium-ad-sponsor .ad-discount-badge {
+        top: 10px;
+        right: 10px;
+        transform: rotate(12deg);
+        width: 68px;
+        height: 68px;
+    }
+
+    .premium-ad-sponsor .ad-discount-badge span:first-child {
+        font-size: 17px;
+    }
+
+    .premium-ad-sponsor .ad-discount-badge span:last-child {
+        font-size: 9px;
+    }
+
+    .premium-ad-card.premium-ad-sponsor {
+        margin: 20px 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .premium-ad-sponsor .ad-sponsor-layout {
+        padding: 16px 12px 20px;
+        gap: 16px;
+    }
+
+    .premium-ad-sponsor .ad-sponsor-title {
+        font-size: 1.2rem;
+    }
+
+    .premium-ad-sponsor .ad-sponsor-desc {
+        font-size: 13px;
+    }
+
+    .premium-ad-sponsor .ad-discount-badge {
+        width: 60px;
+        height: 60px;
+        top: 8px;
+        right: 8px;
+    }
+
+    .premium-ad-sponsor .ad-discount-badge span:first-child {
+        font-size: 15px;
     }
 }
 /* የካርዶቹ መቀመጫ (Container) */
@@ -1458,4 +1582,159 @@ font-weight: 700;
     min-height: 300px !important;
     display: block !important;
     background-color: #eee; /* ካርታው ባይመጣ እንኳን ግራጫ ቦታ እንዲያሳይ */
+}
+#google-map .tamagn-gmaps-surface {
+    width: 100%;
+    height: 100%;
+    min-height: 300px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+#google-map .leaflet-container {
+    width: 100%;
+    height: 100%;
+    min-height: 300px;
+    font: inherit;
+}
+
+/* Home #reGrid: developer logos — disable EXIF Orientation so UAs don't auto-rotate displayed pixels */
+#reGrid article .re-dev-logo,
+#reGrid article img {
+    image-orientation: none !important;
+    object-fit: contain;
+    object-position: center;
+}
+
+/* ========== Zillow-style side drawer (mobile nav) ========== */
+#sideDrawer.zillow-drawer-panel,
+nav#sideDrawer {
+    font-family: 'Roboto', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    background: #fff;
+}
+
+#sideDrawer .zillow-drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1rem 1rem 1.25rem;
+    border-bottom: 1px solid #e5e7eb;
+    background: #fff;
+}
+
+#sideDrawer .zillow-drawer-close {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 1.75rem;
+    line-height: 1;
+    color: #64748b;
+    padding: 0.25rem 0.5rem;
+    transition: color 0.2s ease;
+    font-weight: 300;
+}
+
+#sideDrawer .zillow-drawer-close:hover {
+    color: #006AFF;
+}
+
+#sideDrawer .zillow-drawer-brand {
+    font-size: 1.125rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+#sideDrawer .zillow-drawer-brand-a { color: #006AFF; }
+#sideDrawer .zillow-drawer-brand-b { color: #059669; }
+
+#sideDrawer .zillow-drawer-nav {
+    padding: 0.25rem 0 1rem;
+}
+
+#sideDrawer .zillow-drawer-link {
+    display: block;
+    padding: 0.5rem 1rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    letter-spacing: 0.025em;
+    color: #334155;
+    text-decoration: none;
+    border-bottom: 1px solid #f1f5f9;
+    transition: all 0.2s ease;
+}
+
+#sideDrawer .zillow-drawer-link:hover {
+    font-weight: 700;
+    color: #006AFF;
+    box-shadow: inset 0 -2px 0 0 #006AFF;
+}
+
+#sideDrawer .zillow-drawer-link:focus-visible {
+    outline: 2px solid #006AFF;
+    outline-offset: -2px;
+}
+
+#sideDrawer .zillow-drawer-nav > .menu-section {
+    border-bottom: 1px solid #f1f5f9;
+}
+
+#sideDrawer .toggle-btn.zillow-drawer-toggle {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    margin: 0;
+    background: none !important;
+    border: none !important;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    letter-spacing: 0.025em;
+    color: #334155;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s ease;
+    box-shadow: none !important;
+}
+
+#sideDrawer .zillow-drawer-toggle:hover {
+    font-weight: 700;
+    color: #006AFF;
+    box-shadow: inset 0 -2px 0 0 #006AFF !important;
+}
+
+#sideDrawer .zillow-drawer-toggle:focus-visible {
+    outline: 2px solid #006AFF;
+    outline-offset: -2px;
+}
+
+#sideDrawer .zillow-drawer-toggle--report {
+    color: #334155;
+}
+
+#sideDrawer .zillow-drawer-toggle--report:hover {
+    color: #b91c1c;
+    box-shadow: inset 0 -2px 0 0 #b91c1c !important;
+}
+
+#sideDrawer .zillow-drawer-submenu {
+    background: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+    padding: 0;
+}
+
+#sideDrawer .zillow-drawer-sublink.sub-link {
+    padding: 0.5rem 1rem 0.5rem 1.5rem;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 0.875rem;
+    letter-spacing: 0.02em;
+    color: #475569;
+    transition: all 0.2s ease;
+}
+
+#sideDrawer .zillow-drawer-sublink:hover {
+    font-weight: 700;
+    color: #006AFF;
+    background: #fff;
 }
